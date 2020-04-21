@@ -3,20 +3,52 @@
     <head>
         <link rel="stylesheet" href="css/index2.css">
         <script>
-            function add(){
-                var para = document.createElement("div");
-                para.id="box";
-                var element = document.getElementById("branch");
-                element.appendChild(para);
+            i=0;
+            j=0;
+            function add(branch_id){ 
+                var box = document.createElement("div");
+                box.id="box"+i;
+                box.className="box";
+                var box_p_x = document.createElement("p");
+                box_p_x.id="distance_x"+i;
+                box.appendChild(box_p_x);
+                var box_p_y = document.createElement("p");
+                box_p_y.id="distance_y"+i;
+                box.appendChild(box_p_y);
+                var element = document.getElementById(branch_id);
+                element.appendChild(box);
+                document.getElementById('distance_x'+i).innerHTML="left:"+document.getElementById("box"+i).offsetLeft;
+                document.getElementById('distance_y'+i).innerHTML="top:"+document.getElementById("box"+i).offsetTop;
+                i++;
+            }
+            function position_add(){
+                var element = document.createElement("div");
+                element.id="branch"+j;
+                element.className="branch";
+
+                var button=document.createElement('BUTTON');
+                button.innerHTML="add_child";
+                // So that flex does not count add child as another element
+                button.style.position ="absolute";
+
+                button.onclick=function(){
+                   add(element.id);
+                }
+                element.appendChild(button);
+                document.getElementById("tree").appendChild(element);
+                j++;
             }
         </script>
     </head>
 <body>
     <div id="tree">
-        <div id="branch">
-            <div id="box"></div>
-        </div>
+        <!-- <div id="branch0">
+            <div id="box">
+                <p id="distance_x"></p>
+                <p id="distabce_y"></p>
+            </div>
+        </div> -->
     </div>
-    <button onclick="add()"> add</button>
+    <button onclick="position_add()"> add</button>
 </body>
 </html>

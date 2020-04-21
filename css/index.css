@@ -8,10 +8,11 @@ body {
 .text-center {
     text-align: center;
 }
-.tree {
+#tree {
     margin-top: 40px;
     display: inline-flex;
     flex-direction: column;
+    min-width: 100%;
 }
 .branch {
     display: flex;
@@ -22,5 +23,6 @@ body {
     width: 70px;
     height: 70px;
     background-color: aquamarine;
-    margin: 10px;
+    margin: 5px;
+    flex-shrink:0;
 }

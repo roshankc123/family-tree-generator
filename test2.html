@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="css/index.css">
+        <script>
+            i=0;
+            // Counter for branch id
+            j=0;
+            function add(branch_id){ 
+                // branch element
+                var branch = document.createElement("div");
+                branch.id = "branch"+j;
+                branch.className = "branch";
+
+                var box = document.createElement("div");
+                box.id="box"+i;
+                box.className="box";
+
+                var box_p_x = document.createElement("p");
+                box_p_x.id="distance_x"+i;
+                box.appendChild(box_p_x);
+                var box_p_y = document.createElement("p");
+                box_p_y.id="distance_y"+i;
+                box.appendChild(box_p_y);
+
+                // If i==0:    0,1,3,7,15,31 and so on
+                if((Math.pow(2, j)-1 == i)){
+                    // If condition, add branch id to separate in dive (new line start)
+                    branch.appendChild(box);
+                    document.getElementById("tree").appendChild(branch);
+                    j++;
+                } else {
+                    // Append to previously made branch
+                    document.getElementById("branch"+(j-1)).appendChild(box);
+                }
+
+                box_p_x.innerHTML="left:"+document.getElementById("box"+i).offsetLeft;
+                box_p_y.innerHTML="top:"+document.getElementById("box"+i).offsetTop;
+                i++;
+            }
+        </script>
+    </head>
+<body>
+    <button onclick="add()" style="position: absolute;">Add</button>
+    <div id="tree">
+        <!-- <div id="branch0">
+            <div id="box">
+                <p id="distance_x"></p>
+                <p id="distabce_y"></p>
+            </div>
+        </div> -->
+    </div>
+</body>
+</html>
