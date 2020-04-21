@@ -19,7 +19,7 @@ body {
     display: flex;
     justify-content: space-around;
 }
-#box {
+.box {
     display: inline-block;
     width: 70px;
     height: 70px;

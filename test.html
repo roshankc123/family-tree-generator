@@ -3,18 +3,32 @@
     <head>
         <link rel="stylesheet" href="css/index2.css">
         <script>
-            function add(){
-                var para = document.createElement("div");
-                para.id="box";
+            i=0;
+            function add(){ 
+                var box = document.createElement("div");
+                box.id="box"+i;
+                box.className="box";
+                var box_p_x = document.createElement("p");
+                box_p_x.id="distance_x"+i;
+                box.appendChild(box_p_x);
+                var box_p_y = document.createElement("p");
+                box_p_y.id="distance_y"+i;
+                box.appendChild(box_p_y);
                 var element = document.getElementById("branch");
-                element.appendChild(para);
+                element.appendChild(box);
+                document.getElementById('distance_x'+i).innerHTML="left:"+document.getElementById("box"+i).offsetLeft;
+                document.getElementById('distance_y'+i).innerHTML="top:"+document.getElementById("box"+i).offsetTop;
+                i++;
             }
         </script>
     </head>
 <body>
     <div id="tree">
         <div id="branch">
-            <div id="box"></div>
+            <!-- <div id="box">
+                <p id="distance_x"></p>
+                <p id="distabce_y"></p>
+            </div> -->
         </div>
     </div>
     <button onclick="add()"> add</button>
