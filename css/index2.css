@@ -10,8 +10,10 @@ body {
 }
 .tree {
     margin-top: 40px;
-    display: inline-flex;
+    white-space: nowrap;
+    display: flex;
     flex-direction: column;
+    overflow-x:auto;
 }
 .branch {
     display: flex;
@@ -22,5 +24,6 @@ body {
     width: 70px;
     height: 70px;
     background-color: aquamarine;
-    margin: 10px;
+    margin: 5px;
+    flex-shrink:0;
 }
