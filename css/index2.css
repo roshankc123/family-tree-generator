@@ -8,18 +8,18 @@ body {
 .text-center {
     text-align: center;
 }
-.tree {
+#tree {
     margin-top: 40px;
     white-space: nowrap;
     display: flex;
     flex-direction: column;
     overflow-x:auto;
 }
-.branch {
+#branch {
     display: flex;
     justify-content: space-around;
 }
-.box {
+#box {
     display: inline-block;
     width: 70px;
     height: 70px;

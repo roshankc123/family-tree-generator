@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="css/index2.css">
+        <script>
+            function add(){
+                var para = document.createElement("div");
+                para.id="box";
+                var element = document.getElementById("branch");
+                element.appendChild(para);
+            }
+        </script>
+    </head>
+<body>
+    <div id="tree">
+        <div id="branch">
+            <div id="box"></div>
+        </div>
+    </div>
+    <button onclick="add()"> add</button>
+</body>
+</html>
