@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        ul{
+            display: flex;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            text-align: center;
+        }
+        .branch {
+            display: inline-block;
+            position: relative;
+            top: 0px;
+        }
+        .box {
+            width: 130px;
+            box-sizing: border-box;
+            background-color: red;
+            display: inline-block;
+            margin: 10px;
+            height: 130px;
+        }
+        .box::before {
+            content: '';
+            position: absolute;
+            border-top: 5px solid aqua;
+            width: 50%;
+            top: 0;
+        }
+
+    </style>
+</head>
+<body>
+    <ul id="tree">
+        <li class="branch"><span class="box">Parent</span>
+            <ul>
+                <li class="branch"><span class="box">Child</span>
+                    <ul>
+                        <li class="branch"><span class="box">Grand Child</span>
+                            <ul>
+                                <li class="branch"><span class="box">Great Grand Child</span>
+                                </li>
+                                <li class="branch"><span class="box">Great Grand Child</span>
+                                    <ul>
+                                        <li class="branch"><span class="box">GGG C</span>
+                                        </li>
+                                        <li class="branch"><span class="box">GGG C</span>
+                                        </li>
+                                        <li class="branch"><span class="box">GGG C</span>
+                                        </li>
+                                        <li class="branch"><span class="box">GGG C</span>
+                                        </li>
+                                        <li class="branch"><span class="box">GGG C</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="branch"><span class="box">Grand Child</span>
+                            <ul>
+                                <li class="branch"><span class="box">Great Grand Child</span>
+                                </li>
+                                <li class="branch"><span class="box">Great Grand Child</span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="branch"><span class="box">Child</span>
+                    <ul>
+                        <li class="branch"><span class="box">Grand Child</span>
+                            <ul>
+                                <li class="branch"><span class="box">Great Grand Child</span>
+                                </li>
+                                <li class="branch"><span class="box">Great Grand Child</span>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="branch"><span class="box">Grand Child</span>
+                            <ul>
+                                <li class="branch"><span class="box">Great Grand Child</span>
+                                </li>
+                                <li class="branch"><span class="box">Great Grand Child</span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</body>
+</html>

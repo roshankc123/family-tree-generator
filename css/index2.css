@@ -10,20 +10,38 @@ body {
 }
 #tree {
     margin-top: 40px;
-    white-space: nowrap;
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
-    overflow-x:auto;
+    min-width: 100%;
 }
-#branch, .branch {
+.branch {
     display: flex;
     justify-content: space-around;
+    position: relative;
 }
+
 .box {
     display: inline-block;
     width: 70px;
     height: 70px;
     background-color: aquamarine;
-    margin: 5px;
+    margin: 10px;
     flex-shrink:0;
+    transition: all 0.5s;
+}
+.box::before {
+    content: '';
+    position: absolute;
+    width: 3px;
+    border-top: 10px solid red;
+    left: 25%;
+    top: 0px;
+}
+.box::after {
+    content: '';
+    position: absolute;
+    width: 50%;
+    border-bottom: 3px solid red;
+    left: 25%;
+    bottom: -3px;
 }
