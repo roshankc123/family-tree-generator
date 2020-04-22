@@ -21,9 +21,19 @@ body {
 }
 .box {
     display: inline-block;
-    width: 70px;
-    height: 70px;
+    position: relative;
+    width: 100px;
+    height: 100px;
     background-color: aquamarine;
     margin: 5px;
     flex-shrink:0;
+}
+.btn_1{
+    position: relative;
+}
+.btn_2{
+    position: relative;
+}
+.btn_3{
+    position: relative;
 }
