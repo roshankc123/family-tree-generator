@@ -35,22 +35,6 @@
                 }
                 return button;
             }
-            function add(branch_id){ 
-                var box = document.createElement("div");
-                box.id="box"+i;
-                box.className="box";
-                var box_p_x = document.createElement("p");
-                box_p_x.id="distance_x"+i;
-                box.appendChild(box_p_x);
-                var box_p_y = document.createElement("p");
-                box_p_y.id="distance_y"+i;
-                box.appendChild(box_p_y);
-                var element = document.getElementById(branch_id);
-                element.appendChild(box);
-                document.getElementById('distance_x'+i).innerHTML="left:"+document.getElementById("box"+i).offsetLeft;
-                document.getElementById('distance_y'+i).innerHTML="top:"+document.getElementById("box"+i).offsetTop;
-                i++;
-            }
             function position_add(id,init){
                 if(init==0){
                     child=0;
@@ -71,21 +55,17 @@
                var box_p = document.createElement("p");
                box_p.innerHTML=box.id;
                box.appendChild(box_p);
-               //branch.appendChild(box);
                if((init == 0)){
                     var branch = document.createElement("div");
                     branch.id="branch_"+id;
                     branch.className="branch";
                     branch.appendChild(box);
-                    document.getElementById("tree").appendChild(branch);
+                    document.getElementById(id).appendChild(branch);
                     j++;
                 } else {
-                    // Append to previously made branch
                     var branch=document.getElementById("branch_"+id);
                     branch.appendChild(box);
                 }
-                //document.getElementById("tree").appendChild(branch);
-                //document.getElementById(box.id).offsetLeft=200+j*20;
                 j++;
                 child++;
             }
@@ -93,7 +73,7 @@
     </head>
 <body>
     <div id="tree" class="tree">
-        <div id="branch0" clas="branch">
+        <div id="branch_0" class="branch">
             <div id="A" class="box">
                 <p id="distance_x"></p>
                 <p id="distabce_y"></p>
@@ -103,6 +83,5 @@
             </div>
         </div>
     </div>
-    <!-- <button onclick="position_add()" class="button_down"> add</button> -->
 </body>
 </html>

@@ -15,17 +15,17 @@ body {
     min-width: 100%;
 }
 .branch {
+    position: relative;
     display: flex;
     justify-content: space-around;
     position: relative;
 }
 .box {
     display: inline-block;
-    position: relative;
     width: 100px;
     height: 100px;
     background-color: aquamarine;
-    margin: 5px;
+    margin: 20px;
     flex-shrink:0;
 }
 .btn_1{
