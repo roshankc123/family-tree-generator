@@ -8,10 +8,11 @@ body {
 .text-center {
     text-align: center;
 }
-.tree {
+#tree {
     margin-top: 40px;
     display: inline-flex;
     flex-direction: column;
+    min-width: 100%;
 }
 .branch {
     display: flex;
@@ -23,6 +24,7 @@ body {
     width: 70px;
     height: 70px;
     background-color: aquamarine;
+<<<<<<< HEAD
     margin: 10px;
 }
 .button_down{
@@ -33,4 +35,8 @@ body {
 .child_button{
     position: fixed;
     left:10px;
+=======
+    margin: 5px;
+    flex-shrink:0;
+>>>>>>> af376866a33113b52cbd171f78d78ece377a85ba
 }

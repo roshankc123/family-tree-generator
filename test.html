@@ -25,11 +25,20 @@
                 var element = document.createElement("div");
                 element.id="branch"+j;
                 element.className="branch";
+<<<<<<< HEAD
                 element.style.top=j*20+10;
                 var button=document.createElement('BUTTON');
                 button.innerHTML="add_child";
                 button.className="child_button";
                 button.style.top=j*20+10;
+=======
+
+                var button=document.createElement('BUTTON');
+                button.innerHTML="add_child";
+                // So that flex does not count add child as another element
+                button.style.position ="absolute";
+
+>>>>>>> af376866a33113b52cbd171f78d78ece377a85ba
                 button.onclick=function(){
                    add(element.id);
                 }
@@ -40,7 +49,11 @@
         </script>
     </head>
 <body>
+<<<<<<< HEAD
     <div id="tree" class="tree">
+=======
+    <div id="tree">
+>>>>>>> af376866a33113b52cbd171f78d78ece377a85ba
         <!-- <div id="branch0">
             <div id="box">
                 <p id="distance_x"></p>
@@ -48,6 +61,10 @@
             </div>
         </div> -->
     </div>
+<<<<<<< HEAD
     <button onclick="position_add()" class="button_down"> add</button>
+=======
+    <button onclick="position_add()"> add</button>
+>>>>>>> af376866a33113b52cbd171f78d78ece377a85ba
 </body>
 </html>
