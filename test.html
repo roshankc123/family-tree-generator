@@ -71,6 +71,9 @@
                box.appendChild(button);
                 var button=button_create("edit","");
                box.appendChild(button);
+               var box_p = document.createElement("p");
+               box_p.innerHTML=box.id;
+               box.appendChild(box_p);
                branch.appendChild(box);
                 document.getElementById("tree").appendChild(branch);
                 document.getElementById(box.id).offsetLeft=200+j*20;
