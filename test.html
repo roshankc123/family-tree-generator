@@ -58,9 +58,6 @@
                         position_add(id,1);
                     }
                 }
-                var branch = document.createElement("div");
-               branch.id="branch"+j;
-               branch.className="branch";
                 var box = document.createElement("div");
                 box.id=id+String.fromCharCode(65+child);
                 box.className="box";
@@ -74,9 +71,21 @@
                var box_p = document.createElement("p");
                box_p.innerHTML=box.id;
                box.appendChild(box_p);
-               branch.appendChild(box);
-                document.getElementById("tree").appendChild(branch);
-                document.getElementById(box.id).offsetLeft=200+j*20;
+               //branch.appendChild(box);
+               if((init == 0)){
+                    var branch = document.createElement("div");
+                    branch.id="branch_"+id;
+                    branch.className="branch";
+                    branch.appendChild(box);
+                    document.getElementById("tree").appendChild(branch);
+                    j++;
+                } else {
+                    // Append to previously made branch
+                    var branch=document.getElementById("branch_"+id);
+                    branch.appendChild(box);
+                }
+                //document.getElementById("tree").appendChild(branch);
+                //document.getElementById(box.id).offsetLeft=200+j*20;
                 j++;
                 child++;
             }
@@ -88,7 +97,7 @@
             <div id="A" class="box">
                 <p id="distance_x"></p>
                 <p id="distabce_y"></p>
-                <button onclick="position_add('A')" class="btn_1">add</button>
+                <button onclick="position_add('A',0)" class="btn_1" id="btn_A">add</button>
                 <button onclick="" class="btn_2">view</button>
                 <button onclick="" class="btn_3">edit</button>
             </div>
