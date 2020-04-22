@@ -24,19 +24,6 @@ body {
     width: 70px;
     height: 70px;
     background-color: aquamarine;
-<<<<<<< HEAD
-    margin: 10px;
-}
-.button_down{
-    position:fixed;
-    top:10px;
-    left:10px;
-}
-.child_button{
-    position: fixed;
-    left:10px;
-=======
     margin: 5px;
     flex-shrink:0;
->>>>>>> af376866a33113b52cbd171f78d78ece377a85ba
 }
