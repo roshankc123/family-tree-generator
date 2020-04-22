@@ -16,6 +16,7 @@ body {
 .branch {
     display: flex;
     justify-content: space-around;
+    position: relative;
 }
 .box {
     display: inline-block;
@@ -23,4 +24,13 @@ body {
     height: 70px;
     background-color: aquamarine;
     margin: 10px;
+}
+.button_down{
+    position:fixed;
+    top:10px;
+    left:10px;
+}
+.child_button{
+    position: fixed;
+    left:10px;
 }

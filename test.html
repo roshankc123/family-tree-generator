@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="css/index2.css">
+        <link rel="stylesheet" href="css/index.css">
         <script>
             i=0;
             j=0;
@@ -24,8 +24,12 @@
             function position_add(){
                 var element = document.createElement("div");
                 element.id="branch"+j;
+                element.className="branch";
+                element.style.top=j*20+10;
                 var button=document.createElement('BUTTON');
                 button.innerHTML="add_child";
+                button.className="child_button";
+                button.style.top=j*20+10;
                 button.onclick=function(){
                    add(element.id);
                 }
@@ -36,7 +40,7 @@
         </script>
     </head>
 <body>
-    <div id="tree">
+    <div id="tree" class="tree">
         <!-- <div id="branch0">
             <div id="box">
                 <p id="distance_x"></p>
@@ -44,6 +48,6 @@
             </div>
         </div> -->
     </div>
-    <button onclick="position_add()"> add</button>
+    <button onclick="position_add()" class="button_down"> add</button>
 </body>
 </html>
