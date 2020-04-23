@@ -60,11 +60,13 @@
                     branch.id="branch_"+id;
                     branch.className="branch";
                     branch.appendChild(box);
-                    document.getElementById("tree").appendChild(branch);
+                    document.getElementById(id).appendChild(branch);
                 } else {
                     var branch=document.getElementById("branch_"+id);
                     branch.appendChild(box);
                 }
+                //console.log(box.id);
+                alert(box.id+":"+document.getElementById(box.id).offsetLeft+","+document.getElementById(box.id).offsetTop);
                 j++;
                 child++;
             }
