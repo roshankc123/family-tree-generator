@@ -1,0 +1,84 @@
+ul{
+    display: flex;
+    justify-content: space-around;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+}
+.branch {
+    display: inline-block;
+    position: relative;
+    top: 0px;
+}
+.box {
+    width: 130px;
+    box-sizing: border-box;
+    background-color: red;
+    display: inline-block;
+    margin: 10px;
+    height: 130px;
+}
+.branch::before, .branch::after{
+    content: '';
+    position: absolute; 
+    top: 0; 
+    right: 50%;
+    border-top: 3px solid #0084FF;
+    width: 50%; 
+    height: 7px;
+}
+.branch::after{
+    right: auto; 
+    left: 50%;
+    border-left: 3px solid #0084FF;
+}
+
+/*We need to remove left-right connectors from elements without 
+any siblings*/
+.branch:only-child::after, .branch:only-child::before {
+    display: none;
+}
+
+/*Remove space from the top of single children*/
+.branch:only-child{ 
+    padding-top: 0;
+}
+
+/*Remove left connector from first child and 
+right connector from last child*/
+.branch:first-child::before, .branch:last-child::after{
+    border: 0 none;
+}
+/*Adding back the vertical connector to the last nodes*/
+.branch:last-child::before{
+    border-right: 3px solid #0084FF;
+    border-radius: 0 1px 0 0;
+}
+.branch:first-child::after{
+    border-radius: 1px 0 0 0;
+}
+
+/*Time to add downward connectors from parents*/
+#tree ul::before{
+    content: '';
+    position: absolute; 
+    top: 140px; left: 50%;
+    border-left: 3px solid #0084FF;
+    height: 10px;
+}
+#btn_A_1{
+    visibility: hidden;
+}
+#btn_A_2{
+    visibility: hidden;
+}
+#btn_A_3{
+    visibility: hidden;
+}
+span{
+    z-index=1;
+}
+button{
+    z-index: 4;
+}
