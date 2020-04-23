@@ -1,22 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
+        <meta charset="UTF-8">
+        <title>Test</title>
         <!-- <link rel="stylesheet" href="css/index.css"> -->
-        <link rel="stylesheet" href="css/test3.css">
-        <script src="main.js"></script>
+        <link rel="stylesheet" href="css/index.css">
+        <script src="js/main.js"></script>
     </head>
 <body>
     <ul id="tree" class="tree">
         <li id="branch_A" class="branch">
-            <span id="A" class="box" onclick="appear_btn('A',1)">
-                <p id="distance_x"></p>
-                <p id="distabce_y"></p>
-                <button onclick="position_add('A',0)" class="btn_1" id="btn_A_1">add</button>
-                <button onclick="" class="btn_2" id="btn_A_2">view</button>
-                <button onclick="" class="btn_3" id="btn_A_3">edit</button>
-                <p>A</p>
-            </span>
+            <div id="A" class="box" onclick="appear_btn('A',1)">
+                <p>
+                    <button onclick="position_add('A',0)" class="btn_1" id="btn_A_1">Add</button>
+                    <button onclick="" class="btn_2" id="btn_A_2">View</button>
+                    <button onclick="" class="btn_3" id="btn_A_3">Edit</button>
+                </p>
+                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/9/90/HeathJoker.png/220px-HeathJoker.png" alt="Joker" width="130" height="130">
+            </div>
         </li>
     </ul>
+    <div>
+        <form action="#" method="POST" enctype="multipart/form-data">
+            <div>
+                <label for="nameId">Name</label>
+                <input type="text" name="name" id="nameId"/>
+            </div>
+            <div>
+                <input type="file" name="image" id="imageId"/>
+            </div>
+            <div>
+                <button type="submit">Done</button>
+            </div>
+        </form>
+    </div>
 </body>
 </html>
