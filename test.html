@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="css/index.css">
+        <!-- <link rel="stylesheet" href="css/index.css"> -->
+        <link rel="stylesheet" href="css/test3.css">
         <script>
             i=0;
             j=0;
@@ -42,7 +43,7 @@
                         position_add(id,1);
                     }
                 }
-                var box = document.createElement("div");
+                var box = document.createElement("span");
                 box.id=id+String.fromCharCode(65+child);
                 box.className="box";
                 //element.style.top=j*20+10;
@@ -55,34 +56,38 @@
                var box_p = document.createElement("p");
                box_p.innerHTML=box.id;
                box.appendChild(box_p);
+               var branch = document.createElement("li");
+               branch.id="branch_"+id+String.fromCharCode(65+child);
+                branch.className="branch";
+                branch.appendChild(box);
                if((init == 0)){
-                    var branch = document.createElement("div");
-                    branch.id="branch_"+id;
-                    branch.className="branch";
-                    branch.appendChild(box);
-                    document.getElementById(id).appendChild(branch);
+                    var ul=document.createElement('ul');
+                    ul.id="ul_"+id;
+                    ul.appendChild(branch);
+                    document.getElementById("branch_"+id).appendChild(ul);
                 } else {
-                    var branch=document.getElementById("branch_"+id);
-                    branch.appendChild(box);
+                    var ul=document.getElementById("ul_"+id);
+                    ul.appendChild(branch);
+
                 }
                 //console.log(box.id);
-                alert(box.id+":"+document.getElementById(box.id).offsetLeft+","+document.getElementById(box.id).offsetTop);
+                //alert(box.id+":"+document.getElementById(box.id).offsetLeft+","+document.getElementById(box.id).offsetTop);
                 j++;
                 child++;
             }
         </script>
     </head>
 <body>
-    <div id="tree" class="tree">
-        <div id="branch_0" class="branch">
-            <div id="A" class="box">
+    <ul id="tree" class="tree">
+        <li id="branch_A" class="branch">
+            <span id="A" class="box">
                 <p id="distance_x"></p>
                 <p id="distabce_y"></p>
                 <button onclick="position_add('A',0)" class="btn_1" id="btn_A">add</button>
                 <button onclick="" class="btn_2">view</button>
                 <button onclick="" class="btn_3">edit</button>
-            </div>
-        </div>
-    </div>
+            </span>
+        </li>
+    </ul>
 </body>
 </html>
