@@ -82,3 +82,6 @@ span{
 button{
     z-index: 4;
 }
+#edit_form{
+    visibility: hidden;
+}
