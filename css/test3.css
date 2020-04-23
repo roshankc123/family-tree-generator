@@ -62,7 +62,8 @@ right connector from last child*/
 #tree ul::before{
     content: '';
     position: absolute; 
-    top: 140px; left: 50%;
+    top: 140px; 
+    left: 50%;
     border-left: 3px solid #0084FF;
     height: 10px;
 }
