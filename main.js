@@ -6,7 +6,8 @@
     function view(){
         return 0;
     }
-    function edit(){
+    function edit(id){
+        data_add(id);
         return 0;
     }
     function button_create(name,id){
@@ -22,7 +23,7 @@
                 view();
                 break;
             case 'edit':
-                edit();
+                edit(id);
                 break;
             default:
                 break;
@@ -47,11 +48,11 @@
             button.className="btn_1";
             button.id="btn_"+box.id+"_"+1;
             box.appendChild(button);
-        var button=button_create("view",id+String.fromCharCode(65+child));
+        var button=button_create("view",box.id);
             button.className="btn_2";
             button.id="btn_"+box.id+"_"+2;
             box.appendChild(button);
-        var button=button_create("edit",id+String.fromCharCode(65+child));
+        var button=button_create("edit",box.id);
             button.className="btn_3";
             button.id="btn_"+box.id+"_"+3;
             box.appendChild(button);
@@ -89,5 +90,8 @@
         document.getElementById(id).onclick=function(){
             appear_btn(id,(action+1)%2);
         }
-        //alert(action);
+    }
+    function data_add(id){
+        data[id][0]="aye";
+        data[id][1]="bey";
     }
