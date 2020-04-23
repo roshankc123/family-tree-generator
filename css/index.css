@@ -1,39 +1,112 @@
-*{
-    margin: 0;
-    padding: 0;
+#tree div {
+    display: inline-block;
 }
-body {
-    background-color: #eee;
-}
-.text-center {
-    text-align: center;
-}
-#tree {
-    margin-top: 40px;
-    display: inline-flex;
-    flex-direction: column;
-    min-width: 100%;
-}
-.branch {
-    position: relative;
+ul{
     display: flex;
     justify-content: space-around;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+}
+.branch {
+    display: inline-block;
     position: relative;
+    top: 0px;
 }
 .box {
+    position: relative;
+    width: 130px;
+    box-sizing: border-box;
+    background-color: #000;
     display: inline-block;
-    width: 100px;
-    height: 100px;
-    background-color: aquamarine;
-    margin: 20px;
-    flex-shrink:0;
+    margin: 10px;
+    height: 130px;
 }
-.btn_1{
-    position: relative;
+/* Main horizontal line */
+.branch::before, .branch::after{
+    content: '';
+    position: absolute; 
+    top: 0; 
+    right: 50%;
+    border-top: 3px solid #0084FF;
+    width: 50%; 
+    height: 7px;
 }
-.btn_2{
-    position: relative;
+/* Horizontal line from left part */
+.branch::after{
+    right: auto; 
+    left: 50%;
+    border-left: 3px solid #0084FF;
 }
-.btn_3{
+
+/* We need to remove left-right connectors from elements without 
+any siblings*/
+.branch:only-child::after, .branch:only-child::before {
+    display: none;
+}
+
+/* Remove space from the top of single children */
+.branch:only-child{ 
+    padding-top: 0;
+}
+
+/* Remove left connector from first child and 
+right connector from last child*/
+.branch:first-child::before, .branch:last-child::after{
+    border: 0 none;
+}
+/* Adding back the vertical connector to the last nodes*/
+.branch:last-child::before{
+    border-right: 3px solid #0084FF;
+    border-radius: 0 7px 0 0;
+}
+.branch:first-child::after{
+    border-radius: 7px 0 0 0;
+}
+
+/* Add downward connectors from parents*/
+#tree ul::before{
+    content: '';
+    position: absolute; 
+    top: 140px; left: 50%;
+    border-left: 3px solid #0084FF;
+    height: 10px;
+}
+#btn_A_1{
+    visibility: hidden;
+}
+#btn_A_2{
+    visibility: hidden;
+}
+#btn_A_3{
+    visibility: hidden;
+}
+li div.box p {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+#tree button{
     position: relative;
+    z-index: 4;
+    width: 40px;
+    display: inline-block;
+    height: 40px;
+    border: 0px;
+    border-radius: 50%;
+}
+li div.box img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+.opacity-to-img {
+    opacity: 0.5;
+    position: relative;
+    z-index: 3;
+    transition: 0.2s all;
 }
