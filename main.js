@@ -1,6 +1,8 @@
 
     i=0;
     child=0;
+    var data={};
+    data['A']=[];
     function view(){
         return 0;
     }
@@ -68,8 +70,9 @@
         } else {
             var ul=document.getElementById("ul_"+id);
             ul.appendChild(branch);
-
         }
+        array_name=box.id;
+        data[box.id]=[];
         child++;
     }
     function appear_btn(id,action){
@@ -86,4 +89,5 @@
         document.getElementById(id).onclick=function(){
             appear_btn(id,(action+1)%2);
         }
+        //alert(action);
     }
