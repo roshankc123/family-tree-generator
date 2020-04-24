@@ -8,7 +8,7 @@
     }
     function edit(id){
         document.getElementById('edit_form').style.visibility="visible";
-        document.forms['edit_form']['a'].value=id;
+        //document.forms['edit_form']['a'].value=id;
         data_add(id);
         return 0;
     }
