@@ -1,3 +1,6 @@
+#tree{
+    position: absolute;
+}
 #tree div {
     display: inline-block;
 }

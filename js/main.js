@@ -6,7 +6,8 @@ function view(){
     return 0;
 }
 function edit(id){
-    document.getElementById('form_div_name').value="here";
+    document.getElementById('form_div_name').value="";
+    document.getElementById('form_div_image').value="";
     data[id]=[];
     //document.getElementsByTagName("body")[0].style.overflow = "hidden";
     document.getElementById("top-edit-form").style.display = "flex";
@@ -119,8 +120,15 @@ function popUpClose(){
 }
 function data_add(id){
     data[id][0]=document.getElementById('form_div_name').value;
-    data[id][1]=window.URL.createObjectURL(document.getElementById('form_div_image').files[0]);
+    var image=document.getElementById('form_div_image');
+    if(image.value){
+    data[id][1]=window.URL.createObjectURL(image.files[0]);
+    }
+    else{
+        data[id][1]="";
+    }
     document.getElementById('img_'+id).src=data[id][1];
+    popUpClose();
 }
 function ok(){
     var a=document.getElementById('form_div_image');
