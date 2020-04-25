@@ -1,20 +1,11 @@
 i=0;
 child=0;
-var data={};
-data['A']=[];
+var sec=['BCT','BEX','BCE','BAM','BME','BGE'];
 function view(){
     return 0;
 }
-function edit(id){
-    document.getElementById('form_div_name').value="";
-    document.getElementById('form_div_image').value="";
-    data[id]=[];
-    //document.getElementsByTagName("body")[0].style.overflow = "hidden";
-    document.getElementById("top-edit-form").style.display = "flex";
-    document.getElementById('form_div_btn').onclick=function(){
-        data_add(id);
-    }
-    return 0; 
+function edit(){
+    return 0;
 }
 function button_create(name,id){
     var button=document.createElement('BUTTON');
@@ -29,7 +20,7 @@ function button_create(name,id){
             view();
             break;
         case 'Edit':
-            edit(id);
+            edit();
             break;
         default:
             break;
@@ -37,7 +28,7 @@ function button_create(name,id){
     }
     return button;
 }
-function position_add(id,init){
+function position_add(id,init,present_id){
     if(init==0){
         child=0;
         document.getElementById('btn_'+id+"_"+1).onclick=function(){
@@ -45,33 +36,34 @@ function position_add(id,init){
         }
     }
     var box = document.createElement("div");
-        box.id=id+String.fromCharCode(65+child);
+        box.id=present_id;
         box.className="box";
         box.onclick=function(){
             appear_btn(box.id,1);
         }
     
     var p_tag_to_enclose_btn = document.createElement("p");
-
     var button=button_create("Add",box.id);
         button.className="btn_1";
         button.id="btn_"+box.id+"_"+1;
         p_tag_to_enclose_btn.appendChild(button);
-    var button=button_create("View",id+String.fromCharCode(65+child));
+    var button=button_create("View",box.id);
         button.className="btn_2";
         button.id="btn_"+box.id+"_"+2;
         p_tag_to_enclose_btn.appendChild(button);
-    var button=button_create("Edit",id+String.fromCharCode(65+child));
+    var button=button_create("Edit",box.id);
         button.className="btn_3";
         button.id="btn_"+box.id+"_"+3;
         p_tag_to_enclose_btn.appendChild(button);
         box.appendChild(p_tag_to_enclose_btn);
-    var image=document.createElement('img');
+    var image=document.createElement("img");
+        image.src="file:///home/roshan/vscode/bashtest/photos/"+box.id+".jpg";
         image.alt=box.id;
-        image.id="img_"+box.id;
+        image.width="130";
+        image.height="130";
         box.appendChild(image);
     var branch = document.createElement("li");
-        branch.id="branch_"+id+String.fromCharCode(65+child);
+        branch.id="branch_"+box.id;
         branch.className="branch";
         branch.appendChild(box);
     if((init == 0)){
@@ -82,7 +74,6 @@ function position_add(id,init){
     } else {
         var ul=document.getElementById("ul_"+id);
         ul.appendChild(branch);
-
     }
     child++;
 }
@@ -111,28 +102,27 @@ function appear_btn(id,action){
         appear_btn(id,(action+1)%2);
     }
 }
-function popUpOpen(){
-    document.getElementById('edit_form').style.visibility="visible";
-}
-function popUpClose(){
-    //document.getElementsByTagName("body")[0].style="";
-    document.getElementById("top-edit-form").style.display = "none";
-}
-function data_add(id){
-    data[id][0]=document.getElementById('form_div_name').value;
-    var image=document.getElementById('form_div_image');
-    if(image.value){
-    data[id][1]=window.URL.createObjectURL(image.files[0]);
+function start(){
+    var offset=0;
+    var memory_1;
+    var memory_2;
+    var off_sec;
+    var off_index;
+    while(offset<=2){
+        memory_1='PAS07'+(4+offset);
+        position_add('PAS',offset,memory_1);
+        off_sec=0;
+        while(sec[off_sec]){
+            memory_2=memory_1+sec[off_sec];
+            position_add(memory_1,off_sec,memory_2);
+            off_index=1;
+            while(off_index<=48){
+                position_add(memory_2,off_index-1,memory_2+"0"+(((off_index)-(off_index%10))/10)+(off_index%10));
+                document.getElementById('top').innerHTML=(memory_2+"0"+(((off_index)-(off_index%10))/10)+(off_index%10));
+                off_index++;
+            }
+        off_sec++;
+        }
+        offset++;
     }
-    else{
-        data[id][1]="";
-    }
-    document.getElementById('img_'+id).src=data[id][1];
-    popUpClose();
-}
-function ok(){
-    var a=document.getElementById('form_div_image');
-    document.getElementById('img_1').src=window.URL.createObjectURL(a.files[0]);
-    
-    alert(window.URL.createObjectURL(a.files[0]));
 }
