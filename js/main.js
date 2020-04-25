@@ -1,10 +1,18 @@
 i=0;
 child=0;
+
+///initilize associative array that is in data['box_id'] format
 var data={};
+
+//initilize numeric array for main initial box that has constant id A
 data['A']=[];
+
+///function that create a view division when popup happens
 function view(){
     return 0;
 }
+
+///function that create a edit division when popup happens
 function edit(id){
     var edit_container=document.createElement("div");
         edit_container.id="edit_container";
@@ -29,12 +37,12 @@ function edit(id){
         edit_container.appendChild(div_1);
         edit_container.appendChild(button);
     document.getElementById('popup_div').appendChild(edit_container);
-    //input_name.remove();
     document.getElementById('u_name').value=data[id][0];
     document.getElementById('u_image').value="";
-    //document.getElementsByTagName("body")[0].style.overflow = "hidden";
     return 0; 
 }
+
+///function that create button element with desired onclick effect and return button object
 function button_create(name,id){
     var button=document.createElement('BUTTON');
         button.innerHTML=name;
@@ -56,6 +64,8 @@ function button_create(name,id){
     }
     return button;
 }
+
+///function that add up boxes in desired position
 function position_add(id,init){
     if(init==0){
         child=0;
@@ -71,7 +81,6 @@ function position_add(id,init){
         }
     data[box.id]=[];
     var p_tag_to_enclose_btn = document.createElement("p");
-
     var button=button_create("Add",box.id);
         button.className="btn_1";
         button.id="btn_"+box.id+"_"+1;
@@ -105,6 +114,8 @@ function position_add(id,init){
     }
     child++;
 }
+
+///function that make button appears or dissappear when box is clicked
 function appear_btn(id,action){
     var btn_offset=1;
     todo = action!=0 ? "visible" : "hidden";
@@ -130,8 +141,9 @@ function appear_btn(id,action){
         appear_btn(id,(action+1)%2);
     }
 }
+
+///function for making popup appear
 function popUpOpen(type,id){
-    //document.getElementById('edit_form').style.visibility="visible";
     document.getElementById("popup_div").style.display = "flex";
     if(type=="edit"){
         edit(id);
@@ -139,13 +151,15 @@ function popUpOpen(type,id){
     else if(type=="view"){
         view(id);
     }
-    //document.getElementById(type+'-container').style.visibility="visible";
 }
+
+///function for making popup dissappear
 function popUpClose(){
-    //document.getElementsByTagName("body")[0].style="";
     document.getElementById('popup_div').lastElementChild.remove();
     document.getElementById("popup_div").style.display = "none";
 }
+
+//function to push,edit array data
 function data_add(id){
     data[id][0]=document.getElementById('u_name').value;
     var image=document.getElementById('u_image');
@@ -158,9 +172,4 @@ function data_add(id){
     document.getElementById('img_'+id).src=data[id][1];
     popUpClose("edit");
 }
-function ok(){
-    var a=document.getElementById('u_image');
-    document.getElementById('img_1').src=window.URL.createObjectURL(a.files[0]);
-    
-    alert(window.URL.createObjectURL(a.files[0]));
-}
+
