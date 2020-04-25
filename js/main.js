@@ -18,12 +18,12 @@ function view(id){
 
 ///function that create a edit division when popup happens
 function edit(id){
-    var edit_container=document.createElement("div");
-        edit_container.id="edit_container";
+    var edit_container=document.getElementById("popup_container");
+
     var div_0=document.createElement("div");
     var input_name=document.createElement("input");
         input_name.type="text";
-        input_name.placeholder="name";
+        input_name.placeholder="Name";
         input_name.id="u_name";
         div_0.appendChild(input_name);
     var div_1=document.createElement("div");
@@ -159,7 +159,11 @@ function popUpOpen(type,id){
 
 ///function for making popup dissappear
 function popUpClose(){
-    document.getElementById('popup_div').lastElementChild.remove();
+    var parent = document.getElementById('popup_container');
+    // remove all children except close button
+    while(parent.childNodes.length > 2){
+        parent.removeChild(parent.lastChild);
+    }
     document.getElementById("popup_div").style.display = "none";
 }
 
