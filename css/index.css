@@ -138,12 +138,15 @@ img{
 }
 #popup_container {
     position: relative;
-    max-width: 300px;
+    width: 300px;
     height: 300px;
     box-sizing: border-box;
-    padding: 20px;
     background-color: #eee;
     z-index: 10;
+}
+#edit_div {
+    padding: 20px;
+    margin-top: 10px;
 }
 input::placeholder {
     color: #000;
@@ -175,15 +178,34 @@ input::placeholder {
 }
 #pop-close {
     position: absolute;
-    bottom: 0px;
-    right: 10px;
+    top: 0px;
+    right: 5px;
+    background-color: transparent;
     border: 0;
-    background-color: none;
     cursor: pointer;
-    padding: 20px;
-    text-decoration: underline;
+    font-size: 2em;
+    text-shadow: 2px 1px #eee;
 }
 #pop-close:hover, #pop-close:focus{
     outline: none;
-    font-size: 0.9em;
+    color: #eee;
+    text-shadow: 2px 1px #000;
+}
+
+/* View */
+#view_div {
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 300px;
+}
+#view_name_div {
+    background-color: rgba(200, 200, 200, 0.6);
+    padding: 5px;
+    box-sizing: border-box;
+    font-size: 1.15em;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    text-align: center;
 }

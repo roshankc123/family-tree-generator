@@ -9,17 +9,23 @@ data['A']=[];
 
 ///function that create a view division when popup happens
 function view(id){
-    var edit_container=document.createElement("div");
-        edit_container.id="edit_container";
-        document.getElementById('popup_div').appendChild(edit_container);
-    alert(data[id][0]);
-    return 0;
+    var view_container=document.createElement("div");
+    view_container.id="view_div";
+    // Image path of user image
+    var imagePath = 'https://upload.wikimedia.org/wikipedia/en/thumb/9/90/HeathJoker.png/220px-HeathJoker.png';
+    view_container.style.backgroundImage = `url('${imagePath}')`;
+    // div for name of user
+    var div_0=document.createElement("div");
+    div_0.id="view_name_div";
+    div_0.innerHTML="Roshan KC";
+    view_container.appendChild(div_0);
+    document.getElementById('popup_container').appendChild(view_container);
 }
 
 ///function that create a edit division when popup happens
 function edit(id){
-    var edit_container=document.getElementById("popup_container");
-
+    var edit_container=document.createElement("div");
+    edit_container.id="edit_div";
     var div_0=document.createElement("div");
     var input_name=document.createElement("input");
         input_name.type="text";
@@ -40,7 +46,7 @@ function edit(id){
         edit_container.appendChild(div_0);
         edit_container.appendChild(div_1);
         edit_container.appendChild(button);
-    document.getElementById('popup_div').appendChild(edit_container);
+    document.getElementById('popup_container').appendChild(edit_container);
     document.getElementById('u_name').value=data[id][0];
     document.getElementById('u_image').value="";
     return 0; 
@@ -159,11 +165,7 @@ function popUpOpen(type,id){
 
 ///function for making popup dissappear
 function popUpClose(){
-    var parent = document.getElementById('popup_container');
-    // remove all children except close button
-    while(parent.childNodes.length > 2){
-        parent.removeChild(parent.lastChild);
-    }
+    document.getElementById('popup_container').lastChild.remove();
     document.getElementById("popup_div").style.display = "none";
 }
 
