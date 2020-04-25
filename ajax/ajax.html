@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax check</title>
+</head>
+<body>
+    <form action="#" method="POST" id="edit-form" enctype="multipart/form-data" style="text-align: center;">
+        <input type="text" name="name" id="nameId" placeholder="Name"/>
+        <input type="file" name="file" id="file">
+        <button>Post</button>
+    </form>
+
+    <script>
+        var editForm = document.getElementById("edit-form");
+        editForm.onsubmit = event =>{
+            event.preventDefault();
+            // All data from the form
+            var allData = new FormData(editForm);
+
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status==200){
+                    // Json response sent from the server 
+                    response = JSON.parse(this.response);
+
+                    // Do after response is recieved
+                    // console.log(response.userDetails[0].name);
+                } else if(this.readyState == 4 && this.status!=200) {
+                    console.log(`${this.status} error ${this.statusText}`);
+                }
+            };
+
+            // request.open("get", "data.json");
+            request.open("POST", "action.php");
+            request.send(allData);
+        };
+    </script>
+</body>
+</html>
