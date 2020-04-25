@@ -8,7 +8,11 @@ var data={};
 data['A']=[];
 
 ///function that create a view division when popup happens
-function view(){
+function view(id){
+    var edit_container=document.createElement("div");
+        edit_container.id="edit_container";
+        document.getElementById('popup_div').appendChild(edit_container);
+    alert(data[id][0]);
     return 0;
 }
 
@@ -170,6 +174,6 @@ function data_add(id){
         data[id][1]="";
     }
     document.getElementById('img_'+id).src=data[id][1];
-    popUpClose("edit");
+    popUpClose();
 }
 
