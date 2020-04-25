@@ -122,7 +122,7 @@ img{
 /* Form */
 /*             */
 
-#top-edit-form {
+#popup_div {
     display: none;
     position: fixed;
     top: 0;
@@ -136,7 +136,7 @@ img{
     overflow: hidden;
     transition: all 1s;
 }
-.edit-form-container {
+#edit_container {
     position: relative;
     max-width: 300px;
     height: 300px;
@@ -148,7 +148,7 @@ img{
 input::placeholder {
     color: #000;
 }
-.edit-form-container form input {
+#edit_container form input {
     margin: 20px 0;
     width: 100%;
     padding: 5px;
@@ -160,14 +160,14 @@ input::placeholder {
     border: 0px;
     border-bottom: 1px solid #222;
 }
-.edit-form-container form input:focus{
+#edit_container form input:focus{
     outline: none;
     box-shadow: 0px 2px 0px 0px #999;
 }
-.edit-form-container form input[type="file"]{
+#edit_container form input[type="file"]{
     padding: 5px 0px;
 }
-.edit-form-container form input[type="submit"]{
+#edit_container form input[type="submit"]{
     width: auto;
     padding: 5px 36px;
     border: 1px solid #222;

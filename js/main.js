@@ -6,14 +6,33 @@ function view(){
     return 0;
 }
 function edit(id){
-    document.getElementById('form_div_name').value="";
-    document.getElementById('form_div_image').value="";
-    data[id]=[];
+    var edit_container=document.createElement("div");
+        edit_container.id="edit_container";
+    var div_0=document.createElement("div");
+    var input_name=document.createElement("input");
+        input_name.type="text";
+        input_name.placeholder="name";
+        input_name.id="u_name";
+        div_0.appendChild(input_name);
+    var div_1=document.createElement("div");
+    var input_image=document.createElement("input");
+        input_image.type="file";
+        input_image.id="u_image";
+        div_1.appendChild(input_image);
+    var button=document.createElement('button');
+        button.id="submit_btn";
+        button.innerHTML="ok";
+        button.onclick=function(){
+            data_add(id);
+        }
+        edit_container.appendChild(div_0);
+        edit_container.appendChild(div_1);
+        edit_container.appendChild(button);
+    document.getElementById('popup_div').appendChild(edit_container);
+    //input_name.remove();
+    document.getElementById('u_name').value=data[id][0];
+    document.getElementById('u_image').value="";
     //document.getElementsByTagName("body")[0].style.overflow = "hidden";
-    document.getElementById("top-edit-form").style.display = "flex";
-    document.getElementById('form_div_btn').onclick=function(){
-        data_add(id);
-    }
     return 0; 
 }
 function button_create(name,id){
@@ -26,10 +45,10 @@ function button_create(name,id){
             position_add(id,0);
             break;
         case 'View':
-            view();
+            popUpOpen("view",id);
             break;
         case 'Edit':
-            edit(id);
+            popUpOpen("edit",id);
             break;
         default:
             break;
@@ -50,7 +69,7 @@ function position_add(id,init){
         box.onclick=function(){
             appear_btn(box.id,1);
         }
-    
+    data[box.id]=[];
     var p_tag_to_enclose_btn = document.createElement("p");
 
     var button=button_create("Add",box.id);
@@ -111,16 +130,25 @@ function appear_btn(id,action){
         appear_btn(id,(action+1)%2);
     }
 }
-function popUpOpen(){
-    document.getElementById('edit_form').style.visibility="visible";
+function popUpOpen(type,id){
+    //document.getElementById('edit_form').style.visibility="visible";
+    document.getElementById("popup_div").style.display = "flex";
+    if(type=="edit"){
+        edit(id);
+    }
+    else if(type=="view"){
+        view(id);
+    }
+    //document.getElementById(type+'-container').style.visibility="visible";
 }
 function popUpClose(){
     //document.getElementsByTagName("body")[0].style="";
-    document.getElementById("top-edit-form").style.display = "none";
+    document.getElementById('popup_div').lastElementChild.remove();
+    document.getElementById("popup_div").style.display = "none";
 }
 function data_add(id){
-    data[id][0]=document.getElementById('form_div_name').value;
-    var image=document.getElementById('form_div_image');
+    data[id][0]=document.getElementById('u_name').value;
+    var image=document.getElementById('u_image');
     if(image.value){
     data[id][1]=window.URL.createObjectURL(image.files[0]);
     }
@@ -128,10 +156,10 @@ function data_add(id){
         data[id][1]="";
     }
     document.getElementById('img_'+id).src=data[id][1];
-    popUpClose();
+    popUpClose("edit");
 }
 function ok(){
-    var a=document.getElementById('form_div_image');
+    var a=document.getElementById('u_image');
     document.getElementById('img_1').src=window.URL.createObjectURL(a.files[0]);
     
     alert(window.URL.createObjectURL(a.files[0]));
