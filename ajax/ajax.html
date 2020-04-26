@@ -1,41 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajax check</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Ajax</title>
+        <link rel="stylesheet" href="../css/index.css">
+        <!--<script src="../js/main.js"></script> -->
+    </head>
 <body>
-    <form action="#" method="POST" id="edit-form" enctype="multipart/form-data" style="text-align: center;">
-        <input type="text" name="name" id="nameId" placeholder="Name"/>
-        <input type="file" name="file" id="file">
-        <button>Post</button>
+    <!--
+    <ul id="tree" class="tree">
+        <li id="branch_A" class="branch">
+            <div id="A" class="box" onclick="appear_btn('A',1)">
+                <p>
+                    <button onclick="position_add('A',0)" class="btn_1" id="btn_A_1">Add</button>
+                    <button onclick="popUpOpen('view','A')" class="btn_2" id="btn_A_2">View</button>
+                    <button onclick="popUpOpen('edit','A')" class="btn_3" id="btn_A_3">Edit</button>
+                </p>
+                <img id="img_A" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/90/HeathJoker.png/220px-HeathJoker.png" alt="Joker" width="130" height="130">
+            </div>
+        </li>
+    </ul>
+    <div id="popup_div">
+        <div id="popup_container">
+            <button id="pop-close" onclick="popUpClose()" title="Close">&times;</button>        
+        </div>
+    </div>
+    -->
+    <form action="#" method="post" id="edit-form" enctype="multipart/form-data">
+        <input type="file" name="u_image"/>
+        <button>Ok</button>
     </form>
 
-    <script>
-        var editForm = document.getElementById("edit-form");
-        editForm.onsubmit = event =>{
-            event.preventDefault();
-            // All data from the form
-            var allData = new FormData(editForm);
-
-            var request = new XMLHttpRequest();
-            request.onreadystatechange = function(){
-                if(this.readyState == 4 && this.status==200){
-                    // Json response sent from the server 
-                    response = JSON.parse(this.response);
-
-                    // Do after response is recieved
-                    // console.log(response.userDetails[0].name);
-                } else if(this.readyState == 4 && this.status!=200) {
-                    console.log(`${this.status} error ${this.statusText}`);
-                }
-            };
-
-            // request.open("get", "data.json");
-            request.open("POST", "action.php");
-            request.send(allData);
-        };
-    </script>
+    <script src="ajax.js"></script>
 </body>
 </html>
