@@ -12,12 +12,12 @@ function view(id){
     var view_container=document.createElement("div");
     view_container.id="view_div";
     // Image path of user image
-    var imagePath = 'https://upload.wikimedia.org/wikipedia/en/thumb/9/90/HeathJoker.png/220px-HeathJoker.png';
+    var imagePath = data[id][1];
     view_container.style.backgroundImage = `url('${imagePath}')`;
     // div for name of user
     var div_0=document.createElement("div");
     div_0.id="view_name_div";
-    div_0.innerHTML="Roshan KC";
+    div_0.innerHTML=data[id][0];
     view_container.appendChild(div_0);
     document.getElementById('popup_container').appendChild(view_container);
 }
@@ -90,6 +90,8 @@ function position_add(id,init){
             appear_btn(box.id,1);
         }
     data[box.id]=[];
+    data[box.id][0]="";                                                    ///name is blank in first
+    data[box.id][1]="";                                                    ///image location is blank infirst
     var p_tag_to_enclose_btn = document.createElement("p");
     var button=button_create("Add",box.id);
         button.className="btn_1";
@@ -174,11 +176,8 @@ function data_add(id){
     data[id][0]=document.getElementById('u_name').value;
     var image=document.getElementById('u_image');
     if(image.value){
-    data[id][1]=window.URL.createObjectURL(image.files[0]);
-    }
-    else{
-        data[id][1]="";
-    }
+    data[id][1]=window.URL.createObjectURL(image.files[0]);           ///uploaded image local url create and assigned
+    }                                                                 ///no else condition as no upload gitves previous image
     document.getElementById('img_'+id).src=data[id][1];
     popUpClose();
 }
