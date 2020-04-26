@@ -7,6 +7,31 @@ var data={};
 //initilize numeric array for main initial box that has constant id A
 data['A']=[];
 
+/* Cookie user logged or not */
+// Create cookie
+function createCookie(ck_name='tree_data', expire=365*10){
+    // expire == 10yrs
+    var date = new Date();
+    var currentTime = date.getTime();
+    // string of current time and random number 
+    var ck_value = md5(`${currentTime}${Math.round(Math.random()*1000)}`);
+    date.setTime(date.getTime() + (expire*24*60*60*1000));
+    var expires = date.toUTCString();
+    document.cookie = `${ck_name}=${ck_value};expires=${expires};path=/`;
+}
+
+// If cookie is set return true, false otherwise
+function isCookieSet(ck_name='tree_data'){
+    return document.cookie.indexOf(`${ck_name}=`)>=0;
+}
+
+// When window is loaded then only
+window.onload = () => {
+    if(!isCookieSet()){
+        createCookie();
+    }
+}
+
 ///function that create a view division when popup happens
 function view(id){
     var view_container=document.createElement("div");
@@ -233,7 +258,6 @@ function okEditFormClicked(id){
                 return false;
             }
         };
-
         request.send(allData);
     }
     else {
