@@ -39,7 +39,7 @@ function edit(id){
         div_1.appendChild(input_image);
     var button=document.createElement('button');
         button.id="submit_btn";
-        button.innerHTML="ok";
+        button.innerHTML="Ok";
         button.onclick=function(){
             data_add(id);
         }
@@ -175,14 +175,71 @@ function popUpClose(){
 
 //function to push,edit array data
 function data_add(id){
-    data[id][0]=document.getElementById('u_name').value;
-    var image=document.getElementById('u_image');
-    if(image.value){
-        ///uploaded image local url create and assigned
-    data[id][1]=window.URL.createObjectURL(image.files[0]);           
-    }  
-    ///no else condition as no upload gitves previous image                                                               
-    document.getElementById('img_'+id).src=data[id][1];
+    if(okEditFormClicked(id)){
+        data[id][0]=document.getElementById('u_name').value;
+        var image=document.getElementById('u_image');
+        if(image.value){
+            data[id][1]=window.URL.createObjectURL(image.files[0]);           ///uploaded image local url create and assigned
+        }                                                                 ///no else condition as no upload gives previous image
+        document.getElementById('img_'+id).src=data[id][1];
+        okEditFormClicked(id);
+    }
     popUpClose();
+}
+
+// Create the ajax request object.
+function makeRequest(method, url) {
+    var request = new XMLHttpRequest();
+    if ("withCredentials" in request) {
+        // request for modern browsers
+        request.open(method, url, true);
+    } 
+    else if (typeof XDomainRequest != "undefined") {
+        // request for older IE browsers
+        request = new XDomainRequest();
+        request.open(method, url);
+    } else {
+        // CORS not supported.
+        request = null;
+    }
+    return request;
+}
+
+// When ok button is clicked in edit
+function okEditFormClicked(id){
+    var file_is_present = document.getElementById('u_image').value.trim();
+
+    if(file_is_present){
+        // All data from the form
+        var allData = new FormData();
+        allData.append("u_image", document.getElementById('u_image').files[0]);
+
+        // Server to send data
+        var url = `http://40.71.91.158/api/main.php?fbclid=IwAR3nhzv6ErPvCc2VPb128LrdD5-_s0XcxsVN8P_vJf9lhlofq3yl_NGkKJA&div_id=${id}`;
+
+        var request = makeRequest('POST', url);
+        if (!request) {
+            console.log('Request not supported');
+            return;
+        }
+
+        // Handle the requests
+        request.onreadystatechange = () => {
+            if(this.readystate == 4 && this.status == 200){
+                var response = JSON.parse(this.responseText);
+                return true;
+            } else if(this.status != 200 && this.readystate == 4){
+                console.log("Some error occured");
+                return false;
+            }
+        };
+
+        request.send(allData);
+    }
+    else {
+        alert("You have to choose image in order to save.");
+        return false;
+    }
+    
 }
 
