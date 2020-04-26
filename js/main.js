@@ -90,8 +90,10 @@ function position_add(id,init){
             appear_btn(box.id,1);
         }
     data[box.id]=[];
-    data[box.id][0]="";                                                    ///name is blank in first
-    data[box.id][1]="";                                                    ///image location is blank infirst
+    ///name is blank in first
+    data[box.id][0]=""; 
+    ///image location is blank in first                                                   
+    data[box.id][1]="";                                                    
     var p_tag_to_enclose_btn = document.createElement("p");
     var button=button_create("Add",box.id);
         button.className="btn_1";
@@ -176,8 +178,10 @@ function data_add(id){
     data[id][0]=document.getElementById('u_name').value;
     var image=document.getElementById('u_image');
     if(image.value){
-    data[id][1]=window.URL.createObjectURL(image.files[0]);           ///uploaded image local url create and assigned
-    }                                                                 ///no else condition as no upload gitves previous image
+        ///uploaded image local url create and assigned
+    data[id][1]=window.URL.createObjectURL(image.files[0]);           
+    }  
+    ///no else condition as no upload gitves previous image                                                               
     document.getElementById('img_'+id).src=data[id][1];
     popUpClose();
 }
