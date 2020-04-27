@@ -48,7 +48,7 @@ window.onload = () => {
     if(!isCookieSet()){
         data['tree_data'][0]=createCookie();
     } else {
-        console.log(getCookie());
+        data['tree_data'][0]=getCookie();
     }
 }
 
