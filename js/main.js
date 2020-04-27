@@ -22,6 +22,22 @@ function createCookie(ck_name='tree_data', expire=365*10){
     return ck_value;
 }
 
+// Get cookie value from cookie name
+function getCookie(ck_name='tree_data'){
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var each_cookie_item = decodedCookie.split(';');
+    for(var i = 0; i <each_cookie_item.length; i++) {
+        var val = each_cookie_item[i];
+        while (val.charAt(0) == ' ') {
+            val = val.substring(1);
+        }
+        if (val.indexOf(`${ck_name}=`) == 0) {
+            return val.substring(`${ck_name}=`.length, val.length);
+        }
+    }
+    return null;
+}
+
 // If cookie is set return true, false otherwise
 function isCookieSet(ck_name='tree_data'){
     return document.cookie.indexOf(`${ck_name}=`)>=0;
@@ -31,6 +47,8 @@ function isCookieSet(ck_name='tree_data'){
 window.onload = () => {
     if(!isCookieSet()){
         data['tree_data'][0]=createCookie();
+    } else {
+        console.log(getCookie());
     }
 }
 
