@@ -1,4 +1,3 @@
-
 // Create the XHR object.
 function makeRequest(method, url) {
     var request = new XMLHttpRequest();
