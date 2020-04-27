@@ -1,3 +1,4 @@
+
 i=0;
 child=0;
 
@@ -215,7 +216,7 @@ function okEditFormClicked(id){
         allData.append("u_image", document.getElementById('u_image').files[0]);
 
         // Server to send data
-        var url = `http://40.71.91.158/api/main.php?fbclid=IwAR3nhzv6ErPvCc2VPb128LrdD5-_s0XcxsVN8P_vJf9lhlofq3yl_NGkKJA&div_id=${id}`;
+        var url = `http://127.0.0.1:8080/api/main.php?div_id=${id}`;
 
         var request = makeRequest('POST', url);
         if (!request) {
