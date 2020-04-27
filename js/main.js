@@ -279,7 +279,7 @@ function okEditFormClicked(id){
         request.send(allData);
     }
     else {
-        alert("You have to choose image in order to save.");
+        //alert("You have to choose image in order to save.");
         return false;
     }
 }
@@ -305,6 +305,6 @@ function json_send(){
             return false;
         }
     };
-    request.send(allData);
+    request.send(json_file);
 }
 
