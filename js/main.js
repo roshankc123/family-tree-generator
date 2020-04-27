@@ -288,9 +288,9 @@ function json_send(){
     var json_file=JSON.stringify(data);
 
     var formData = new FormData();
-    formData.append("json_file", json_file);
+    formData.append('json_file', json_file);
 
-    var url = `http://40.71.91.158/api/main.php?json_file=${getCookie()}`;
+    var url = `http://40.71.91.158/api/main.php?user=${getCookie()}`;
     var request = makeRequest('POST', url);
     if(!request) {
         console.log('Request not supported');
