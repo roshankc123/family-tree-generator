@@ -26,7 +26,7 @@ editForm.onsubmit = event => {
     var div_id = 1;
 
     // Server to send data
-    var url = `http://40.71.91.158/api/main.php?fbclid=IwAR3nhzv6ErPvCc2VPb128LrdD5-_s0XcxsVN8P_vJf9lhlofq3yl_NGkKJA&div_id=${div_id}`;
+    var url = `http://40.71.91.158/api/main.php?&div_id=${div_id}`;
 
     var request = makeRequest('POST', url);
     if (!request) {
