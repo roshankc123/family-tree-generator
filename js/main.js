@@ -202,15 +202,9 @@ function popUpClose(){
 
 //function to push,edit array data
 function data_add(id){
-    if(okEditFormClicked(id)){
         data[id][0]=document.getElementById('u_name').value;
-        var image=document.getElementById('u_image');
-        if(image.value){
-            data[id][1]=window.URL.createObjectURL(image.files[0]);           ///uploaded image local url create and assigned
-        }                                                                 ///no else condition as no upload gives previous image
+        okEditFormClicked(id);                                                           ///no else condition as no upload gives previous image
         document.getElementById('img_'+id).src=data[id][1];
-        okEditFormClicked(id);
-    }
     popUpClose();
 }
 
@@ -239,10 +233,14 @@ function okEditFormClicked(id){
     if(file_is_present){
         // All data from the form
         var allData = new FormData();
-        allData.append("u_image", document.getElementById('u_image').files[0]);
+
+        var image=document.getElementById('u_image');
+        ///uploaded image local url create and assigned
+        data[id][1]=window.URL.createObjectURL(image.files[0]);
+        allData.append("u_image", document.image.files[0]);
 
         // Server to send data
-        var url = `http://127.0.0.1:8080/api/main.php?div_id=${data['tree_data'][0]+"_"+id}`;
+        var url = `http://40.71.91.158/api/main.php?div_id=${data['tree_data'][0]+"_"+id}`;
 
         var request = makeRequest('POST', url);
         if (!request) {
