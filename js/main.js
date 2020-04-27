@@ -285,3 +285,7 @@ function okEditFormClicked(id){
     
 }
 
+function json_send(){
+    var json_file=JSON.stringify(data);
+}
+
