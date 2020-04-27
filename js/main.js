@@ -282,10 +282,29 @@ function okEditFormClicked(id){
         alert("You have to choose image in order to save.");
         return false;
     }
-    
 }
 
 function json_send(){
     var json_file=JSON.stringify(data);
+
+    var url = `http://40.71.91.158/api/main.php?json_file=${json_file}`;
+    var request = makeRequest('POST', url);
+    if(!request) {
+        console.log('Request not supported');
+        return;
+    }
+
+    // Handle the requests
+    request.onreadystatechange = () => {
+        if(this.readystate == 4 && this.status == 200){
+            var response = JSON.parse(this.responseText);
+            alert("Data stored successfully");
+            return true;
+        } else if(this.status != 200 && this.readystate == 4){
+            console.log("Some error occured");
+            return false;
+        }
+    };
+    request.send(allData);
 }
 
