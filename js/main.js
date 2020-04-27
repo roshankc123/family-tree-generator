@@ -7,7 +7,7 @@ var data={};
 
 //initilize numeric array for main initial box that has constant id A
 data['A']=[];
-
+data['tree_data']=[];
 /* Cookie user logged or not */
 // Create cookie
 function createCookie(ck_name='tree_data', expire=365*10){
@@ -19,6 +19,7 @@ function createCookie(ck_name='tree_data', expire=365*10){
     date.setTime(date.getTime() + (expire*24*60*60*1000));
     var expires = date.toUTCString();
     document.cookie = `${ck_name}=${ck_value};expires=${expires};path=/`;
+    return ck_value;
 }
 
 // If cookie is set return true, false otherwise
@@ -29,7 +30,7 @@ function isCookieSet(ck_name='tree_data'){
 // When window is loaded then only
 window.onload = () => {
     if(!isCookieSet()){
-        createCookie();
+        data['tree_data'][0]=createCookie();
     }
 }
 
@@ -241,7 +242,7 @@ function okEditFormClicked(id){
         allData.append("u_image", document.getElementById('u_image').files[0]);
 
         // Server to send data
-        var url = `http://127.0.0.1:8080/api/main.php?div_id=${id}`;
+        var url = `http://127.0.0.1:8080/api/main.php?div_id=${data['tree_data'][0]+"_"+id}`;
 
         var request = makeRequest('POST', url);
         if (!request) {
