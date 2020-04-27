@@ -237,7 +237,7 @@ function okEditFormClicked(id){
         var image=document.getElementById('u_image');
         ///uploaded image local url create and assigned
         data[id][1]=window.URL.createObjectURL(image.files[0]);
-        allData.append("u_image", document.image.files[0]);
+        allData.append("u_image", image.files[0]);
 
         // Server to send data
         var url = `http://40.71.91.158/api/main.php?div_id=${data['tree_data'][0]+"_"+id}`;
