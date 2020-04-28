@@ -15,31 +15,38 @@ window.onload = () => {
         data['tree_data'][0]=createCookie();
     } else {
         var tmp_cookie=getCookie();
-        var url = `http://127.0.0.1:8080/api/main.php?user=${tmp_cookie}&get_json=1`;
-
-        var request = makeRequest('GET', url);
-        if(!request) {
-            console.log('Request not supported');
-            return;
-        }
-        // Handle the requests
-        request.onreadystatechange = () => {
-            if(request.readyState==4&&request.status==200){
-                var response=request.responseText;
-                document.getElementById('popup_div').innerHTML=response;
-                try{
-                    response=JSON.parse(response);
-                    
-                } finally {
-                    console.log(response);
-                }
-            }
-        };
-        request.send();
+        
         data['tree_data'][0]=tmp_cookie;
+        // get_json return the data that is from server, if server sent json data then now we can JSON.parse(get_json())
+        // data['get_json'][0]=JSON.parse(get_json());
+        data['get_json'][0]=get_json();
     }
 }
 
+// call back for get_json 
+function callback_get_json(response){
+    return response;
+}
+
+// Json send from get_json
+function get_json(callback_json_send){
+    var url = `http://127.0.0.1:8080/api/main.php?user=${getCookie()}&get_json=1`;
+
+    var request = makeRequest('GET', url);
+    if(!request) {
+        console.log('Request not supported');
+        return;
+    }
+    // Handle the requests
+    request.onreadystatechange = () => {
+        if(request.readyState==4&&request.status==200){
+            var response=request.responseText;
+            document.getElementById('popup_div').innerHTML=response;
+            callback_get_json(response);
+        }
+    };
+    request.send();
+}
 
 /* Cookie user logged or not */
 // Create cookie
@@ -309,10 +316,10 @@ function okEditFormClicked(id){
 
         // Handle the requests
         request.onreadystatechange = () => {
-            if(this.readystate == 4 && this.status == 200){
-                var response = JSON.parse(this.responseText);
+            if(request.readystate == 4 && request.status == 200){
+                var response = JSON.parse(request.responseText);
                 return true;
-            } else if(this.status != 200 && this.readystate == 4){
+            } else if(request.status != 200 && request.readystate == 4){
                 console.log("Some error occured");
                 return false;
             }
@@ -353,8 +360,5 @@ function json_send(){
             console.log("Error occured!!!");
         }
     };
-    // request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    // request.responseType = "json";
     request.send(formData);
 }
-
