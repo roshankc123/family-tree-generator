@@ -8,6 +8,7 @@ var data={};
 //initilize numeric array for main initial box that has constant id A
 data['A']=[];
 data['tree_data']=[];
+data['get_json']=[];
 
 // When window is loaded then only
 window.onload = () => {
