@@ -8,6 +8,39 @@ var data={};
 //initilize numeric array for main initial box that has constant id A
 data['A']=[];
 data['tree_data']=[];
+
+// When window is loaded then only
+window.onload = () => {
+    if(!isCookieSet()){
+        data['tree_data'][0]=createCookie();
+    } else {
+        
+        var url = `http://127.0.0.1:8080/api/main.php?user=${getCookie()}&get_json=1`;
+
+        var request = makeRequest('GET', url);
+        if(!request) {
+            console.log('Request not supported');
+            return;
+        }
+        // Handle the requests
+        request.onreadystatechange = () => {
+            if(request.readyState==4&&request.status==200){
+                var response=request.responseText;
+                document.getElementById('popup_div').innerHTML=response;
+                try{
+                    response=JSON.parse(response);
+                    
+                } finally {
+                    console.log(response);
+                }
+            }
+        };
+        request.send();
+        data['tree_data'][0]=getCookie();
+    }
+}
+
+
 /* Cookie user logged or not */
 // Create cookie
 function createCookie(ck_name='tree_data', expire=365*10){
@@ -41,35 +74,6 @@ function getCookie(ck_name='tree_data'){
 // If cookie is set return true, false otherwise
 function isCookieSet(ck_name='tree_data'){
     return document.cookie.indexOf(`${ck_name}=`)>=0;
-}
-
-// When window is loaded then only
-window.onload = () => {
-    if(!isCookieSet()){
-        data['tree_data'][0]=createCookie();
-    } else {
-        data['tree_data'][0]=getCookie();
-        
-        var url = `http://127.0.0.1:8080/api/main.php?user=${getCookie()}&get_json=1`;
-
-        var request = makeRequest('GET', url);
-        if(!request) {
-            console.log('Request not supported');
-            return;
-        }
-        // Handle the requests
-        request.onreadystatechange = () => {
-            if(request.readyState==4&&request.status==200){
-                var response=request.responseText;
-                try{
-                    response=JSON.parse(response);
-                } finally {
-                    console.log(response);
-                }
-            }
-        };
-        request.send();
-    }
 }
 
 ///function that create a view division when popup happens
@@ -137,8 +141,8 @@ function button_create(name,id){
         case 'View':
             popUpOpen("view",id);
             break;
-        case 'Edit':
-            popUpOpen("edit",id);
+        case 'xpnd':
+            expand(id);
             break;
         default:
             break;
@@ -175,10 +179,10 @@ function position_add(id,init){
         button.className="btn_2";
         button.id="btn_"+box.id+"_"+2;
         p_tag_to_enclose_btn.appendChild(button);
-    // var button=button_create("Edit",id+String.fromCharCode(65+child));
-    //     button.className="btn_3";
-    //     button.id="btn_"+box.id+"_"+3;
-    //     p_tag_to_enclose_btn.appendChild(button);
+    var button=button_create("xpnd",id+String.fromCharCode(65+child));
+        button.className="btn_3";
+        button.id="btn_"+box.id+"_"+3;
+        p_tag_to_enclose_btn.appendChild(button);
         box.appendChild(p_tag_to_enclose_btn);
     var image=document.createElement('img');
         image.alt=box.id;
@@ -201,6 +205,15 @@ function position_add(id,init){
     child++;
 }
 
+///function to expand
+function expand(id){
+    var expand_offset=0;
+    while(data[id+String.fromCharCode(65+expand_offset)] || data[id+String.fromCharCode(65+expand_offset)]==""){
+        position_add(id,expand_offset);
+        expand_offset++;
+    }
+}
+
 ///function that make button appears or dissappear when box is clicked
 function appear_btn(id,action){
     var btn_offset=1;
@@ -220,7 +233,7 @@ function appear_btn(id,action){
         }
     }
     
-    for(btn_offset=1;btn_offset<=2;btn_offset++){
+    for(btn_offset=1;btn_offset<=3;btn_offset++){
         document.getElementById("btn_"+id+"_"+btn_offset).style.visibility=todo;
     }
     document.getElementById(id).onclick=function(){
