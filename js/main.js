@@ -290,7 +290,7 @@ function json_send(){
     var formData = new FormData();
     formData.append('json_file', json_file);
 
-    var url = `http://40.71.91.158/api/main.php?user=${getCookie()}`;
+    var url = `http://127.0.0.1:8080/api/main.php?user=${getCookie()}`;
 
     var request = makeRequest('POST', url);
     if(!request) {
