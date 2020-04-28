@@ -29,7 +29,7 @@ function callback_get_json(response){
 }
 
 // Json send from get_json
-function get_json(callback_json_send){
+function get_json(callback_get_json){
     var url = `http://127.0.0.1:8080/api/main.php?user=${getCookie()}&get_json=1`;
 
     var request = makeRequest('GET', url);
