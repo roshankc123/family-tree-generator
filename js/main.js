@@ -49,6 +49,26 @@ window.onload = () => {
         data['tree_data'][0]=createCookie();
     } else {
         data['tree_data'][0]=getCookie();
+        
+        var url = `http://127.0.0.1:8080/api/main.php?user=${getCookie()}&get_json=1`;
+
+        var request = makeRequest('GET', url);
+        if(!request) {
+            console.log('Request not supported');
+            return;
+        }
+        // Handle the requests
+        request.onreadystatechange = () => {
+            if(request.readyState==4&&request.status==200){
+                var response=request.responseText;
+                try{
+                    response=JSON.parse(response);
+                } finally {
+                    console.log(response);
+                }
+            }
+        };
+        request.send();
     }
 }
 
