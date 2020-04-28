@@ -193,6 +193,25 @@ input::placeholder {
 }
 
 /* View */
+#edit_btn {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    padding: 5px;
+    background-color: #111;
+    color: #eee;
+    border: 0;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 30%;
+    margin: 3px;
+    z-index: 10;
+}
+#edit_btn:hover{
+    letter-spacing: 0.1em;
+}
+
 #view_div {
     background-repeat: no-repeat;
     background-size: cover;

@@ -82,6 +82,7 @@ function view(id){
     view_container.id="view_div";
     var edit_btn=document.createElement("button");
     edit_btn.innerHTML="edit";
+    edit_btn.id="edit_btn";
     edit_btn.onclick=function(){
         popUpOpen("edit",id);
     }
