@@ -20,12 +20,13 @@ window.onload = () => {
         data['tree_data'][0]=tmp_cookie;
         // get_json return the data that is from server, if server sent json data then now we can JSON.parse(get_json())
         // data['get_json'][0]=JSON.parse(get_json());
-        data['get_json'][0]=get_json();
+        data['get_json'][0]=get_json(callback_get_json);
     }
 }
 
 // call back for get_json 
 function callback_get_json(response){
+    alert(response);
     return response;
 }
 
