@@ -56,6 +56,12 @@ window.onload = () => {
 function view(id){
     var view_container=document.createElement("div");
     view_container.id="view_div";
+    var edit_btn=document.createElement("button");
+    edit_btn.innerHTML="edit";
+    edit_btn.onclick=function(){
+        popUpOpen("edit",id);
+    }
+    view_container.appendChild(edit_btn);
     // Image path of user image
     var imagePath = data[id][1];
     view_container.style.backgroundImage = `url('${imagePath}')`;
@@ -69,6 +75,7 @@ function view(id){
 
 ///function that create a edit division when popup happens
 function edit(id){
+    document.getElementById('popup_container').lastChild.remove();
     var edit_container=document.createElement("div");
     edit_container.id="edit_div";
     var div_0=document.createElement("div");
@@ -148,10 +155,10 @@ function position_add(id,init){
         button.className="btn_2";
         button.id="btn_"+box.id+"_"+2;
         p_tag_to_enclose_btn.appendChild(button);
-    var button=button_create("Edit",id+String.fromCharCode(65+child));
-        button.className="btn_3";
-        button.id="btn_"+box.id+"_"+3;
-        p_tag_to_enclose_btn.appendChild(button);
+    // var button=button_create("Edit",id+String.fromCharCode(65+child));
+    //     button.className="btn_3";
+    //     button.id="btn_"+box.id+"_"+3;
+    //     p_tag_to_enclose_btn.appendChild(button);
         box.appendChild(p_tag_to_enclose_btn);
     var image=document.createElement('img');
         image.alt=box.id;
@@ -193,7 +200,7 @@ function appear_btn(id,action){
         }
     }
     
-    for(btn_offset=1;btn_offset<=3;btn_offset++){
+    for(btn_offset=1;btn_offset<=2;btn_offset++){
         document.getElementById("btn_"+id+"_"+btn_offset).style.visibility=todo;
     }
     document.getElementById(id).onclick=function(){
