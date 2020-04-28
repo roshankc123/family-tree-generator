@@ -291,6 +291,7 @@ function json_send(){
     formData.append('json_file', json_file);
 
     var url = `http://40.71.91.158/api/main.php?user=${getCookie()}`;
+
     var request = makeRequest('POST', url);
     if(!request) {
         console.log('Request not supported');
@@ -299,15 +300,20 @@ function json_send(){
 
     // Handle the requests
     request.onreadystatechange = () => {
-        if(this.readystate == 4 && this.status == 200){
-            var response = JSON.parse(this.responseText);
-            alert("Data stored successfully");
-            return true;
-        } else if(this.status != 200 && this.readystate == 4){
-            console.log("Some error occured");
-            return false;
+        if(request.readyState==4&&request.status==200){
+            var response=request.responseText;
+            try{
+                response=JSON.parse(response);
+            } finally {
+                console.log(response);
+            }
+        }
+        else if(request.readyState==4&&request.status!=200){
+            console.log("Error occured!!!");
         }
     };
+    // request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    // request.responseType = "json";
     request.send(formData);
 }
 
