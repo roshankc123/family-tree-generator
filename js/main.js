@@ -14,8 +14,8 @@ window.onload = () => {
     if(!isCookieSet()){
         data['tree_data'][0]=createCookie();
     } else {
-        
-        var url = `http://127.0.0.1:8080/api/main.php?user=${getCookie()}&get_json=1`;
+        var tmp_cookie=getCookie();
+        var url = `http://127.0.0.1:8080/api/main.php?user=${tmp_cookie}&get_json=1`;
 
         var request = makeRequest('GET', url);
         if(!request) {
@@ -36,7 +36,7 @@ window.onload = () => {
             }
         };
         request.send();
-        data['tree_data'][0]=getCookie();
+        data['tree_data'][0]=tmp_cookie;
     }
 }
 
