@@ -25,7 +25,7 @@ window.onload = () => {
 // call back for get_json 
 function callback_get_json(response){
     data=JSON.parse(response);
-    document.getElementById('img_A').src=data['A'][0];
+    document.getElementById('img_A').src="40.71.91.158/api/images/"+getCookie()+"_A.png";
     //console.log(data);
     return response;
 }
@@ -236,6 +236,7 @@ function expand(id){
         while((data[id+String.fromCharCode(65+expand_offset)] ||
                  data[id+String.fromCharCode(65+expand_offset)]=="")){        
             position_add(id,expand_offset);
+            document.getElementById("img_"+id+String.fromCharCode(65+expand_offset)).src="40.71.91.158/api/images/";
             expand_offset++;
     }
     }
@@ -249,7 +250,11 @@ function expand(id){
 ////function to merge
 function merge(id){
     var merge_offset=0;
-    document.getElementById("ul_"+id).style.visibility="hidden";
+    var ul_object=document.getElementById("ul_"+id);
+    if(ul_object){
+        //ul_object.style.visibility="hidden";   ///some errors with this
+        ul_object.remove();
+    }
     var button=document.getElementById('btn_'+id+'_3');
     button.innerHTML="xpnd";
     button.onclick=function(){
@@ -341,7 +346,7 @@ function okEditFormClicked(id){
         allData.append("u_image", image.files[0]);
 
         // Server to send data
-        var url = `http://40.71.91.158/api/main.php?div_id=${data['tree_data'][0]+"_"+id}`;
+        var url = `http://40.71.91.158/api/main.php?div_id=${getCookie()+"_"+id}`;
 
         var request = makeRequest('POST', url);
         if (!request) {
@@ -396,4 +401,8 @@ function json_send(){
         }
     };
     request.send(formData);
+}
+
+function rerun(){
+
 }
