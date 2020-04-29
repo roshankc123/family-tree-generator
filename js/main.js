@@ -26,14 +26,14 @@ window.onload = () => {
 function callback_get_json(response){
     data=JSON.parse(response);
     document.getElementById('img_A').src=data['A'][0];
-    console.log(data);
+    //console.log(data);
     return response;
 }
 
 // Json send from get_json
 function get_json(){
     var json;
-    var url = `http://127.0.0.1:8080/api/main.php?user=${getCookie()}&get_json=1`;
+    var url = `http://40.71.91.158/api/main.php?user=${getCookie()}&get_json=1`;
 
     var request = makeRequest('GET', url);
     if(!request) {
@@ -178,11 +178,13 @@ function position_add(id,init){
         box.onclick=function(){
             appear_btn(box.id,1);
         }
-    data[box.id]=[];
-    ///name is blank in first
-    data[box.id][0]=""; 
-    ///image location is blank in first                                                   
-    data[box.id][1]="";                                                    
+    if(!data[box.id]){
+        data[box.id]=[];
+        ///name is blank in first
+        data[box.id][0]=""; 
+        ///image location is blank in first                                                   
+        data[box.id][1]="";
+    }                                                    
     var p_tag_to_enclose_btn = document.createElement("p");
     var button=button_create("Add",box.id);
         button.className="btn_1";
@@ -218,12 +220,40 @@ function position_add(id,init){
     child++;
 }
 
+///function to remove box
+function position_remove(id){
+    document.getElementById("ul_"+id).style.visibility="hidden";
+}
+
 ///function to expand
 function expand(id){
-    var expand_offset=0;
-    while(data[id+String.fromCharCode(65+expand_offset)] || data[id+String.fromCharCode(65+expand_offset)]==""){
-        position_add(id,expand_offset);
-        expand_offset++;
+    var ul_branch=document.getElementById("ul_"+id);
+    if(ul_branch){
+        ul_branch.style.visibility="visible";
+    }
+    else{
+        var expand_offset=0;
+        while((data[id+String.fromCharCode(65+expand_offset)] ||
+                 data[id+String.fromCharCode(65+expand_offset)]=="")){        
+            position_add(id,expand_offset);
+            expand_offset++;
+    }
+    }
+    var button=document.getElementById('btn_'+id+'_3');
+    button.innerHTML="mrge";
+    button.onclick=function(){
+        merge(id);
+    }
+}
+
+////function to merge
+function merge(id){
+    var merge_offset=0;
+    document.getElementById("ul_"+id).style.visibility="hidden";
+    var button=document.getElementById('btn_'+id+'_3');
+    button.innerHTML="xpnd";
+    button.onclick=function(){
+        expand(id);
     }
 }
 
@@ -311,7 +341,7 @@ function okEditFormClicked(id){
         allData.append("u_image", image.files[0]);
 
         // Server to send data
-        var url = `http://127.0.0.1:8080/api/main.php?div_id=${data['tree_data'][0]+"_"+id}`;
+        var url = `http://40.71.91.158/api/main.php?div_id=${data['tree_data'][0]+"_"+id}`;
 
         var request = makeRequest('POST', url);
         if (!request) {
@@ -343,7 +373,7 @@ function json_send(){
     var formData = new FormData();
     formData.append('json_file', json_file);
 
-    var url = `http://127.0.0.1:8080/api/main.php?user=${getCookie()}`;
+    var url = `http://40.71.91.158/api/main.php?user=${getCookie()}`;
 
     var request = makeRequest('POST', url);
     if(!request) {
