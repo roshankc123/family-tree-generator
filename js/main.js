@@ -4,12 +4,11 @@ child=0;
 
 ///initilize associative array that is in data['box_id'] format
 var data={};
-
 //initilize numeric array for main initial box that has constant id A
 data['A']=[];
 data['tree_data']=[];
 data['get_json']=[];
-
+data['p']=[];
 // When window is loaded then only
 window.onload = () => {
     if(!isCookieSet()){
@@ -17,21 +16,28 @@ window.onload = () => {
     } else {
         var tmp_cookie=getCookie();
         
-        data['tree_data'][0]=tmp_cookie;
+        //data['tree_data'][0]=tmp_cookie;
         // get_json return the data that is from server, if server sent json data then now we can JSON.parse(get_json())
-        // data['get_json'][0]=JSON.parse(get_json());
-        data['get_json'][0]=get_json(callback_get_json);
+        data="hello";   //but redeclareing value
+        console.log(get_json());   ///proof
+        
+        console.log(data);  ///proof 
+        //alert(json);
+        //console.log(get_json(callback_get_json));
+
     }
 }
 
 // call back for get_json 
 function callback_get_json(response){
-    alert(response);
+    //alert(response);
+    //data=JSON.parse(response);
+    //console.log(data);
     return response;
 }
 
 // Json send from get_json
-function get_json(callback_get_json){
+function get_json(){
     var url = `http://127.0.0.1:8080/api/main.php?user=${getCookie()}&get_json=1`;
 
     var request = makeRequest('GET', url);
@@ -43,8 +49,13 @@ function get_json(callback_get_json){
     request.onreadystatechange = () => {
         if(request.readyState==4&&request.status==200){
             var response=request.responseText;
-            document.getElementById('popup_div').innerHTML=response;
-            callback_get_json(response);
+            alert(data);
+            //document.getElementById('popup_div').innerHTML=response;
+            //callback_get_json(response);
+            data=JSON.parse(response);   ///check this not storing json to data
+            //console.log(json);
+            return data;              ///even not returning
+            
         }
     };
     request.send();
@@ -352,11 +363,11 @@ function json_send(){
     request.onreadystatechange = () => {
         if(request.readyState==4&&request.status==200){
             var response=request.responseText;
-            try{
-                response=JSON.parse(response);
-            } finally {
-                console.log(response);
-            }
+            // try{
+            //     response=JSON.parse(response);
+            // } finally {
+            //     console.log(response);
+            // }
         }
         else if(request.readyState==4&&request.status!=200){
             console.log("Error occured!!!");
