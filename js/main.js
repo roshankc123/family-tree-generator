@@ -15,29 +15,24 @@ window.onload = () => {
         data['tree_data'][0]=createCookie();
     } else {
         var tmp_cookie=getCookie();
-        
-        //data['tree_data'][0]=tmp_cookie;
         // get_json return the data that is from server, if server sent json data then now we can JSON.parse(get_json())
-        data="hello";   //but redeclareing value
-        console.log(get_json());   ///proof
-        
-        console.log(data);  ///proof 
-        //alert(json);
-        //console.log(get_json(callback_get_json));
+        get_json(callback_get_json);
+        //data['tree_data'][0]=tmp_cookie;
 
     }
 }
 
 // call back for get_json 
 function callback_get_json(response){
-    //alert(response);
-    //data=JSON.parse(response);
-    //console.log(data);
+    data=JSON.parse(response);
+    document.getElementById('img_A').src=data['A'][0];
+    console.log(data);
     return response;
 }
 
 // Json send from get_json
 function get_json(){
+    var json;
     var url = `http://127.0.0.1:8080/api/main.php?user=${getCookie()}&get_json=1`;
 
     var request = makeRequest('GET', url);
@@ -49,16 +44,13 @@ function get_json(){
     request.onreadystatechange = () => {
         if(request.readyState==4&&request.status==200){
             var response=request.responseText;
-            alert(data);
-            //document.getElementById('popup_div').innerHTML=response;
-            //callback_get_json(response);
-            data=JSON.parse(response);   ///check this not storing json to data
-            //console.log(json);
-            return data;              ///even not returning
-            
+            if(response!=""){
+            callback_get_json(response);
+            }
         }
     };
     request.send();
+    console.log(json);
 }
 
 /* Cookie user logged or not */
@@ -319,7 +311,7 @@ function okEditFormClicked(id){
         allData.append("u_image", image.files[0]);
 
         // Server to send data
-        var url = `http://40.71.91.158/api/main.php?div_id=${data['tree_data'][0]+"_"+id}`;
+        var url = `http://127.0.0.1:8080/api/main.php?div_id=${data['tree_data'][0]+"_"+id}`;
 
         var request = makeRequest('POST', url);
         if (!request) {
