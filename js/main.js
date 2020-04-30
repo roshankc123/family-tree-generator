@@ -100,7 +100,7 @@ function view(id){
     }
     view_container.appendChild(edit_btn);
     // Image path of user image
-    var imagePath = data[id][1];
+    var imagePath = "40.71.91.158/api/images/"+getCookie()+"_"+id+".png";
     view_container.style.backgroundImage = `url('${imagePath}')`;
     // div for name of user
     var div_0=document.createElement("div");
