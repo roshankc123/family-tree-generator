@@ -25,7 +25,7 @@ window.onload = () => {
 // call back for get_json 
 function callback_get_json(response){
     data=JSON.parse(response);
-    document.getElementById('img_A').src="http://13.68.145.80/images/"+getCookie()+"_A.png";
+    document.getElementById('img_A').src="images/"+getCookie()+"_A.png";
     return response;
 }
 
@@ -94,7 +94,7 @@ function view(id){
     }
     view_container.appendChild(edit_btn);
     // Image path of user image
-    var imagePath = "13.68.145.80/images/"+getCookie()+"_"+id+".png";
+    var imagePath = "images/"+getCookie()+"_"+id+".png";
     view_container.style.backgroundImage = `url('${imagePath}')`;
     // div for name of user
     var div_0=document.createElement("div");
@@ -229,7 +229,7 @@ function expand(id){
         while((data[id+String.fromCharCode(65+expand_offset)]
         ||data[id+String.fromCharCode(65+expand_offset)]=="")){        
             position_add(id,expand_offset);
-            document.getElementById("img_"+id+String.fromCharCode(65+expand_offset)).src="13.68.145.80/images/";
+            document.getElementById("img_"+id+String.fromCharCode(65+expand_offset)).src="images/";
             expand_offset++;
         }
     }
