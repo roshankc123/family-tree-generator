@@ -1,6 +1,8 @@
 
 i=0;
 child=0;
+var intial_zoom=1;
+var zoom_step=0.25;
 
 ///initilize associative array that is in data['box_id'] format
 var data={};
@@ -20,6 +22,23 @@ window.onload = () => {
         //data['tree_data'][0]=tmp_cookie;
 
     }
+}
+
+function zoomIn(e){
+    if(intial_zoom<3){
+        intial_zoom+=zoom_step;
+        document.getElementById("tree").style.transform=`scale(${intial_zoom})`;
+    }
+}
+function zoomOut(e){
+    if(intial_zoom>=0.1){
+        intial_zoom-=zoom_step;
+        document.getElementById("tree").style.transform=`scale(${intial_zoom})`;
+    }
+}
+function zoomReset(e){
+    intial_zoom=1;
+    document.getElementById("tree").style.transform=`scale(${intial_zoom})`;
 }
 
 // call back for get_json 

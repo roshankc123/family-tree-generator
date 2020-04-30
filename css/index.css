@@ -1,5 +1,13 @@
+body {
+    margin: 0;
+    padding: 0;
+}
 #tree{
     position: absolute;
+    top: 60px;
+    transform: scale(1);
+    transform-origin: top left;
+    transition: transform 0.2s linear;
 }
 #tree div {
     display: inline-block;
@@ -17,6 +25,51 @@ ul{
     position: relative;
     top: 0px;
 }
+button {
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+}
+.top-all-btns {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    right: 0;
+}
+#main-push {
+    float: left;
+    margin: 10px 0 0 10px;
+    padding: 15px;
+    text-align: center;
+    background-color: #fff;
+    border: 1px solid #333;
+    box-shadow: 1px 5px 9px #ccc;
+    color: #000;
+    border-radius: 50px;
+    outline: none;
+}
+#main-push:hover {
+    box-shadow: 0px 0px 29px #ccc;
+}
+.zoom-btns {
+    float: right;
+    margin-right: 5px;
+}
+#zoom-in, #zoom-out, #zoom-reset {
+    margin: 10px 0 0 5px;
+    padding: 15px 5px;
+    border-radius: 10px;
+}
+#zoom-in {
+    background-color: #99FFFF;
+}
+#zoom-out {
+    background-color: 	#76FF7A;
+}
+#zoom-reset {
+    background-color: #FFCC33
+}
+
 .box {
     position: relative;
     width: 130px;
@@ -99,8 +152,11 @@ li div.box p {
     width: 40px;
     display: inline-block;
     height: 40px;
-    border: 0px;
+    background-color: #eee;
     border-radius: 50%;
+}
+#tree button:hover {
+    border-radius: 10px;
 }
 li div.box img {
     position: absolute;
@@ -180,9 +236,6 @@ input::placeholder {
     position: absolute;
     top: 0px;
     right: 5px;
-    background-color: transparent;
-    border: 0;
-    cursor: pointer;
     font-size: 2em;
     text-shadow: 2px 1px #eee;
 }
@@ -201,7 +254,6 @@ input::placeholder {
     background-color: #111;
     color: #eee;
     border: 0;
-    cursor: pointer;
     width: 40px;
     height: 40px;
     border-radius: 30%;

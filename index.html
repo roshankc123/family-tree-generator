@@ -3,13 +3,21 @@
     <head>
         <meta charset="UTF-8">
         <title>index</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- <link rel="stylesheet" href="css/index.css"> -->
         <link rel="stylesheet" href="css/index.css">
         <script src="js/md5.js"></script>
         <script src="js/main.js"></script> 
     </head>
 <body>
-    <button onclick="json_send()">upload</button>
+    <div class="top-all-btns">
+        <button onclick="json_send()" id="main-push" title="Upload all new changes">Save</button>
+        <div class="zoom-btns">
+            <button id="zoom-in" onclick="zoomIn(this)" title="Zoom-In">Zoom(+)</button>
+            <button id="zoom-reset" onclick="zoomReset(this)" title="Reset zoom">Zoom(0)</button>
+            <button id="zoom-out" onclick="zoomOut(this)" title="Zoom-out">Zoom(-)</button>
+        </div>
+    </div>
     <ul id="tree" class="tree">
         <li id="branch_A" class="branch">
             <div id="A" class="box" onclick="appear_btn('A',1)">
