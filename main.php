@@ -1,7 +1,8 @@
 <?php
-$conn=mysqli_connect("<censored>");
+error_reporting(0);
+$conn=mysqli_connect("127.0.0.1","root","","tree");
 if(!$conn){ die(mysqli_connect_error());}
- //header('Access-Contr­ol-Allow-Origin: *');
+//header('Access-Control-Allow-Origin: *');
     if($_FILES['u_image']['tmp_name']){
       $image="images/".$_REQUEST['div_id'].".png";
         $fp=fopen($_FILES['u_image']['tmp_name'],'r');
@@ -12,9 +13,11 @@ if(!$conn){ die(mysqli_connect_error());}
         fclose($fp);
         //echo $image."::done";
       }
+      if($_GET['user']){
+        $user=str_replace(array("'","-"),array("&qot","&das"),$_GET['user']);
+      }
       if($_POST['json_file']){
         $json_file_filter=str_replace(array("'","-"),array("&qot","&das"),$_POST['json_file']);
-        $user=str_replace(array("'","-"),array("&qot","&das"),$_GET['user']);
         $qry=mysqli_query($conn,"insert into data values('0',
                                     '".$user."',
                                     '".$json_file_filter."');");
