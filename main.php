@@ -2,7 +2,7 @@
 error_reporting(0);
 $conn=mysqli_connect("127.0.0.1","root","","tree");
 if(!$conn){ die(mysqli_connect_error());}
-header('Access-Control-Allow-Origin: *');
+//header('Access-Control-Allow-Origin: *');
     if($_FILES['u_image']['tmp_name']){
       $image="images/".$_REQUEST['div_id'].".png";
         $fp=fopen($_FILES['u_image']['tmp_name'],'r');
