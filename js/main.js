@@ -222,7 +222,7 @@ function position_remove(id){
 function expand(id){
     var ul_branch=document.getElementById("ul_"+id);
     if(ul_branch){
-        ul_branch.style.visibility="visible";
+        ul_branch.style.visibility="visible";  ///needed for ref#1
     }
     else{
         var expand_offset=0;
@@ -245,7 +245,7 @@ function merge(id){
     var merge_offset=0;
     var ul_object=document.getElementById("ul_"+id);
     if(ul_object){
-        //ul_object.style.visibility="hidden";   ///some errors with this
+        //ul_object.style.visibility="hidden";   ///some errors with this ref#1
         ul_object.remove();
     }
     var button=document.getElementById('btn_'+id+'_3');
