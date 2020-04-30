@@ -26,7 +26,6 @@ window.onload = () => {
 function callback_get_json(response){
     data=JSON.parse(response);
     document.getElementById('img_A').src="40.71.91.158/api/images/"+getCookie()+"_A.png";
-    //console.log(data);
     return response;
 }
 
@@ -37,7 +36,6 @@ function get_json(){
 
     var request = makeRequest('GET', url);
     if(!request) {
-        console.log('Request not supported');
         return;
     }
     // Handle the requests
@@ -45,25 +43,21 @@ function get_json(){
         if(request.readyState==4&&request.status==200){
             var response=request.responseText;
             if(response!=""){
-            callback_get_json(response);
+                callback_get_json(response);
             }
         }
     };
     request.send();
-    console.log(json);
 }
 
 /* Cookie user logged or not */
 // Create cookie
 function createCookie(ck_name='tree_data', expire=365*10){
-    // expire == 10yrs
     var date = new Date();
     var currentTime = date.getTime();
-    // string of current time and random number 
     var ck_value = md5(`${currentTime}${Math.round(Math.random()*1000)}`);
     date.setTime(date.getTime() + (expire*24*60*60*1000));
-    var expires = date.toUTCString();
-    document.cookie = `${ck_name}=${ck_value};expires=${expires};path=/`;
+    document.cookie = `${ck_name}=${ck_value};expires=${date.toUTCString()};path=/`;
     return ck_value;
 }
 
@@ -148,18 +142,18 @@ function button_create(name,id){
         button.style.visibility="hidden";
         button.onclick=function(){
         switch(name){
-        case 'Add':
-            position_add(id,0);
-            break;
-        case 'View':
-            popUpOpen("view",id);
-            break;
-        case 'xpnd':
-            expand(id);
-            break;
-        default:
-            break;
-    }
+            case 'Add':
+                position_add(id,0);
+                break;
+            case 'View':
+                popUpOpen("view",id);
+                break;
+            case 'xpnd':
+                expand(id);
+                break;
+            default:
+                break;
+        }
     }
     return button;
 }
@@ -215,7 +209,6 @@ function position_add(id,init){
     } else {
         var ul=document.getElementById("ul_"+id);
         ul.appendChild(branch);
-
     }
     child++;
 }
@@ -233,12 +226,12 @@ function expand(id){
     }
     else{
         var expand_offset=0;
-        while((data[id+String.fromCharCode(65+expand_offset)] ||
-                 data[id+String.fromCharCode(65+expand_offset)]=="")){        
+        while((data[id+String.fromCharCode(65+expand_offset)]
+        ||data[id+String.fromCharCode(65+expand_offset)]=="")){        
             position_add(id,expand_offset);
             document.getElementById("img_"+id+String.fromCharCode(65+expand_offset)).src="40.71.91.158/api/images/";
             expand_offset++;
-    }
+        }
     }
     var button=document.getElementById('btn_'+id+'_3');
     button.innerHTML="mrge";
@@ -268,17 +261,9 @@ function appear_btn(id,action){
     todo = action!=0 ? "visible" : "hidden";
 
     if(todo=="visible"){
-        try{
-            document.querySelector(`#${id} img`).className += " opacity-to-img";
-        } catch (exception){
-            console.log("Unable to add img tag not added");
-        }
+        document.querySelector(`#${id} img`).className += " opacity-to-img";
     } else {
-        try{
-            document.querySelector(`#${id} img`).className = " ";
-        } catch (exception){
-            console.log("Unable to get img tag not added");
-        }
+        document.querySelector(`#${id} img`).className = " ";
     }
     
     for(btn_offset=1;btn_offset<=3;btn_offset++){
@@ -318,15 +303,12 @@ function data_add(id){
 function makeRequest(method, url) {
     var request = new XMLHttpRequest();
     if ("withCredentials" in request) {
-        // request for modern browsers
         request.open(method, url, true);
     } 
     else if (typeof XDomainRequest != "undefined") {
-        // request for older IE browsers
         request = new XDomainRequest();
         request.open(method, url);
     } else {
-        // CORS not supported.
         request = null;
     }
     return request;
@@ -337,11 +319,9 @@ function okEditFormClicked(id){
     var file_is_present = document.getElementById('u_image').value.trim();
 
     if(file_is_present){
-        // All data from the form
         var allData = new FormData();
 
         var image=document.getElementById('u_image');
-        ///uploaded image local url create and assigned
         data[id][1]=window.URL.createObjectURL(image.files[0]);
         allData.append("u_image", image.files[0]);
 
@@ -350,17 +330,14 @@ function okEditFormClicked(id){
 
         var request = makeRequest('POST', url);
         if (!request) {
-            console.log('Request not supported');
             return;
         }
 
         // Handle the requests
         request.onreadystatechange = () => {
             if(request.readystate == 4 && request.status == 200){
-                var response = JSON.parse(request.responseText);
                 return true;
             } else if(request.status != 200 && request.readystate == 4){
-                console.log("Some error occured");
                 return false;
             }
         };
@@ -390,11 +367,6 @@ function json_send(){
     request.onreadystatechange = () => {
         if(request.readyState==4&&request.status==200){
             var response=request.responseText;
-            // try{
-            //     response=JSON.parse(response);
-            // } finally {
-            //     console.log(response);
-            // }
         }
         else if(request.readyState==4&&request.status!=200){
             console.log("Error occured!!!");
