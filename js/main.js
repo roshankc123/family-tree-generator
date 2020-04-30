@@ -229,7 +229,7 @@ function expand(id){
         while((data[id+String.fromCharCode(65+expand_offset)]
         ||data[id+String.fromCharCode(65+expand_offset)]=="")){        
             position_add(id,expand_offset);
-            document.getElementById("img_"+id+String.fromCharCode(65+expand_offset)).src="images/";
+            document.getElementById("img_"+id+String.fromCharCode(65+expand_offset)).src="images/"+getCookie()+"_A.png";
             expand_offset++;
         }
     }
