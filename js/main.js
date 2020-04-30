@@ -25,7 +25,7 @@ window.onload = () => {
 // call back for get_json 
 function callback_get_json(response){
     data=JSON.parse(response);
-    document.getElementById('img_A').src="40.71.91.158/api/images/"+getCookie()+"_A.png";
+    document.getElementById('img_A').src="http://40.71.91.158/api/images/"+getCookie()+"_A.png";
     return response;
 }
 
