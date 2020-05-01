@@ -218,7 +218,7 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
         ///image location is blank in first                                                   
         data[box.id][1]="";
         data[box.id][2]=-1;
-    }                                            
+    }                                         
     var p_tag_to_enclose_btn = document.createElement("p");
     var button=button_create("Add",box.id);
         button.className="btn_1";
@@ -260,6 +260,11 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
     }
     update_cache();
     child++;
+    var button=document.getElementById('btn_'+id+'_3');
+    button.innerHTML="mrge";
+    button.onclick=function(){
+        merge(id);
+    }
     // Many take documentElement
     document.documentElement.scrollTop=document.getElementById("tree").offsetHeight;
     // Some browsers take body
