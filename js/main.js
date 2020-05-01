@@ -6,18 +6,18 @@ child=0;
 var data={};
 //initilize numeric array for main initial box that has constant id A
 data['A']=[];
-data['tree_data']=[];
-data['get_json']=[];
-data['p']=[];
+data['A'][0]="";
+data['A'][1]="";
+data['A'][2]=-1;
 // When window is loaded then only
 window.onload = () => {
     if(!isCookieSet()){
-        data['tree_data'][0]=createCookie();
+        createCookie("tree_cookie",3650*24*60*60,"site");
     } else {
         var tmp_cookie=getCookie();
         // get_json return the data that is from server, if server sent json data then now we can JSON.parse(get_json())
         get_json(callback_get_json);
-        //data['tree_data'][0]=tmp_cookie;
+        //data['tree_cookie'][0]=tmp_cookie;
 
     }
 }
@@ -52,17 +52,26 @@ function get_json(){
 
 /* Cookie user logged or not */
 // Create cookie
-function createCookie(ck_name='tree_data', expire=365*10){
+function createCookie(ck_name, expire,ck_for){
     var date = new Date();
     var currentTime = date.getTime();
-    var ck_value = md5(`${currentTime}${Math.round(Math.random()*1000)}`);
-    date.setTime(date.getTime() + (expire*24*60*60*1000));
+    if(ck_for!="data"){
+        var ck_value = md5(`${currentTime}${Math.round(Math.random()*1000)}`);
+    }
+    else{
+        var ck_value = JSON.stringify(data);
+    }
+    date.setTime(date.getTime() + (expire*1000));
     document.cookie = `${ck_name}=${ck_value};expires=${date.toUTCString()};path=/`;
-    return ck_value;
+    //return ck_value;
 }
 
+///function to update data in cookie
+function update_cache(){
+    createCookie("tree_data",86400,"data");
+}
 // Get cookie value from cookie name
-function getCookie(ck_name='tree_data'){
+function getCookie(ck_name='tree_cookie'){
     var decodedCookie = decodeURIComponent(document.cookie);
     var each_cookie_item = decodedCookie.split(';');
     for(var i = 0; i <each_cookie_item.length; i++) {
@@ -78,7 +87,7 @@ function getCookie(ck_name='tree_data'){
 }
 
 // If cookie is set return true, false otherwise
-function isCookieSet(ck_name='tree_data'){
+function isCookieSet(ck_name='tree_cookie'){
     return document.cookie.indexOf(`${ck_name}=`)>=0;
 }
 
@@ -143,7 +152,7 @@ function button_create(name,id){
         button.onclick=function(){
         switch(name){
             case 'Add':
-                position_add(id,0);
+                position_add(id,0,0);
                 break;
             case 'View':
                 popUpOpen("view",id);
@@ -159,12 +168,15 @@ function button_create(name,id){
 }
 
 ///function that add up boxes in desired position
-function position_add(id,init){
+function position_add(id,init,view_only){  ////view_only 1 for just viewing
     if(init==0){
         child=0;
         document.getElementById('btn_'+id+"_"+1).onclick=function(){
-            position_add(id,1);
+            position_add(id,1,0);
         }
+    }
+    else if(init!=0 && view_only!=1 && view_only!=0){
+        child=data[id][2];                                  ///problem here
     }
     var box = document.createElement("div");
         box.id=id+String.fromCharCode(65+child);
@@ -172,13 +184,15 @@ function position_add(id,init){
         box.onclick=function(){
             appear_btn(box.id,1);
         }
+    //increasing child box count
     if(!data[box.id]){
         data[box.id]=[];
         ///name is blank in first
         data[box.id][0]=""; 
         ///image location is blank in first                                                   
         data[box.id][1]="";
-    }                                                    
+        data[box.id][2]=-1;
+    }                                            
     var p_tag_to_enclose_btn = document.createElement("p");
     var button=button_create("Add",box.id);
         button.className="btn_1";
@@ -208,8 +222,17 @@ function position_add(id,init){
         document.getElementById("branch_"+id).appendChild(ul);
     } else {
         var ul=document.getElementById("ul_"+id);
+        if(!ul){
+            expand(id);
+            ul=document.getElementById("ul_"+id);
+        }
         ul.appendChild(branch);
     }
+    if(view_only!=1){
+        data[id][2]++;
+        //alert(id+":"+data[id][2]);
+    }
+    update_cache();
     child++;
 }
 
@@ -226,11 +249,10 @@ function expand(id){
     }
     else{
         var expand_offset=0;
-        while((data[id+String.fromCharCode(65+expand_offset)]
-        ||data[id+String.fromCharCode(65+expand_offset)]=="")){        
-            position_add(id,expand_offset);
-            document.getElementById("img_"+id+String.fromCharCode(65+expand_offset)).src="images/"+getCookie()+"_"+id+String.fromCharCode(65+expand_offset)+".png";
-            expand_offset++;
+        for(expand_offset=0;expand_offset<=data[id][2];expand_offset++){
+            position_add(id,expand_offset,1);
+            //document.getElementById("img_"+id+String.fromCharCode(65+expand_offset)).src="images/"+getCookie()+"_"+id+String.fromCharCode(65+expand_offset)+".png";
+            console.log(expand_offset);
         }
     }
     var button=document.getElementById('btn_'+id+'_3');
