@@ -1,6 +1,8 @@
 
 i=0;
 child=0;
+var intial_zoom=1;
+var zoom_step=0.3;
 
 ///initilize associative array that is in data['box_id'] format
 var data={};
@@ -27,6 +29,23 @@ window.onload = () => {
         //data['tree_cookie'][0]=tmp_cookie;
 
     }
+}
+
+function zoomIn(e){
+    if(intial_zoom<2.5){
+        intial_zoom+=zoom_step;
+        document.getElementById("tree").style.transform=`scale(${intial_zoom})`;
+    }
+}
+function zoomOut(e){
+    if(intial_zoom>0.1){
+        intial_zoom-=zoom_step;
+    }
+    document.getElementById("tree").style.transform=`scale(${intial_zoom})`;
+}
+function zoomReset(e){
+    intial_zoom=1;
+    document.getElementById("tree").style.transform=`scale(${intial_zoom})`;
 }
 
 // call back for get_json 
@@ -222,8 +241,8 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
         branch.id="branch_"+id+String.fromCharCode(65+child);
         branch.className="branch";
         branch.appendChild(box);
+    var ul=document.createElement('ul');
     if((init == 0)){
-        var ul=document.createElement('ul');
         ul.id="ul_"+id;
         ul.appendChild(branch);
         document.getElementById("branch_"+id).appendChild(ul);
@@ -241,6 +260,10 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
     }
     update_cache();
     child++;
+    // Many take documentElement
+    document.documentElement.scrollTop=document.getElementById("tree").offsetHeight;
+    // Some browsers take body
+    document.body.scrollTop=document.getElementById("tree").offsetHeight;
 }
 
 ///function to remove box
