@@ -14,9 +14,16 @@ window.onload = () => {
     if(!isCookieSet()){
         createCookie("tree_cookie",3650*24*60*60,"site");
     } else {
-        var tmp_cookie=getCookie();
+        var tmp_cookie=getCookie("tree_cookie");
+        if(raw_data=getCookie("tree_data")){
+            data=JSON.parse(raw_data);
+            console.log("cookie data found");
+        }
+        else{
         // get_json return the data that is from server, if server sent json data then now we can JSON.parse(get_json())
-        get_json(callback_get_json);
+            get_json(callback_get_json);
+            console.log("data from server");
+        }
         //data['tree_cookie'][0]=tmp_cookie;
 
     }
@@ -25,14 +32,14 @@ window.onload = () => {
 // call back for get_json 
 function callback_get_json(response){
     data=JSON.parse(response);
-    document.getElementById('img_A').src="images/"+getCookie()+"_A.png";
+    document.getElementById('img_A').src="images/"+getCookie("tree_cookie")+"_A.png";
     return response;
 }
 
 // Json send from get_json
 function get_json(){
     var json;
-    var url = `http://13.68.145.80/main.php?user=${getCookie()}&get_json=1`;
+    var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}&get_json=1`;
 
     var request = makeRequest('GET', url);
     if(!request) {
@@ -71,7 +78,7 @@ function update_cache(){
     createCookie("tree_data",86400,"data");
 }
 // Get cookie value from cookie name
-function getCookie(ck_name='tree_cookie'){
+function getCookie(ck_name){
     var decodedCookie = decodeURIComponent(document.cookie);
     var each_cookie_item = decodedCookie.split(';');
     for(var i = 0; i <each_cookie_item.length; i++) {
@@ -103,7 +110,7 @@ function view(id){
     }
     view_container.appendChild(edit_btn);
     // Image path of user image
-    var imagePath = "images/"+getCookie()+"_"+id+".png";
+    var imagePath = "images/"+getCookie("tree_cookie")+"_"+id+".png";
     view_container.style.backgroundImage = `url('${imagePath}')`;
     // div for name of user
     var div_0=document.createElement("div");
@@ -175,8 +182,8 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
             position_add(id,1,0);
         }
     }
-    else if(init!=0 && view_only!=1 && view_only!=0){
-        child=data[id][2];                                  ///problem here
+    else if(init!=0 && view_only!=1){
+        child=data[id][2]+1;                                  ///problem here
     }
     var box = document.createElement("div");
         box.id=id+String.fromCharCode(65+child);
@@ -251,7 +258,7 @@ function expand(id){
         var expand_offset=0;
         for(expand_offset=0;expand_offset<=data[id][2];expand_offset++){
             position_add(id,expand_offset,1);
-            //document.getElementById("img_"+id+String.fromCharCode(65+expand_offset)).src="images/"+getCookie()+"_"+id+String.fromCharCode(65+expand_offset)+".png";
+            //document.getElementById("img_"+id+String.fromCharCode(65+expand_offset)).src="images/"+getCookie("tree_cookie")+"_"+id+String.fromCharCode(65+expand_offset)+".png";
             console.log(expand_offset);
         }
     }
@@ -348,7 +355,7 @@ function okEditFormClicked(id){
         allData.append("u_image", image.files[0]);
 
         // Server to send data
-        var url = `http://13.68.145.80/main.php?div_id=${getCookie()+"_"+id}`;
+        var url = `http://13.68.145.80/main.php?div_id=${getCookie("tree_cookie")+"_"+id}`;
 
         var request = makeRequest('POST', url);
         if (!request) {
@@ -377,7 +384,7 @@ function json_send(){
     var formData = new FormData();
     formData.append('json_file', json_file);
 
-    var url = `http://13.68.145.80/main.php?user=${getCookie()}`;
+    var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}`;
 
     var request = makeRequest('POST', url);
     if(!request) {
