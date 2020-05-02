@@ -23,7 +23,7 @@ window.onload = () => {
         }
         else{
         // get_json return the data that is from server, if server sent json data then now we can JSON.parse(get_json())
-            get_json(callback_get_json);
+            get_json();
             console.log("data from server");
         }
         //data['tree_cookie'][0]=tmp_cookie;
@@ -49,31 +49,25 @@ function zoomReset(e){
 }
 
 // call back for get_json 
-function callback_get_json(response){
-    data=JSON.parse(response);
-    document.getElementById('img_A').src="images/"+getCookie("tree_cookie")+"_A.png";
-    return response;
+function callback(response, callback_arg){
+    if(callback_arg=="get_json"){
+        data=JSON.parse(response);
+        document.getElementById('img_A').src="images/"+getCookie("tree_cookie")+"_A.png";
+        return response;
+    }
+    else if(callback_arg=="delete_clicked"){
+        // When delete clicked
+    }
+    
 }
 
 // Json send from get_json
 function get_json(){
-    var json;
     var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}&get_json=1`;
 
     var request = makeRequest('GET', url);
-    if(!request) {
-        return;
-    }
-    // Handle the requests
-    request.onreadystatechange = () => {
-        if(request.readyState==4&&request.status==200){
-            var response=request.responseText;
-            if(response!=""){
-                callback_get_json(response);
-            }
-        }
-    };
-    request.send();
+    
+    sendActualRequest(request, callback_arg="get_json");
 }
 
 /* Cookie user logged or not */
@@ -90,6 +84,11 @@ function createCookie(ck_name, expire,ck_for){
     date.setTime(date.getTime() + (expire*1000));
     document.cookie = `${ck_name}=${ck_value};expires=${date.toUTCString()};path=/`;
     //return ck_value;
+}
+
+// Delete cookie by name
+function delete_cookie(ck_name) {
+    document.cookie = ck_name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
 
 ///function to update data in cookie
@@ -371,6 +370,27 @@ function makeRequest(method, url) {
     return request;
 }
 
+// Send get request
+function sendActualRequest(request, callback_arg=null, data=null){
+    if(!request) {
+        console.log('Request not supported');
+        return;
+    }
+    // Handle the requests
+    request.onreadystatechange = () => {
+        if(request.readyState==4&&request.status==200){
+            var response=request.responseText;
+            if(response!=""&&!callback_arg){
+                callback(response, callback_arg);
+            }
+        }
+        else if(request.readyState==4&&request.status!=200){
+            console.log("Error occured!!!");
+        }
+    };
+    request.send(data);
+}
+
 // When ok button is clicked in edit
 function okEditFormClicked(id){
     var file_is_present = document.getElementById('u_image').value.trim();
@@ -415,23 +435,25 @@ function json_send(){
     var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}`;
 
     var request = makeRequest('POST', url);
-    if(!request) {
-        console.log('Request not supported');
-        return;
-    }
-
-    // Handle the requests
-    request.onreadystatechange = () => {
-        if(request.readyState==4&&request.status==200){
-            var response=request.responseText;
-        }
-        else if(request.readyState==4&&request.status!=200){
-            console.log("Error occured!!!");
-        }
-    };
-    request.send(formData);
+    
+    sendActualRequest(request, data=formData);
 }
 
 function rerun(){
 
+}
+
+// Delete button clicked
+function delete_clicked(){
+    createCookie(ck_name="trash_data", expire=24*60*60, ck_for="data");
+    delete_cookie(ck_name="tree_data");
+
+    /*
+    var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}`;
+
+    var request = makeRequest('GET', url);
+
+    // If success directly go to callback function
+    sendActualRequest(request, callback_arg="delete_clicked");
+    */
 }
