@@ -11,7 +11,8 @@
     </head>
 <body>
     <div class="top-all-btns">
-        <button onclick="json_send()" id="main-push" title="Upload all new changes">Save</button>
+        <button onclick="json_send()" class="main-push" title="Upload all new changes">Save</button>
+        <button class="main-push">clone</button>
     </div>
     <div class="zoom-btns">
         <button id="zoom-in" onclick="zoomIn(this)" title="Zoom-In">Zoom in</button>
@@ -23,7 +24,7 @@
             <div id="A" class="box" onclick="appear_btn('A',1)">
                 <img id="img_A" alt="a" width="130" height="130">
                 <p>
-                    <button onclick="position_add('A',0)" class="btn_1" id="btn_A_1">Add</button>
+                    <button onclick="position_add('A',0,0)" class="btn_1" id="btn_A_1">Add</button>
                     <button onclick="popUpOpen('view','A')" class="btn_2" id="btn_A_2">View</button>
                     <button onclick="expand('A')" class="btn_3" id="btn_A_3">xpnd</button>
                 </p>

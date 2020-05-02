@@ -20,7 +20,8 @@ header('Access-Control-Allow-Origin: *');
         $json_file_filter=str_replace(array("'","-"),array("&qot","&das"),$_POST['json_file']);
         $qry=mysqli_query($conn,"insert into data values('0',
                                     '".$user."',
-                                    '".$json_file_filter."');");
+                                    '".$json_file_filter."',
+                                    1);");
         if(!$qry){ echo mysqli_error($conn); }
       }
       if($_GET['get_json']==1){
