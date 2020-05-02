@@ -448,12 +448,10 @@ function delete_clicked(){
     createCookie(ck_name="trash_data", expire=24*60*60, ck_for="data");
     delete_cookie(ck_name="tree_data");
 
-    /*
-    var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}`;
+    var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}&delete=1`;
 
     var request = makeRequest('GET', url);
 
     // If success directly go to callback function
     sendActualRequest(request, callback_arg="delete_clicked");
-    */
 }
