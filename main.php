@@ -31,4 +31,8 @@ header('Access-Control-Allow-Origin: *');
         $json_file_filter=str_replace(array("&qot","&das"),array("'","-"),$data[0][0]);
         echo $json_file_filter;
       }
+      if($_GET['delete']==1){
+        $qry=mysqli_query($conn,"update data set def=0 where u_cookie='".$user."';");
+        if(!$qry){echo mysqli_error($conn);}
+      }
 ?>
