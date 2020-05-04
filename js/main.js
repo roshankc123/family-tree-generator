@@ -481,10 +481,17 @@ function delete_clicked(){
     var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}&delete=1`;
 
     var request = makeRequest('GET', url);
+    request.onreadystatechange = () => {
+        if(request.readystate == 4 && request.status == 200){
+            window.location="";
+            return true;
+        } else if(request.status != 200 && request.readystate == 4){
+            return false;
+        }
+    };
 
     // If success directly go to callback function
     sendActualRequest(request, callback_arg="delete_clicked");
-    window.location="";
 }
 
 ///function to delete box
