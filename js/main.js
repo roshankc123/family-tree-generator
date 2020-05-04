@@ -454,8 +454,19 @@ function json_send(){
     var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}`;
 
     var request = makeRequest('POST', url);
-    
-    sendActualRequest(request, data=formData);
+        if (!request) {
+            return;
+        }
+
+        // Handle the requests
+        request.onreadystatechange = () => {
+            if(request.readystate == 4 && request.status == 200){
+                return true;
+            } else if(request.status != 200 && request.readystate == 4){
+                return false;
+            }
+        };
+        request.send(formData);
 }
 
 
