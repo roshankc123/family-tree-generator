@@ -469,8 +469,8 @@ function json_send(){
 }
 
 
-function init(){
-
+function reload(){
+    window.location="";
 }
 
 // Delete button clicked
@@ -483,7 +483,6 @@ function delete_clicked(){
     var request = makeRequest('GET', url);
     request.onreadystatechange = () => {
         if(request.readystate == 4 && request.status == 200){
-            window.location="";
             return true;
         } else if(request.status != 200 && request.readystate == 4){
             return false;
@@ -492,6 +491,7 @@ function delete_clicked(){
 
     // If success directly go to callback function
     sendActualRequest(request, callback_arg="delete_clicked");
+    window.location="";
 }
 
 ///function to delete box
