@@ -56,7 +56,7 @@ function callback(response, callback_arg){
         return response;
     }
     else if(callback_arg=="reload"){
-        window.location="";
+        location.reload();
     }
     else if(callback_arg=="delete_clicked"){
         // When delete clicked
@@ -77,7 +77,7 @@ function get_json(){
         if(request.readyState==4&&request.status==200){
             var response=request.responseText;
             if(response!=""){
-                callback_get_json(response);
+                callback(response, "get_json");
             }
         }
     };
@@ -401,27 +401,6 @@ function makeRequest(method, url) {
     return request;
 }
 
-// Send get request
-function sendActualRequest(request, callback_arg=null, data=null){
-    if(!request) {
-        console.log('Request not supported');
-        return;
-    }
-    // Handle the requests
-    request.onreadystatechange = () => {
-        if(request.readyState==4&&request.status==200){
-            var response=request.responseText;
-            if(response!=""&&!callback_arg){
-                callback(response, callback_arg);
-            }
-        }
-        else if(request.readyState==4&&request.status!=200){
-            console.log("Error occured!!!");
-        }
-    };
-    request.send(data);
-}
-
 // When ok button is clicked in edit
 function okEditFormClicked(id){
     var file_is_present = document.getElementById('u_image').value.trim();
@@ -494,15 +473,11 @@ function delete_clicked(){
     var request = makeRequest('GET', url);
     request.onreadystatechange = () => {
         if(request.readystate == 4 && request.status == 200){
-            callback("","reload");
-            return true;
-        } else if(request.status != 200 && request.readystate == 4){
-            return false;
+            callback(response=null,callback_arg="reload");
+        } else if(request.readyState==4&&request.status!=200){
+            console.log("Error occured!!!");
         }
     };
-
-    // If success directly go to callback function
-    sendActualRequest(request, callback_arg="delete_clicked");
 }
 
 ///function to delete box
