@@ -247,8 +247,8 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
     var image=document.createElement('img');
         image.alt=box.id;
         image.id="img_"+box.id;
-        if(data[id][1]){
-            image.src="images/"+data[id][1]+".png";
+        if(data[box.id][1]){
+            image.src="images/"+data[box.id][1]+".png";
         }
         box.appendChild(image);
     var branch = document.createElement("li");
