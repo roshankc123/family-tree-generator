@@ -52,7 +52,7 @@ function zoomReset(e){
 function callback(response, callback_arg){
     if(callback_arg=="get_json"){
         data=JSON.parse(response);
-        document.getElementById('img_A').src="images/"+getCookie("tree_cookie")+"_A.png";
+        document.getElementById('img_A').src="13.68.145.80/images/"+data['A'][1]+".png";
         return response;
     }
     else if(callback_arg=="delete_clicked"){
@@ -128,7 +128,7 @@ function view(id){
     }
     view_container.appendChild(edit_btn);
     // Image path of user image
-    var imagePath = "images/"+getCookie("tree_cookie")+"_"+id+".png";
+    var imagePath = "13.68.145.80/images/"+data[id][1]+".png";
     view_container.style.backgroundImage = `url('${imagePath}')`;
     // div for name of user
     var div_0=document.createElement("div");
@@ -244,6 +244,9 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
     var image=document.createElement('img');
         image.alt=box.id;
         image.id="img_"+box.id;
+        if(data[id][1]){
+            image.src="13.68.145.80/images/"+data[id][1]+".png";
+        }
         box.appendChild(image);
     var branch = document.createElement("li");
         branch.id="branch_"+id+String.fromCharCode(65+child);
@@ -366,7 +369,6 @@ function popUpClose(){
 function data_add(id){
         data[id][0]=document.getElementById('u_name').value;
         okEditFormClicked(id);                                                           ///no else condition as no upload gives previous image
-        document.getElementById('img_'+id).src=data[id][1];
     popUpClose();
 }
 
@@ -415,10 +417,12 @@ function okEditFormClicked(id){
 
         var image=document.getElementById('u_image');
         data[id][1]=window.URL.createObjectURL(image.files[0]);
+        document.getElementById('img_'+id).src=data[id][1];
         allData.append("u_image", image.files[0]);
-
+        var image_id=getCookie("tree_cookie")+"_"+Date.now();
+        data[id][1]=image_id;
         // Server to send data
-        var url = `http://13.68.145.80/main.php?div_id=${getCookie("tree_cookie")+"_"+id}`;
+        var url = `http://13.68.145.80/main.php?div_id=${image_id}`;
 
         var request = makeRequest('POST', url);
         if (!request) {
@@ -451,7 +455,7 @@ function json_send(){
 
     var request = makeRequest('POST', url);
     
-    sendActualRequest(request, data=formData);
+    sendActualRequest(request, formData);
 }
 
 
