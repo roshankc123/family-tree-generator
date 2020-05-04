@@ -455,7 +455,7 @@ function json_send(){
 
     var request = makeRequest('POST', url);
     
-    sendActualRequest(request, formData);
+    sendActualRequest(request, data=formData);
 }
 
 
