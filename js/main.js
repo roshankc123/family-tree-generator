@@ -416,8 +416,7 @@ function okEditFormClicked(id){
         var allData = new FormData();
 
         var image=document.getElementById('u_image');
-        data[id][1]=window.URL.createObjectURL(image.files[0]);
-        document.getElementById('img_'+id).src=data[id][1];
+        document.getElementById('img_'+id).src=window.URL.createObjectURL(image.files[0]);
         allData.append("u_image", image.files[0]);
         var image_id=getCookie("tree_cookie")+"_"+Date.now();
         data[id][1]=image_id;
