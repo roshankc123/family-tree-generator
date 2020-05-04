@@ -32,19 +32,19 @@ button {
     cursor: pointer;
 }
 .top-all-btns {
-    background-color: red;
+    display: flex;
+    justify-content: space-around;
     position: fixed;
     width: 100%;
     top: 0;
     z-index: 3;
+    box-shadow: 0px 2px 5px #ccc;
 }
 .main-push {
     margin: 5px;
     padding: 15px;
     text-align: center;
     background-color: #fff;
-    border: 1px solid #333;
-    box-shadow: 1px 5px 9px #ccc;
     color: #000;
     border-radius: 50px;
     outline: none;
@@ -52,8 +52,17 @@ button {
 .main-push:hover {
     box-shadow: 0px 0px 29px #ccc;
 }
+.main-push:first-child {
+    background-color: #76FF7A;
+}
+.main-push:nth-child(2) {
+    background-color: #ff726f;
+}
+.main-push:nth-child(3){
+    background-color: #FFCC33;
+}
 .zoom-btns {
-    background-color: red;
+    box-shadow: 2px 0px 5px #ccc;
     position: fixed;
     width: 100%;
     bottom: 0;
@@ -75,7 +84,17 @@ button {
 #zoom-reset {
     background-color: #FFCC33
 }
-
+p.box_btns {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+p.box_btns button {
+    background-color: #efefef;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
 .box {
     position: relative;
     width: 130px;
@@ -154,18 +173,6 @@ li div.box p {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-}
-#tree button{
-    position: relative;
-    z-index: 4;
-    width: 40px;
-    display: inline-block;
-    height: 40px;
-    background-color: #eee;
-    border-radius: 50%;
-}
-#tree button:hover {
-    border-radius: 10px;
 }
 li div.box img {
     position: absolute;
