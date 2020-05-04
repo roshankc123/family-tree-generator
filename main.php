@@ -28,7 +28,6 @@ header('Access-Control-Allow-Origin: *');
                                     1);");
         if(!$qry){ echo mysqli_error($conn); }
       }
-      print_r($_POST);
 
       if($_GET['get_json']==1 || $_GET['clone']==1){
         if($_GET['get_json']){

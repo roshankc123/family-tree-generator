@@ -55,6 +55,9 @@ function callback(response, callback_arg){
         document.getElementById('img_A').src="13.68.145.80/images/"+data['A'][1]+".png";
         return response;
     }
+    else if(callback_arg=="reload"){
+        window.location="";
+    }
     else if(callback_arg=="delete_clicked"){
         // When delete clicked
     }
@@ -469,9 +472,6 @@ function json_send(){
 }
 
 
-function reload(){
-    window.location="";
-}
 
 // Delete button clicked
 function delete_clicked(){
@@ -483,6 +483,7 @@ function delete_clicked(){
     var request = makeRequest('GET', url);
     request.onreadystatechange = () => {
         if(request.readystate == 4 && request.status == 200){
+            callback("","reload");
             return true;
         } else if(request.status != 200 && request.readystate == 4){
             return false;
@@ -491,7 +492,6 @@ function delete_clicked(){
 
     // If success directly go to callback function
     sendActualRequest(request, callback_arg="delete_clicked");
-    window.location="";
 }
 
 ///function to delete box
