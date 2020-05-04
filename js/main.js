@@ -473,11 +473,12 @@ function delete_clicked(){
     var request = makeRequest('GET', url);
     request.onreadystatechange = () => {
         if(request.readystate == 4 && request.status == 200){
-            callback(response=null,callback_arg="reload");
+            callback(response.responseText, callback_arg="reload");
         } else if(request.readyState==4&&request.status!=200){
             console.log("Error occured!!!");
         }
     };
+    request.send();
 }
 
 ///function to delete box
