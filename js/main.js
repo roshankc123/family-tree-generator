@@ -52,7 +52,7 @@ function zoomReset(e){
 function callback(response, callback_arg){
     if(callback_arg=="get_json"){
         data=JSON.parse(response);
-        document.getElementById('img_A').src="13.68.145.80/images/"+data['A'][1]+".png";
+        document.getElementById('img_A').src="images/"+data['A'][1]+".png";
         return response;
     }
     else if(callback_arg=="reload"){
@@ -131,7 +131,7 @@ function view(id){
     }
     view_container.appendChild(edit_btn);
     // Image path of user image
-    var imagePath = "13.68.145.80/images/"+data[id][1]+".png";
+    var imagePath = "images/"+data[id][1]+".png";
     view_container.style.backgroundImage = `url('${imagePath}')`;
     // div for name of user
     var div_0=document.createElement("div");
@@ -248,7 +248,7 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
         image.alt=box.id;
         image.id="img_"+box.id;
         if(data[id][1]){
-            image.src="13.68.145.80/images/"+data[id][1]+".png";
+            image.src="images/"+data[id][1]+".png";
         }
         box.appendChild(image);
     var branch = document.createElement("li");
