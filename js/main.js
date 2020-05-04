@@ -88,7 +88,7 @@ function createCookie(ck_name, expire,ck_for){
 
 // Delete cookie by name
 function delete_cookie(ck_name) {
-    document.cookie = ck_name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie = ck_name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/';
 }
 
 ///function to update data in cookie
@@ -185,6 +185,9 @@ function button_create(name,id){
             case 'xpnd':
                 expand(id);
                 break;
+            case 'del':
+                delete_box(id);
+                break;
             default:
                 break;
         }
@@ -202,6 +205,7 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
     }
     else if(init!=0 && view_only!=1){
         child=data[id][2]+1;                                  ///problem here
+        console.log("child assined parent index");
     }
     var box = document.createElement("div");
         box.id=id+String.fromCharCode(65+child);
@@ -211,6 +215,7 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
         }
     //increasing child box count
     if(!data[box.id]){
+        console.log("data object created");
         data[box.id]=[];
         ///name is blank in first
         data[box.id][0]=""; 
@@ -231,6 +236,10 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
         button.className="btn_3";
         button.id="btn_"+box.id+"_"+3;
         p_tag_to_enclose_btn.appendChild(button);
+    var button=button_create("del",id+String.fromCharCode(65+child));
+        button.className="btn_4";
+        button.id="btn_"+box.id+"_"+4;
+        p_tag_to_enclose_btn.appendChild(button);
         box.appendChild(p_tag_to_enclose_btn);
     var image=document.createElement('img');
         image.alt=box.id;
@@ -241,20 +250,26 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
         branch.className="branch";
         branch.appendChild(box);
     var ul=document.createElement('ul');
+    //var ul_check=document.getElementById("ul_"+id);
     if((init == 0)){
         ul.id="ul_"+id;
         ul.appendChild(branch);
         document.getElementById("branch_"+id).appendChild(ul);
-    } else {
-        var ul=document.getElementById("ul_"+id);
+        console.log("init is 0");
+    } 
+    else {
+        ul=document.getElementById("ul_"+id);
         if(!ul){
             expand(id);
             ul=document.getElementById("ul_"+id);
+            console.log("ul created");
         }
         ul.appendChild(branch);
+        console.log("init not 0");
     }
     if(view_only!=1){
         data[id][2]++;
+        console.log("not view only");
         //alert(id+":"+data[id][2]);
     }
     update_cache();
@@ -322,7 +337,7 @@ function appear_btn(id,action){
         document.querySelector(`#${id} img`).className = " ";
     }
     
-    for(btn_offset=1;btn_offset<=3;btn_offset++){
+    for(btn_offset=1;btn_offset<=4;btn_offset++){
         document.getElementById("btn_"+id+"_"+btn_offset).style.visibility=todo;
     }
     document.getElementById(id).onclick=function(){
@@ -439,7 +454,8 @@ function json_send(){
     sendActualRequest(request, data=formData);
 }
 
-function rerun(){
+
+function init(){
 
 }
 
@@ -454,4 +470,29 @@ function delete_clicked(){
 
     // If success directly go to callback function
     sendActualRequest(request, callback_arg="delete_clicked");
+    window.location="";
+}
+
+///function to delete box
+function delete_box(id){
+    var tmp_id=id;
+    tmp_id=tmp_id.split("");
+    var rmv=tmp_id.pop();
+        console.log(rmv+"::removed");
+    tmp_id=tmp_id.join("");
+    var parent=tmp_id;
+    rmv=rmv.charCodeAt(0);
+    var buffered_rmv=tmp_id+String.fromCharCode(rmv);
+    rmv++;
+    while((index_rmv=(tmp_id+String.fromCharCode(rmv))) && (a=data[index_rmv])){
+        console.log("from "+index_rmv +" to "+buffered_rmv);
+        data[buffered_rmv]=data[index_rmv];
+        delete data[index_rmv];
+        buffered_rmv=index_rmv;
+        rmv++;
+    }
+    data[parent][2]--;
+    console.log(tmp_id);
+    merge(parent);
+    expand(parent);
 }
