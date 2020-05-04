@@ -69,8 +69,19 @@ function get_json(){
     var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}&get_json=1`;
 
     var request = makeRequest('GET', url);
-    
-    sendActualRequest(request, callback_arg="get_json");
+    if(!request) {
+        return;
+    }
+    // Handle the requests
+    request.onreadystatechange = () => {
+        if(request.readyState==4&&request.status==200){
+            var response=request.responseText;
+            if(response!=""){
+                callback_get_json(response);
+            }
+        }
+    };
+    request.send();
 }
 
 /* Cookie user logged or not */
@@ -456,22 +467,22 @@ function json_send(){
     var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}`;
 
     var request = makeRequest('POST', url);
-        if (!request) {
-            return;
+    if(!request) {
+        console.log('Request not supported');
+        return;
+    }
+
+    // Handle the requests
+    request.onreadystatechange = () => {
+        if(request.readyState==4&&request.status==200){
+            var response=request.responseText;
         }
-
-        // Handle the requests
-        request.onreadystatechange = () => {
-            if(request.readystate == 4 && request.status == 200){
-                return true;
-            } else if(request.status != 200 && request.readystate == 4){
-                return false;
-            }
-        };
-        request.send(formData);
+        else if(request.readyState==4&&request.status!=200){
+            console.log("Error occured!!!");
+        }
+    };
+    request.send(formData);
 }
-
-
 
 // Delete button clicked
 function delete_clicked(){
