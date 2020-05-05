@@ -8,9 +8,10 @@ var zoom_step=0.3;
 var data={};
 //initilize numeric array for main initial box that has constant id A
 data['A']=[];
-data['A'][0]="";
-data['A'][1]="";
-data['A'][2]=-1;
+data['A'][0]="";   ///for name
+data['A'][1]="";    ///for image
+data['A'][2]=-1;    ///for child count
+data['A'][3]=1;    ///available(1 means not deleted)
 // When window is loaded then only
 window.onload = () => {
     if(!isCookieSet()){
@@ -211,95 +212,99 @@ function button_create(name,id){
 
 ///function that add up boxes in desired position
 function position_add(id,init,view_only){  ////view_only 1 for just viewing
+    var ul_check=document.getElementById("ul_"+id);
     if(init==0){
         child=0;
         document.getElementById('btn_'+id+"_"+1).onclick=function(){
             position_add(id,1,0);
         }
-    }
-    else if(init!=0 && view_only!=1){
-        child=data[id][2]+1;                                  ///problem here
-        console.log("child assined parent index");
-    }
-    var box = document.createElement("div");
-        box.id=id+String.fromCharCode(65+child);
-        box.className="box";
-        box.onclick=function(){
-            appear_btn(box.id,1);
+        if(!ul_check){
+            var ul_create=document.createElement('ul');
+            ul_create.id="ul_"+id;
+            document.getElementById("branch_"+id).appendChild(ul_create);
+            console.log("ul created at init 0");
         }
-    //increasing child box count
-    if(!data[box.id]){
-        console.log("data object created");
-        data[box.id]=[];
-        ///name is blank in first
-        data[box.id][0]=""; 
-        ///image location is blank in first                                                   
-        data[box.id][1]="";
-        data[box.id][2]=-1;
-    }                                         
-    var p_tag_to_enclose_btn = document.createElement("p");
-    var button=button_create("Add",box.id);
-        button.className="btn_1";
-        button.id="btn_"+box.id+"_"+1;
-        p_tag_to_enclose_btn.appendChild(button);
-    var button=button_create("View",id+String.fromCharCode(65+child));
-        button.className="btn_2";
-        button.id="btn_"+box.id+"_"+2;
-        p_tag_to_enclose_btn.appendChild(button);
-    var button=button_create("xpnd",id+String.fromCharCode(65+child));
-        button.className="btn_3";
-        button.id="btn_"+box.id+"_"+3;
-        p_tag_to_enclose_btn.appendChild(button);
-    var button=button_create("del",id+String.fromCharCode(65+child));
-        button.className="btn_4";
-        button.id="btn_"+box.id+"_"+4;
-        p_tag_to_enclose_btn.appendChild(button);
-        box.appendChild(p_tag_to_enclose_btn);
-    var image=document.createElement('img');
-        image.alt=box.id;
-        image.id="img_"+box.id;
-        if(data[box.id][1]){
-            image.src="images/"+data[box.id][1]+".png";
-        }
-        box.appendChild(image);
-    var branch = document.createElement("li");
-        branch.id="branch_"+id+String.fromCharCode(65+child);
-        branch.className="branch";
-        branch.appendChild(box);
-    var ul=document.createElement('ul');
-    //var ul_check=document.getElementById("ul_"+id);
-    if((init == 0)){
-        ul.id="ul_"+id;
-        ul.appendChild(branch);
-        document.getElementById("branch_"+id).appendChild(ul);
-        console.log("init is 0");
-    } 
-    else {
-        ul=document.getElementById("ul_"+id);
-        if(!ul){
+    }
+    else if(init!=0 && view_only==0){
+        if(!ul_check){
             expand(id);
-            ul=document.getElementById("ul_"+id);
-            console.log("ul created");
+            console.log("expanded first");
         }
-        ul.appendChild(branch);
-        console.log("init not 0");
+        child=data[id][2]+1;                                  ///problem here
+        console.log("child assigned parent index");
     }
-    if(view_only!=1){
-        data[id][2]++;
-        console.log("not view only");
-        //alert(id+":"+data[id][2]);
+    var parent_child=id+String.fromCharCode(65+child);
+    if(!data[parent_child] || data[parent_child][3]!=0){
+        var box = document.createElement("div");
+            box.id=parent_child;
+            box.className="box";
+            box.onclick=function(){
+                appear_btn(box.id,1);
+            }
+    //increasing child box count
+        if(!view_only){
+            console.log("data object created");
+            data[box.id]=[];
+            ///name is blank in first
+            data[box.id][0]=""; 
+            ///image location is blank in first                                                   
+            data[box.id][1]="";
+            data[box.id][2]=-1;
+            data[box.id][3]=1;
+        }                            
+        var p_tag_to_enclose_btn = document.createElement("p");
+            p_tag_to_enclose_btn.className="box_btns";
+        var button=button_create("Add",box.id);
+            button.className="btn_1";
+            button.id="btn_"+box.id+"_"+1;
+            p_tag_to_enclose_btn.appendChild(button);
+        var button=button_create("View",id+String.fromCharCode(65+child));
+            button.className="btn_2";
+            button.id="btn_"+box.id+"_"+2;
+            p_tag_to_enclose_btn.appendChild(button);
+        var button=button_create("xpnd",id+String.fromCharCode(65+child));
+            button.className="btn_3";
+            button.id="btn_"+box.id+"_"+3;
+            p_tag_to_enclose_btn.appendChild(button);
+        var button=button_create("del",id+String.fromCharCode(65+child));
+            button.className="btn_4";
+            button.id="btn_"+box.id+"_"+4;
+            p_tag_to_enclose_btn.appendChild(button);
+            box.appendChild(p_tag_to_enclose_btn);
+        var image=document.createElement('img');
+            image.alt=box.id;
+            image.id="img_"+box.id;
+            if(data[box.id][1]){
+                    image.src="images/"+data[box.id][1]+".png";
+            }
+            box.appendChild(image);
+        var branch = document.createElement("li");
+            branch.id="branch_"+id+String.fromCharCode(65+child);
+            branch.className="branch";
+            branch.appendChild(box);
+        var ul=document.getElementById("ul_"+id);
+        //var ul_check=document.getElementById("ul_"+id);
+            ul=document.getElementById("ul_"+id);
+            ul.appendChild(branch);
+            console.log("init not 0");
+        if(view_only!=1){
+            data[id][2]++;
+            console.log("child added to parent");
+            //alert(id+":"+data[id][2]);
+        }
+        update_cache();
+        var button=document.getElementById('btn_'+id+'_3');
+        button.innerHTML="mrge";
+        button.onclick=function(){
+            merge(id);
+        }
+        // Many take documentElement
+        document.documentElement.scrollTop=document.getElementById("tree").offsetHeight;
+        // Some browsers take body
+        document.body.scrollTop=document.getElementById("tree").offsetHeight;
+        console.log("position add end reached");
     }
-    update_cache();
     child++;
-    var button=document.getElementById('btn_'+id+'_3');
-    button.innerHTML="mrge";
-    button.onclick=function(){
-        merge(id);
-    }
-    // Many take documentElement
-    document.documentElement.scrollTop=document.getElementById("tree").offsetHeight;
-    // Some browsers take body
-    document.body.scrollTop=document.getElementById("tree").offsetHeight;
 }
 
 ///function to remove box
@@ -315,6 +320,7 @@ function expand(id){
     }
     else{
         var expand_offset=0;
+        var tmp_offset=0;
         for(expand_offset=0;expand_offset<=data[id][2];expand_offset++){
             position_add(id,expand_offset,1);
             //document.getElementById("img_"+id+String.fromCharCode(65+expand_offset)).src="images/"+getCookie("tree_cookie")+"_"+id+String.fromCharCode(65+expand_offset)+".png";
@@ -483,24 +489,25 @@ function delete_clicked(){
 
 ///function to delete box
 function delete_box(id){
-    var tmp_id=id;
-    tmp_id=tmp_id.split("");
-    var rmv=tmp_id.pop();
-        console.log(rmv+"::removed");
-    tmp_id=tmp_id.join("");
-    var parent=tmp_id;
-    rmv=rmv.charCodeAt(0);
-    var buffered_rmv=tmp_id+String.fromCharCode(rmv);
-    rmv++;
-    while((index_rmv=(tmp_id+String.fromCharCode(rmv))) && (a=data[index_rmv])){
-        console.log("from "+index_rmv +" to "+buffered_rmv);
-        data[buffered_rmv]=data[index_rmv];
-        delete data[index_rmv];
-        buffered_rmv=index_rmv;
-        rmv++;
-    }
-    data[parent][2]--;
-    console.log(tmp_id);
-    merge(parent);
-    expand(parent);
+    data[id][3]=0;
+    // var tmp_id=id;
+    // tmp_id=tmp_id.split("");
+    // var rmv=tmp_id.pop();
+    //     console.log(rmv+"::removed");
+    // tmp_id=tmp_id.join("");
+    // var parent=tmp_id;
+    // rmv=rmv.charCodeAt(0);
+    // var buffered_rmv=tmp_id+String.fromCharCode(rmv);
+    // rmv++;
+    // while((index_rmv=(tmp_id+String.fromCharCode(rmv))) && (a=data[index_rmv])){
+    //     console.log("from "+index_rmv +" to "+buffered_rmv);
+    //     data[buffered_rmv]=data[index_rmv];
+    //     delete data[index_rmv];
+    //     buffered_rmv=index_rmv;
+    //     rmv++;
+    // }
+    // data[parent][2]--;
+    // console.log(tmp_id);
+    // merge(parent);
+    // expand(parent);
 }
