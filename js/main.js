@@ -12,6 +12,8 @@ data['A'][0]="";   ///for name
 data['A'][1]="";    ///for image
 data['A'][2]=-1;    ///for child count
 data['A'][3]=1;    ///available(1 means not deleted)
+temp={};              ///for cache storage of boxes
+
 // When window is loaded then only
 window.onload = () => {
     if(!isCookieSet()){
@@ -144,7 +146,15 @@ function view(id){
     }
     view_container.appendChild(edit_btn);
     // Image path of user image
-    var imagePath = "images/"+data[id][1]+".png";
+    if(temp[id]){
+        imagePath=temp[id];
+    }
+    else if(data[id][1]){
+        imagePath="13.68.145.80/images/"+data[id][1]+".png";
+    }
+    else{
+        imagePath="";
+    }
     view_container.style.backgroundImage = `url('${imagePath}')`;
     // div for name of user
     var div_0=document.createElement("div");
@@ -300,8 +310,11 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
             image.id="img_"+box.id;
             image.className="box_image";
             image.alt=box.id;
-            if(data[box.id][1]){
-                image.src="images/"+data[box.id][1]+".png";
+            if(temp[box.id]){
+                image.src=temp[box.id];
+            }
+            else if(data[box.id][1]){
+                image.src="13.68.145.80/images/"+data[box.id][1]+".png";
             }
             box.appendChild(image);
         var branch = document.createElement("li");
@@ -444,7 +457,8 @@ function okEditFormClicked(id){
         var allData = new FormData();
 
         var image=document.getElementById('u_image');
-        document.getElementById('img_'+id).src=window.URL.createObjectURL(image.files[0]);
+        temp[id]=window.URL.createObjectURL(image.files[0]);
+        document.getElementById('img_'+id).src=temp[id];
         allData.append("u_image", image.files[0]);
         var image_id=getCookie("tree_cookie")+"_"+Date.now();
         data[id][1]=image_id;
