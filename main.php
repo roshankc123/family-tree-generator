@@ -19,6 +19,12 @@ header('Access-Control-Allow-Origin: *');
         $user=str_replace(array("'","-"),array("&qot","&das"),$_GET['user']);
       }
 
+      if($_GET['key']){
+        $key=str_replace(array("'","-"),array("&qot","&das"),$_GET['key']);
+      }
+      else{
+        $key="";
+      }
 
       if($_POST['json_file']){
         $json_file_filter=str_replace(array("'","-"),array("&qot","&das"),$_POST['json_file']);
@@ -31,10 +37,12 @@ header('Access-Control-Allow-Origin: *');
 
       if($_GET['get_json']==1 || $_GET['clone']==1){
         if($_GET['get_json']){
-          $qry=mysqli_query($conn,"select u_json from data where def=1 and u_cookie='".$user."' order by sn desc limit 1");
+          $qry=mysqli_query($conn,"select u_json from data 
+                                    where def=1 and u_cookie='".$user."' order by sn desc limit 1");
         }
         else{
-          $qry=mysqli_query($conn,"select u_json from data where u_cookie='".$user."' order by sn desc limit 1");
+          $qry=mysqli_query($conn,"select u_json from data 
+                                    where u_cookie='".$user."' order by sn desc limit 1");
         }
         if(!$qry){echo mysqli_error($conn);}
         $data=mysqli_fetch_all($qry);

@@ -29,7 +29,6 @@ window.onload = () => {
             get_json();
             console.log("data from server");
         }
-        //data['tree_cookie'][0]=tmp_cookie;
 
     }
     position_add("",0,1);
@@ -227,8 +226,6 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
     if(!ul_check){
         var ul_create=document.createElement('ul');
             if(id==""){
-                // ul_create.id="ul_A";
-                // document.getElementById("tree").appendChild(ul_create);
                 var ul_check=document.getElementById("tree");
             }
             else{
@@ -247,19 +244,8 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
         document.getElementById('btn_'+id+"_"+1).onclick=function(){
             position_add(id,1,0);
         }
-        // if(!ul_check){
-        //     var ul_create=document.createElement('ul');
-        //     ul_create.id="ul_"+id;
-        //     document.getElementById("branch_"+id).appendChild(ul_create);
-        //     console.log("ul created at init 0");
-        //     //expand(id);
-        // }
     }
     if(view_only==0 && id!=""){
-        // if(!ul_check){
-        //     expand(id);
-        //     console.log("expanded first");
-        // }
         child=data[id][2]+1;                                 
         console.log("child assigned parent index");
     }
@@ -321,15 +307,11 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
             branch.id="branch_"+parent_child;
             branch.className="branch";
             branch.appendChild(box);
-        //var ul_check=document.getElementById("ul_"+id);
-        //var ul_check=document.getElementById("ul_"+id);
-            //ul=document.getElementById("ul_"+id);
         ul_check.appendChild(branch);
         console.log("init not 0");
         if(view_only!=1 && id!=""){
             data[id][2]++;
             console.log("child added to parent");
-            //alert(id+":"+data[id][2]);
         }
         update_cache();
         if(id!=""){
@@ -356,18 +338,12 @@ function position_remove(id){
 ///function to expand
 function expand(id){
     var ul_branch=document.getElementById("ul_"+id);
-    // if(ul_branch){
-    //     ul_branch.style.visibility="visible";  ///needed for ref#1
-    // }
-    // else{
         var expand_offset=0;
         var tmp_offset=0;
         for(expand_offset=0;expand_offset<=data[id][2];expand_offset++){
             position_add(id,expand_offset,1);
-            //document.getElementById("img_"+id+String.fromCharCode(65+expand_offset)).src="images/"+getCookie("tree_cookie")+"_"+id+String.fromCharCode(65+expand_offset)+".png";
             console.log(expand_offset);
         }
-    // }
     var button=document.getElementById('btn_'+id+'_3');
     button.innerHTML="mrge";
     button.onclick=function(){
@@ -481,7 +457,6 @@ function okEditFormClicked(id){
         request.send(allData);
     }
     else {
-        //alert("You have to choose image in order to save.");
         return false;
     }
 }
@@ -539,18 +514,9 @@ function delete_box(id){
         console.log(rmv+"::removed");
     tmp_id=tmp_id.join("");
     var parent=tmp_id;
-    // rmv=rmv.charCodeAt(0);
-    // var buffered_rmv=tmp_id+String.fromCharCode(rmv);
-    // rmv++;
-    // while((index_rmv=(tmp_id+String.fromCharCode(rmv))) && (a=data[index_rmv])){
-    //     console.log("from "+index_rmv +" to "+buffered_rmv);
-    //     data[buffered_rmv]=data[index_rmv];
-    //     delete data[index_rmv];
-    //     buffered_rmv=index_rmv;
-    //     rmv++;
-    // }
-    // data[parent][2]--;
-    // console.log(tmp_id);
     merge(parent);
     expand(parent);
 }
+
+///when save pressed ask for put key
+//popup when clone pressed which takes input for key..this is for tree sharing feature
