@@ -30,6 +30,7 @@ window.onload = () => {
         //data['tree_cookie'][0]=tmp_cookie;
 
     }
+    position_add("",0,1);
 }
 
 function zoomIn(e){
@@ -213,27 +214,51 @@ function button_create(name,id){
 ///function that add up boxes in desired position
 function position_add(id,init,view_only){  ////view_only 1 for just viewing
     var ul_check=document.getElementById("ul_"+id);
-    if(init==0){
+    if(!ul_check){
+        var ul_create=document.createElement('ul');
+            if(id==""){
+                // ul_create.id="ul_A";
+                // document.getElementById("tree").appendChild(ul_create);
+                var ul_check=document.getElementById("tree");
+            }
+            else{
+                ul_create.id="ul_"+id;
+                document.getElementById("branch_"+id).appendChild(ul_create);
+                var ul_check=document.getElementById("ul_"+id);
+            }
+            console.log("ul created at init 0");
+            if(view_only==0 && id!=""){
+                expand(id);
+                console.log("expanded first");
+            }
+    }
+    if(init==0 && id!=""){
         child=0;
         document.getElementById('btn_'+id+"_"+1).onclick=function(){
             position_add(id,1,0);
         }
-        if(!ul_check){
-            var ul_create=document.createElement('ul');
-            ul_create.id="ul_"+id;
-            document.getElementById("branch_"+id).appendChild(ul_create);
-            console.log("ul created at init 0");
-        }
+        // if(!ul_check){
+        //     var ul_create=document.createElement('ul');
+        //     ul_create.id="ul_"+id;
+        //     document.getElementById("branch_"+id).appendChild(ul_create);
+        //     console.log("ul created at init 0");
+        //     //expand(id);
+        // }
     }
-    else if(init!=0 && view_only==0){
-        if(!ul_check){
-            expand(id);
-            console.log("expanded first");
-        }
-        child=data[id][2]+1;                                  ///problem here
+    if(view_only==0 && id!=""){
+        // if(!ul_check){
+        //     expand(id);
+        //     console.log("expanded first");
+        // }
+        child=data[id][2]+1;                                 
         console.log("child assigned parent index");
     }
-    var parent_child=id+String.fromCharCode(65+child);
+    if(id==""){
+        var parent_child="A";
+    }
+    else{
+        var parent_child=id+String.fromCharCode(65+child);
+    }
     if(!data[parent_child] || data[parent_child][3]!=0){
         var box = document.createElement("div");
             box.id=parent_child;
@@ -257,15 +282,15 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
             button.className="btn_1";
             button.id="btn_"+box.id+"_"+1;
             p_tag_to_enclose_btn.appendChild(button);
-        var button=button_create("View",id+String.fromCharCode(65+child));
+        var button=button_create("View",parent_child);
             button.className="btn_2";
             button.id="btn_"+box.id+"_"+2;
             p_tag_to_enclose_btn.appendChild(button);
-        var button=button_create("xpnd",id+String.fromCharCode(65+child));
+        var button=button_create("xpnd",parent_child);
             button.className="btn_3";
             button.id="btn_"+box.id+"_"+3;
             p_tag_to_enclose_btn.appendChild(button);
-        var button=button_create("del",id+String.fromCharCode(65+child));
+        var button=button_create("del",parent_child);
             button.className="btn_4";
             button.id="btn_"+box.id+"_"+4;
             p_tag_to_enclose_btn.appendChild(button);
@@ -273,29 +298,33 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
         var image=document.createElement('img');
             image.alt=box.id;
             image.id="img_"+box.id;
+            image.className="box_image";
+            image.alt=box.id;
             if(data[box.id][1]){
-                    image.src="images/"+data[box.id][1]+".png";
+                image.src="images/"+data[box.id][1]+".png";
             }
             box.appendChild(image);
         var branch = document.createElement("li");
-            branch.id="branch_"+id+String.fromCharCode(65+child);
+            branch.id="branch_"+parent_child;
             branch.className="branch";
             branch.appendChild(box);
-        var ul=document.getElementById("ul_"+id);
         //var ul_check=document.getElementById("ul_"+id);
-            ul=document.getElementById("ul_"+id);
-            ul.appendChild(branch);
-            console.log("init not 0");
-        if(view_only!=1){
+        //var ul_check=document.getElementById("ul_"+id);
+            //ul=document.getElementById("ul_"+id);
+        ul_check.appendChild(branch);
+        console.log("init not 0");
+        if(view_only!=1 && id!=""){
             data[id][2]++;
             console.log("child added to parent");
             //alert(id+":"+data[id][2]);
         }
         update_cache();
-        var button=document.getElementById('btn_'+id+'_3');
-        button.innerHTML="mrge";
-        button.onclick=function(){
-            merge(id);
+        if(id!=""){
+            var button=document.getElementById('btn_'+id+'_3');
+            button.innerHTML="mrge";
+            button.onclick=function(){
+                merge(id);
+            }
         }
         // Many take documentElement
         document.documentElement.scrollTop=document.getElementById("tree").offsetHeight;
@@ -314,10 +343,10 @@ function position_remove(id){
 ///function to expand
 function expand(id){
     var ul_branch=document.getElementById("ul_"+id);
-    if(ul_branch){
-        ul_branch.style.visibility="visible";  ///needed for ref#1
-    }
-    else{
+    // if(ul_branch){
+    //     ul_branch.style.visibility="visible";  ///needed for ref#1
+    // }
+    // else{
         var expand_offset=0;
         var tmp_offset=0;
         for(expand_offset=0;expand_offset<=data[id][2];expand_offset++){
@@ -325,7 +354,7 @@ function expand(id){
             //document.getElementById("img_"+id+String.fromCharCode(65+expand_offset)).src="images/"+getCookie("tree_cookie")+"_"+id+String.fromCharCode(65+expand_offset)+".png";
             console.log(expand_offset);
         }
-    }
+    // }
     var button=document.getElementById('btn_'+id+'_3');
     button.innerHTML="mrge";
     button.onclick=function(){
@@ -352,11 +381,11 @@ function merge(id){
 function appear_btn(id,action){
     var btn_offset=1;
     todo = action!=0 ? "visible" : "hidden";
-
+    if(document.getElementById('branch_'+id)){
     if(todo=="visible"){
         document.querySelector(`#${id} img`).className += " opacity-to-img";
     } else {
-        document.querySelector(`#${id} img`).className = " ";
+        document.querySelector(`#${id} img`).className = "box_image";
     }
     
     for(btn_offset=1;btn_offset<=4;btn_offset++){
@@ -364,6 +393,7 @@ function appear_btn(id,action){
     }
     document.getElementById(id).onclick=function(){
         appear_btn(id,(action+1)%2);
+    }
     }
 }
 
@@ -489,12 +519,12 @@ function delete_clicked(){
 ///function to delete box
 function delete_box(id){
     data[id][3]=0;
-    // var tmp_id=id;
-    // tmp_id=tmp_id.split("");
-    // var rmv=tmp_id.pop();
-    //     console.log(rmv+"::removed");
-    // tmp_id=tmp_id.join("");
-    // var parent=tmp_id;
+    var tmp_id=id;
+    tmp_id=tmp_id.split("");
+    var rmv=tmp_id.pop();
+        console.log(rmv+"::removed");
+    tmp_id=tmp_id.join("");
+    var parent=tmp_id;
     // rmv=rmv.charCodeAt(0);
     // var buffered_rmv=tmp_id+String.fromCharCode(rmv);
     // rmv++;
@@ -507,6 +537,6 @@ function delete_box(id){
     // }
     // data[parent][2]--;
     // console.log(tmp_id);
-    // merge(parent);
-    // expand(parent);
+    merge(parent);
+    expand(parent);
 }
