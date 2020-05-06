@@ -395,6 +395,9 @@ function popUpOpen(type,id){
     else if(type=="view"){
         view(id);
     }
+    else if(type=="share_option"){
+        share_option();
+    }
 }
 
 ///function for making popup dissappear
@@ -461,6 +464,93 @@ function okEditFormClicked(id){
     }
 }
 
+// Option to share yes or no
+function share_option(){
+    var confirm_container=document.createElement("div");
+    confirm_container.id="confirm_container"
+    var mssg_container=document.createElement("div");
+    mssg_container.className="conf_mssg_container";
+    mssg_container.innerHTML="Do you want to make this a sharable tree?"
+
+    var yes_btn=document.createElement("button");
+    yes_btn.className="yes_btn";
+    yes_btn.innerHTML="Yes";
+    var no_btn=document.createElement("button");
+    no_btn.className="no_btn";
+    no_btn.innerHTML="No";
+
+    yes_btn.onclick=function(){
+        confirm_share();
+    }
+    no_btn.onclick=function(){
+        popUpClose();
+    }
+    var note_container = document.createElement("p");
+    note_container.innerHTML="*Note:- Allowing this will make your tree sharable to people with the key you provided.";
+    
+    confirm_container.appendChild(mssg_container);
+    confirm_container.appendChild(yes_btn);
+    confirm_container.appendChild(no_btn);
+    confirm_container.appendChild(note_container);
+    document.getElementById("popup_container").appendChild(confirm_container);
+}
+
+// Yes on share option
+function confirm_share(){
+    document.getElementById("popup_container").lastChild.remove();
+    var confirm_container=document.createElement("div");
+    confirm_container.id="confirm_container";
+    var mssg_container=document.createElement("div");
+    mssg_container.className="conf_mssg_container";
+    mssg_container.innerHTML="Please enter a secure key to share the content"
+
+    var inpt = document.createElement("input");
+    inpt.type="password";
+    inpt.placeholder="Secure Key here...";
+    inpt.autofocus=true;
+
+    var confirm_btn = document.createElement("button");
+    confirm_btn.id="confirm_share_btn";
+    confirm_btn.innerHTML="Okay";
+
+    confirm_btn.onclick = function(){
+        share_option_clicked(key=inpt.value);        
+    };
+
+    confirm_container.appendChild(mssg_container);
+    confirm_container.appendChild(inpt);
+    confirm_container.appendChild(confirm_btn);
+    document.getElementById("popup_container").appendChild(confirm_container);
+}
+
+// Final share save button is clicked
+function share_option_clicked(key){
+    if(key.length!==0){
+        var formData = new FormData();
+        formData.append('key', key);
+
+        var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}&save_pw=1`;
+
+        var request = makeRequest('POST', url);
+        if(!request) {
+            console.log('Request not supported');
+            return;
+        }
+        // Handle the requests
+        request.onreadystatechange = () => {
+            if(request.readyState==4&&request.status==200){
+                var response=request.responseText;
+            }
+            else if(request.readyState==4&&request.status!=200){
+                console.log("Error occured!!!");
+            }
+        };
+        request.send(formData);
+
+        popUpClose();
+    }
+}
+
 function json_send(){
     var json_file=JSON.stringify(data);
 
@@ -474,7 +564,6 @@ function json_send(){
         console.log('Request not supported');
         return;
     }
-
     // Handle the requests
     request.onreadystatechange = () => {
         if(request.readyState==4&&request.status==200){
@@ -485,6 +574,8 @@ function json_send(){
         }
     };
     request.send(formData);
+
+    popUpOpen(type="share_option");
 }
 
 // Delete button clicked
