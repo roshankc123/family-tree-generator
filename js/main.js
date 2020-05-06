@@ -253,7 +253,6 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
             data[box.id][3]=1;
         }                            
         var p_tag_to_enclose_btn = document.createElement("p");
-            p_tag_to_enclose_btn.className="box_btns";
         var button=button_create("Add",box.id);
             button.className="btn_1";
             button.id="btn_"+box.id+"_"+1;

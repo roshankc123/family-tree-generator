@@ -84,17 +84,6 @@ button {
 #zoom-reset {
     background-color: #FFCC33
 }
-p.box_btns {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-}
-p.box_btns button {
-    background-color: #efefef;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-}
 .box {
     position: relative;
     width: 130px;
@@ -154,24 +143,25 @@ right connector from last child*/
     border-left: 3px solid #0084FF;
     height: 10px;
 }
-#btn_A_1{
+#btn_A_1, #btn_A_2, #btn_A_3, #btn_A_4{
     visibility: hidden;
 }
-#btn_A_2{
-    visibility: hidden;
-}
-#btn_A_3{
-    visibility: hidden;
-}
-#btn_A_4{
-    visibility: hidden;
+.box button {
+    background-color: #efefef;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    z-index: 4;
+    display: inline-block;
+    flex-shrink: 0;
 }
 li div.box p {
     width: 100%;
     height: 100%;
     margin: 0;
     display: flex;
-    justify-content: space-evenly;
+    flex-wrap: wrap;
+    justify-content: space-around;
     align-items: center;
 }
 li div.box img {
