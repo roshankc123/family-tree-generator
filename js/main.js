@@ -150,7 +150,7 @@ function view(id){
         imagePath=temp[id];
     }
     else if(data[id][1]){
-        imagePath="13.68.145.80/images/"+data[id][1]+".png";
+        imagePath="http://13.68.145.80/images/"+data[id][1]+".png";
     }
     else{
         imagePath="";
@@ -314,7 +314,7 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
                 image.src=temp[box.id];
             }
             else if(data[box.id][1]){
-                image.src="13.68.145.80/images/"+data[box.id][1]+".png";
+                image.src="http://13.68.145.80/images/"+data[box.id][1]+".png";
             }
             box.appendChild(image);
         var branch = document.createElement("li");
