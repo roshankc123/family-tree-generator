@@ -34,22 +34,26 @@ window.onload = () => {
     position_add("",0,1);
 }
 
-function zoomIn(e){
-    if(intial_zoom<2.5){
-        intial_zoom+=zoom_step;
-        document.getElementById("tree").style.transform=`scale(${intial_zoom})`;
+///function that make button appears or dissappear when box is clicked
+function appear_btn(id,action){
+    var btn_offset=1;
+    todo = action!=0 ? "visible" : "hidden";
+    if(document.getElementById('branch_'+id)){
+    if(todo=="visible"){
+        document.querySelector(`#${id} img`).className += " opacity-to-img";
+    } else {
+        document.querySelector(`#${id} img`).className = "box_image";
+    }
+    
+    for(btn_offset=1;btn_offset<=4;btn_offset++){
+        document.getElementById("btn_"+id+"_"+btn_offset).style.visibility=todo;
+    }
+    document.getElementById(id).onclick=function(){
+        appear_btn(id,(action+1)%2);
+    }
     }
 }
-function zoomOut(e){
-    if(intial_zoom>0.1){
-        intial_zoom-=zoom_step;
-    }
-    document.getElementById("tree").style.transform=`scale(${intial_zoom})`;
-}
-function zoomReset(e){
-    intial_zoom=1;
-    document.getElementById("tree").style.transform=`scale(${intial_zoom})`;
-}
+
 
 // call back for get_json 
 function callback(response, callback_arg){
@@ -65,6 +69,110 @@ function callback(response, callback_arg){
         // When delete clicked
     }
     
+}
+
+
+// Yes on share option
+function confirm_share(){
+    document.getElementById("popup_container").lastChild.remove();
+    var confirm_container=document.createElement("div");
+    confirm_container.id="confirm_container";
+    var mssg_container=document.createElement("div");
+    mssg_container.className="conf_mssg_container";
+    mssg_container.innerHTML="Please enter a secure key to share the content"
+
+    var inpt = document.createElement("input");
+    inpt.type="password";
+    inpt.placeholder="Secure Key here...";
+    inpt.autofocus=true;
+    inpt.id="key_input";
+    var confirm_btn = document.createElement("button");
+    confirm_btn.id="confirm_share_btn";
+    confirm_btn.innerHTML="Okay";
+
+    confirm_btn.onclick = function(){
+        share_option_clicked(key=inpt.value);        
+    };
+
+    confirm_container.appendChild(mssg_container);
+    confirm_container.appendChild(inpt);
+    confirm_container.appendChild(confirm_btn);
+    document.getElementById("popup_container").appendChild(confirm_container);
+}
+
+/* Cookie user logged or not */
+// Create cookie
+function createCookie(ck_name, expire,ck_for){
+    var date = new Date();
+    var currentTime = date.getTime();
+    if(ck_for!="data"){
+        var ck_value = md5(`${currentTime}${Math.round(Math.random()*1000)}`);
+    }
+    else{
+        var ck_value = JSON.stringify(data);
+    }
+    date.setTime(date.getTime() + (expire*1000));
+    document.cookie = `${ck_name}=${ck_value};expires=${date.toUTCString()};path=/`;
+}
+
+
+//function to push,edit array data
+function data_add(id){
+    data[id][0]=document.getElementById('u_name').value;
+    okEditFormClicked(id);                                                           ///no else condition as no upload gives previous image
+popUpClose();
+}
+
+// Delete button clicked
+function delete_clicked(){
+    createCookie(ck_name="trash_data", expire=24*60*60, ck_for="data");
+    delete_cookie(ck_name="tree_data");
+
+    var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}&delete=1`;
+
+    var request = makeRequest('GET', url);
+    request.onreadystatechange = () => {
+        if(request.readystate == 4 && request.status == 200){
+            callback(response.responseText, callback_arg="reload");
+        } else if(request.readyState==4&&request.status!=200){
+            console.log("Error occured!!!");
+        }
+    };
+    request.send();
+}
+
+///function to delete box
+function delete_box(id){
+    data[id][3]=0;
+    var tmp_id=id;
+    tmp_id=tmp_id.split("");
+    var rmv=tmp_id.pop();
+        console.log(rmv+"::removed");
+    tmp_id=tmp_id.join("");
+    var parent=tmp_id;
+    merge(parent);
+    expand(parent);
+}
+
+// Delete cookie by name
+function delete_cookie(ck_name) {
+    document.cookie = ck_name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/';
+}
+
+// Get cookie value from cookie name
+function getCookie(ck_name){
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var each_cookie_item = decodedCookie.split(';');
+    for(var i = 0; i <each_cookie_item.length; i++) {
+        var val = each_cookie_item[i];
+        while (val.charAt(0) == ' ') {
+            val = val.substring(1);
+        }
+        if (val.indexOf(`${ck_name}=`) == 0) {
+            return val.substring(`${ck_name}=`.length, val.length);
+        }
+    }
+    return null;
 }
 
 // Json send from get_json
@@ -87,81 +195,15 @@ function get_json(){
     request.send();
 }
 
-/* Cookie user logged or not */
-// Create cookie
-function createCookie(ck_name, expire,ck_for){
-    var date = new Date();
-    var currentTime = date.getTime();
-    if(ck_for!="data"){
-        var ck_value = md5(`${currentTime}${Math.round(Math.random()*1000)}`);
-    }
-    else{
-        var ck_value = JSON.stringify(data);
-    }
-    date.setTime(date.getTime() + (expire*1000));
-    document.cookie = `${ck_name}=${ck_value};expires=${date.toUTCString()};path=/`;
-    //return ck_value;
-}
 
-// Delete cookie by name
-function delete_cookie(ck_name) {
-    document.cookie = ck_name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/';
-}
 
-///function to update data in cookie
-function update_cache(){
-    createCookie("tree_data",86400,"data");
-}
-// Get cookie value from cookie name
-function getCookie(ck_name){
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var each_cookie_item = decodedCookie.split(';');
-    for(var i = 0; i <each_cookie_item.length; i++) {
-        var val = each_cookie_item[i];
-        while (val.charAt(0) == ' ') {
-            val = val.substring(1);
-        }
-        if (val.indexOf(`${ck_name}=`) == 0) {
-            return val.substring(`${ck_name}=`.length, val.length);
-        }
-    }
-    return null;
-}
+
 
 // If cookie is set return true, false otherwise
 function isCookieSet(ck_name='tree_cookie'){
     return document.cookie.indexOf(`${ck_name}=`)>=0;
 }
 
-///function that create a view division when popup happens
-function view(id){
-    var view_container=document.createElement("div");
-    view_container.id="view_div";
-    var edit_btn=document.createElement("button");
-    edit_btn.innerHTML="edit";
-    edit_btn.id="edit_btn";
-    edit_btn.onclick=function(){
-        popUpOpen("edit",id);
-    }
-    view_container.appendChild(edit_btn);
-    // Image path of user image
-    if(temp[id]){
-        imagePath=temp[id];
-    }
-    else if(data[id][1]){
-        imagePath="http://13.68.145.80/images/"+data[id][1]+".png";
-    }
-    else{
-        imagePath="";
-    }
-    view_container.style.backgroundImage = `url('${imagePath}')`;
-    // div for name of user
-    var div_0=document.createElement("div");
-    div_0.id="view_name_div";
-    div_0.innerHTML=data[id][0];
-    view_container.appendChild(div_0);
-    document.getElementById('popup_container').appendChild(view_container);
-}
 
 ///function that create a edit division when popup happens
 function edit(id){
@@ -366,51 +408,34 @@ function merge(id){
     }
 }
 
-///function that make button appears or dissappear when box is clicked
-function appear_btn(id,action){
-    var btn_offset=1;
-    todo = action!=0 ? "visible" : "hidden";
-    if(document.getElementById('branch_'+id)){
-    if(todo=="visible"){
-        document.querySelector(`#${id} img`).className += " opacity-to-img";
-    } else {
-        document.querySelector(`#${id} img`).className = "box_image";
+
+
+///function to send data added
+function json_send(){
+    var json_file=JSON.stringify(data);
+
+    var formData = new FormData();
+    formData.append('json_file', json_file);
+
+    var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}`;
+
+    var request = makeRequest('POST', url);
+    if(!request) {
+        console.log('Request not supported');
+        return;
     }
+    // Handle the requests
+    request.onreadystatechange = () => {
+        if(request.readyState==4&&request.status==200){
+            var response=request.responseText;
+        }
+        else if(request.readyState==4&&request.status!=200){
+            console.log("Error occured!!!");
+        }
+    };
+    request.send(formData);
+
     
-    for(btn_offset=1;btn_offset<=4;btn_offset++){
-        document.getElementById("btn_"+id+"_"+btn_offset).style.visibility=todo;
-    }
-    document.getElementById(id).onclick=function(){
-        appear_btn(id,(action+1)%2);
-    }
-    }
-}
-
-///function for making popup appear
-function popUpOpen(type,id){
-    document.getElementById("popup_div").style.display = "flex";
-    if(type=="edit"){
-        edit(id);
-    }
-    else if(type=="view"){
-        view(id);
-    }
-    else if(type=="share_option"){
-        share_option();
-    }
-}
-
-///function for making popup dissappear
-function popUpClose(){
-    document.getElementById('popup_container').lastChild.remove();
-    document.getElementById("popup_div").style.display = "none";
-}
-
-//function to push,edit array data
-function data_add(id){
-        data[id][0]=document.getElementById('u_name').value;
-        okEditFormClicked(id);                                                           ///no else condition as no upload gives previous image
-    popUpClose();
 }
 
 // Create the ajax request object.
@@ -427,6 +452,7 @@ function makeRequest(method, url) {
     }
     return request;
 }
+
 
 // When ok button is clicked in edit
 function okEditFormClicked(id){
@@ -464,6 +490,26 @@ function okEditFormClicked(id){
     }
 }
 
+///function for making popup appear
+function popUpOpen(type,id){
+    document.getElementById("popup_div").style.display = "flex";
+    if(type=="edit"){
+        edit(id);
+    }
+    else if(type=="view"){
+        view(id);
+    }
+    else if(type=="share_option"){
+        share_option();
+    }
+}
+
+///function for making popup dissappear
+function popUpClose(){
+    document.getElementById('popup_container').lastChild.remove();
+    document.getElementById("popup_div").style.display = "none";
+}
+
 // Option to share yes or no
 function share_option(){
     var confirm_container=document.createElement("div");
@@ -483,6 +529,7 @@ function share_option(){
         confirm_share();
     }
     no_btn.onclick=function(){
+        json_send();
         popUpClose();
     }
     var note_container = document.createElement("p");
@@ -492,34 +539,6 @@ function share_option(){
     confirm_container.appendChild(yes_btn);
     confirm_container.appendChild(no_btn);
     confirm_container.appendChild(note_container);
-    document.getElementById("popup_container").appendChild(confirm_container);
-}
-
-// Yes on share option
-function confirm_share(){
-    document.getElementById("popup_container").lastChild.remove();
-    var confirm_container=document.createElement("div");
-    confirm_container.id="confirm_container";
-    var mssg_container=document.createElement("div");
-    mssg_container.className="conf_mssg_container";
-    mssg_container.innerHTML="Please enter a secure key to share the content"
-
-    var inpt = document.createElement("input");
-    inpt.type="password";
-    inpt.placeholder="Secure Key here...";
-    inpt.autofocus=true;
-
-    var confirm_btn = document.createElement("button");
-    confirm_btn.id="confirm_share_btn";
-    confirm_btn.innerHTML="Okay";
-
-    confirm_btn.onclick = function(){
-        share_option_clicked(key=inpt.value);        
-    };
-
-    confirm_container.appendChild(mssg_container);
-    confirm_container.appendChild(inpt);
-    confirm_container.appendChild(confirm_btn);
     document.getElementById("popup_container").appendChild(confirm_container);
 }
 
@@ -549,65 +568,63 @@ function share_option_clicked(key){
 
         popUpClose();
     }
-}
-
-function json_send(){
-    var json_file=JSON.stringify(data);
-
-    var formData = new FormData();
-    formData.append('json_file', json_file);
-
-    var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}`;
-
-    var request = makeRequest('POST', url);
-    if(!request) {
-        console.log('Request not supported');
-        return;
+    else{
+        document.getElementById('key_input').placeholder="please enter key first";
     }
-    // Handle the requests
-    request.onreadystatechange = () => {
-        if(request.readyState==4&&request.status==200){
-            var response=request.responseText;
-        }
-        else if(request.readyState==4&&request.status!=200){
-            console.log("Error occured!!!");
-        }
-    };
-    request.send(formData);
-
-    popUpOpen(type="share_option");
 }
 
-// Delete button clicked
-function delete_clicked(){
-    createCookie(ck_name="trash_data", expire=24*60*60, ck_for="data");
-    delete_cookie(ck_name="tree_data");
-
-    var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}&delete=1`;
-
-    var request = makeRequest('GET', url);
-    request.onreadystatechange = () => {
-        if(request.readystate == 4 && request.status == 200){
-            callback(response.responseText, callback_arg="reload");
-        } else if(request.readyState==4&&request.status!=200){
-            console.log("Error occured!!!");
-        }
-    };
-    request.send();
+///function to update data in cookie
+function update_cache(){
+    createCookie("tree_data",86400,"data");
 }
 
-///function to delete box
-function delete_box(id){
-    data[id][3]=0;
-    var tmp_id=id;
-    tmp_id=tmp_id.split("");
-    var rmv=tmp_id.pop();
-        console.log(rmv+"::removed");
-    tmp_id=tmp_id.join("");
-    var parent=tmp_id;
-    merge(parent);
-    expand(parent);
+
+///function that create a view division when popup happens
+function view(id){
+    var view_container=document.createElement("div");
+    view_container.id="view_div";
+    var edit_btn=document.createElement("button");
+    edit_btn.innerHTML="edit";
+    edit_btn.id="edit_btn";
+    edit_btn.onclick=function(){
+        popUpOpen("edit",id);
+    }
+    view_container.appendChild(edit_btn);
+    // Image path of user image
+    if(temp[id]){
+        imagePath=temp[id];
+    }
+    else if(data[id][1]){
+        imagePath="http://13.68.145.80/images/"+data[id][1]+".png";
+    }
+    else{
+        imagePath="";
+    }
+    view_container.style.backgroundImage = `url('${imagePath}')`;
+    // div for name of user
+    var div_0=document.createElement("div");
+    div_0.id="view_name_div";
+    div_0.innerHTML=data[id][0];
+    view_container.appendChild(div_0);
+    document.getElementById('popup_container').appendChild(view_container);
 }
 
-///when save pressed ask for put key
+
+function zoomIn(e){
+    if(intial_zoom<2.5){
+        intial_zoom+=zoom_step;
+        document.getElementById("tree").style.transform=`scale(${intial_zoom})`;
+    }
+}
+function zoomOut(e){
+    if(intial_zoom>0.1){
+        intial_zoom-=zoom_step;
+    }
+    document.getElementById("tree").style.transform=`scale(${intial_zoom})`;
+}
+function zoomReset(e){
+    intial_zoom=1;
+    document.getElementById("tree").style.transform=`scale(${intial_zoom})`;
+}
+
 //popup when clone pressed which takes input for key..this is for tree sharing feature

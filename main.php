@@ -19,8 +19,9 @@ header('Access-Control-Allow-Origin: *');
         $user=str_replace(array("'","-"),array("&qot","&das"),$_GET['user']);
       }
 
-      if($_GET['key']){
-        $key=str_replace(array("'","-"),array("&qot","&das"),$_GET['key']);
+      if($_GET['save_pw'] && $_POST['key']){
+        $raw_key=hash("md5",$_POST['key']);
+        $key=$raw_key;
       }
       else{
         $key="";
@@ -32,7 +33,8 @@ header('Access-Control-Allow-Origin: *');
                                     '".$user."',
                                     '".$json_file_filter."',
                                     1);");
-        if(!$qry){ echo mysqli_error($conn); }
+        if(!$qry){ echo mysqli_error($conn);die("error"); }
+        else{ echo $key; }
       }
 
       if($_GET['get_json']==1 || $_GET['clone']==1){
