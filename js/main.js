@@ -679,6 +679,7 @@ function delete_clicked(){
     delete_cookie(ck_name="tree_data");
 
     var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}&delete=1`;
+}
 
 function zoomIn(e){
     if(intial_zoom<2.5){
