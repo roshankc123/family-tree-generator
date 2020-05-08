@@ -422,23 +422,6 @@ function merge(id){
 }
 
 
-///function for making popup appear
-function popUpOpen(type,id){
-    document.getElementById("popup_div").style.display = "flex";
-    if(type=="edit"){
-        edit(id);
-    }
-    else if(type=="view"){
-        view(id);
-    }
-    else if(type=="share_option"){
-        share_option();
-    }
-    else if(type=="clone"){
-        ask_key_popup(type);
-    }
-}
-
 ///function to send data added
 function json_send(){
     var json_file=JSON.stringify(data);
@@ -530,6 +513,9 @@ function popUpOpen(type,id){
     }
     else if(type=="share_option"){
         share_option();
+    }
+    else if(type=="clone"){
+        ask_key_popup(type);
     }
 }
 
