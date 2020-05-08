@@ -422,6 +422,22 @@ function merge(id){
 }
 
 
+///function for making popup appear
+function popUpOpen(type,id){
+    document.getElementById("popup_div").style.display = "flex";
+    if(type=="edit"){
+        edit(id);
+    }
+    else if(type=="view"){
+        view(id);
+    }
+    else if(type=="share_option"){
+        share_option();
+    }
+    else if(type=="clone"){
+        ask_key_popup(type);
+    }
+}
 
 ///function to send data added
 function json_send(){
@@ -539,7 +555,7 @@ function share_option(){
     no_btn.innerHTML="No";
 
     yes_btn.onclick=function(){
-        confirm_share();
+        ask_key_popup("save");
     }
     no_btn.onclick=function(){
         json_send();
@@ -555,13 +571,43 @@ function share_option(){
     document.getElementById("popup_container").appendChild(confirm_container);
 }
 
+// Yes on share option
+function ask_key_popup(for_){
+    document.getElementById("popup_container").lastChild.remove();
+    var confirm_container=document.createElement("div");
+    confirm_container.id="confirm_container";
+    var mssg_container=document.createElement("div");
+    mssg_container.className="conf_mssg_container";
+    mssg_container.innerHTML="Please enter a secure key to share the content";
+
+    var inpt = document.createElement("input");
+    inpt.type="password";
+    inpt.placeholder="Secure Key here...";
+    inpt.autofocus=true;
+
+    var confirm_btn = document.createElement("button");
+    confirm_btn.id="confirm_share_btn";
+    confirm_btn.innerHTML="Okay";
+
+    confirm_btn.onclick = function(){
+        share_key_ajax(key=inpt.value, key_of=for_);        
+    };
+
+    confirm_container.appendChild(mssg_container);
+    confirm_container.appendChild(inpt);
+    confirm_container.appendChild(confirm_btn);
+    document.getElementById("popup_container").appendChild(confirm_container);
+}
+
 // Final share save button is clicked
-function share_option_clicked(key){
+// key, input value and key_of = clone or save
+function share_key_ajax(key, key_of){
     if(key.length!==0){
         var formData = new FormData();
         formData.append('key', key);
 
-        var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}&save_pw=1`;
+        var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}&`;
+        url = key_of=="clone" ? url+"clone=1" : url+"save_pw=1";
 
         var request = makeRequest('POST', url);
         if(!request) {
@@ -622,6 +668,17 @@ function view(id){
     document.getElementById('popup_container').appendChild(view_container);
 }
 
+// Clone button clicked
+function clone_clicked(){
+    popUpOpen(type="clone");
+}
+
+// Delete button clicked
+function delete_clicked(){
+    createCookie(ck_name="trash_data", expire=24*60*60, ck_for="data");
+    delete_cookie(ck_name="tree_data");
+
+    var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}&delete=1`;
 
 function zoomIn(e){
     if(intial_zoom<2.5){
