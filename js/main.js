@@ -3,7 +3,7 @@ i=0;
 child=0;
 var intial_zoom=1;
 var zoom_step=0.3;
-
+var child_subid_offset=0;
 ///initilize associative array that is in data['box_id'] format
 var data={};
 //initilize numeric array for main initial box that has constant id A
@@ -281,21 +281,30 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
                 console.log("expanded first");
             }
     }
+
     if(init==0 && id!=""){
         child=0;
+        child_subid_offset=0;
         document.getElementById('btn_'+id+"_"+1).onclick=function(){
             position_add(id,1,0);
         }
     }
-    if(view_only==0 && id!=""){
-        child=data[id][2]+1;                                 
+    if(view_only==1){
+        child_count_tmp=child_subid_offset;
+    }
+    else if(view_only==0 && id!=""){
+        child=(data[id][2])+1;
+        console.log("this::"+data[id][2]);
+        child_count_tmp=data[id][2]+1;                               
         console.log("child assigned parent index");
     }
     if(id==""){
         var parent_child="A";
     }
     else{
-        var parent_child=id+String.fromCharCode(65+child);
+        var first_char_childid=String.fromCharCode(97+return_pre_id(child_count_tmp));
+        console.log("pos_0::"+first_char_childid+"  :"+return_pre_id(child_count_tmp));
+        var parent_child=id+first_char_childid+String.fromCharCode(65+(child%26));
     }
     if(!data[parent_child] || data[parent_child][3]!=0){
         var box = document.createElement("div");
@@ -370,8 +379,13 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
         console.log("position add end reached");
     }
     child++;
+    child_subid_offset++;
 }
 
+function return_pre_id(num){
+    console.log("num::"+num);
+    return ((num/26)-((num/26)%1));
+}
 ///function to remove box
 function position_remove(id){
     document.getElementById("ul_"+id).style.visibility="hidden";
@@ -381,7 +395,6 @@ function position_remove(id){
 function expand(id){
     var ul_branch=document.getElementById("ul_"+id);
         var expand_offset=0;
-        var tmp_offset=0;
         for(expand_offset=0;expand_offset<=data[id][2];expand_offset++){
             position_add(id,expand_offset,1);
             console.log(expand_offset);
