@@ -294,7 +294,6 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
             data[box.id][1]="";
             data[box.id][2]=-1;
             data[box.id][3]=1;
-            update_cache();
         }                            
         var p_tag_to_enclose_btn = document.createElement("p");
         var button=button_create("Add",box.id);
@@ -332,8 +331,11 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
             branch.appendChild(box);
         ul_check.appendChild(branch);
         console.log("init not 0");
-        if(view_only!=1 && id!=""){
-            data[id][2]++;
+        if(view_only!=1){
+            if(id!=""){
+                data[id][2]++;
+            }
+            update_cache();
             console.log("child added to parent");
         }
         if(id!=""){
@@ -671,15 +673,21 @@ function delete_clicked(){
 
 ///function to delete box
 function delete_box(id){
-    data[id][3]=0;
-    var tmp_id=id;
-    tmp_id=tmp_id.split("");
-    var rmv=tmp_id.pop();
-        console.log(rmv+"::removed");
-    tmp_id=tmp_id.join("");
-    var parent=tmp_id;
-    merge(parent);
-    expand(parent);
+    if(id!='A'){
+        data[id][3]=0;
+        var tmp_id=id;
+        tmp_id=tmp_id.split("");
+        var rmv=tmp_id.pop();
+        rmv=tmp_id.pop();
+            console.log(rmv+"::removed");
+        tmp_id=tmp_id.join("");
+        var parent=tmp_id;
+        merge(parent);
+        expand(parent);
+    }
+    else{
+        alert('main parent cant be erased');
+    }
 }
 
 // Show response key to copy
