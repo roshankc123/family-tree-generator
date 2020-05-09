@@ -682,6 +682,7 @@ function delete_box(id){
             console.log(rmv+"::removed");
         tmp_id=tmp_id.join("");
         var parent=tmp_id;
+        update_cache();
         merge(parent);
         expand(parent);
     }
