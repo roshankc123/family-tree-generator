@@ -68,7 +68,7 @@ function callback(response, callback_arg){
         // When delete clicked
     }
     else if(callback_arg=="save"){
-        console.log(response);    ///this is shown to user
+        show_key_to_copy(response);
     }
 }
 
@@ -634,14 +634,6 @@ function clone_clicked(){
     popUpOpen(type="clone");
 }
 
-// Delete button clicked
-function delete_clicked(){
-    createCookie(ck_name="trash_data", expire=24*60*60, ck_for="data");
-    delete_cookie(ck_name="tree_data");
-
-    var url = `http://tree.eastus.cloudapp.azure.com/main.php?user=${getCookie("tree_cookie")}&delete=1`;
-}
-
 function zoomIn(e){
     if(intial_zoom<2.5){
         intial_zoom+=zoom_step;
@@ -668,8 +660,8 @@ function delete_clicked(){
 
     var request = makeRequest('GET', url);
     request.onreadystatechange = () => {
-        if(request.readystate == 4 && request.status == 200){
-            callback(response.responseText, callback_arg="reload");
+        if(request.readyState == 4 && request.status == 200){
+            callback(request.responseText, callback_arg="reload");
         } else if(request.readyState==4&&request.status!=200){
             console.log("Error occured!!!");
         }
@@ -688,6 +680,51 @@ function delete_box(id){
     var parent=tmp_id;
     merge(parent);
     expand(parent);
+}
+
+// Show response key to copy
+function show_key_to_copy(response_key){
+    popUpOpen();
+    var confirm_container=document.createElement("div");
+    confirm_container.id="confirm_container"
+    var mssg_container=document.createElement("div");
+    mssg_container.className="conf_mssg_container";
+    mssg_container.innerHTML="Here is the key for you!!!";
+
+    var main_key_cont=document.createElement("div");
+    main_key_cont.innerHTML=response_key;
+    main_key_cont.style.padding="5px 10px";
+    main_key_cont.style.backgroundColor="#ccc";
+
+    var yes_btn=document.createElement("button");
+    yes_btn.className="yes_btn";
+    yes_btn.innerHTML="Copy";
+    yes_btn.style.marginTop="30px";
+    yes_btn.style.backgroundColor="#00c9FE";
+
+    yes_btn.onclick=function(){
+        // Copy response_text to clipboard
+        if(document.body.createTextRange) {
+            // IE
+            var range = document.body.createTextRange();
+            range.moveToElementText(main_key_cont);
+            range.select();
+            document.execCommand("Copy");
+        }
+        else {
+            // other browsers
+            var selection = window.getSelection();
+            var range = document.createRange();
+            range.selectNodeContents(main_key_cont);
+            selection.removeAllRanges();
+            selection.addRange(range);
+            document.execCommand("Copy");
+        }
+    }    
+    confirm_container.appendChild(mssg_container);
+    confirm_container.appendChild(main_key_cont);
+    confirm_container.appendChild(yes_btn);
+    document.getElementById("popup_container").appendChild(confirm_container);
 }
 
 //popup when clone pressed which takes input for key..this is for tree sharing feature
