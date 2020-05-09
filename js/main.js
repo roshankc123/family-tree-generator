@@ -13,7 +13,7 @@ data['A'][1]="";    ///for image
 data['A'][2]=-1;    ///for child count
 data['A'][3]=1;    ///available(1 means not deleted)
 temp={};              ///for cache storage of boxes
-
+backed_up=0;
 // When window is loaded then only
 window.onload = () => {
     if(!isCookieSet()){
@@ -412,6 +412,7 @@ function json_send(){
     // Handle the requests
     request.onreadystatechange = () => {
         if(request.readyState==4&&request.status==200){
+            backed_up=1;
             var response=request.responseText;
         }
         else if(request.readyState==4&&request.status!=200){
@@ -419,7 +420,6 @@ function json_send(){
         }
     };
     request.send(formData);
-
     
 }
 
@@ -579,6 +579,7 @@ function share_key_ajax(key, key_of){
         // Handle the requests
         request.onreadystatechange = () => {
             if(request.readyState==4&&request.status==200){
+                backed_up=1;
                 var response=request.responseText;
                 callback(response,key_of);
             }
@@ -657,7 +658,6 @@ function zoomReset(e){
 function delete_clicked(){
     createCookie(ck_name="trash_data", expire=24*60*60, ck_for="data");
     delete_cookie(ck_name="tree_data");
-
     var url = `http://tree.eastus.cloudapp.azure.com/main.php?user=${getCookie("tree_cookie")}&delete=1`;
 
     var request = makeRequest('GET', url);
