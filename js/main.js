@@ -57,10 +57,9 @@ function appear_btn(id,action){
 
 // call back for get_json 
 function callback(response, callback_arg){
-    if(callback_arg=="get_json"){
+    if(callback_arg=="get_json" || callback_arg=="clone"){
         data=JSON.parse(response);
         document.getElementById('img_A').src="images/"+data['A'][1]+".png";
-        return response;
     }
     else if(callback_arg=="reload"){
         location.reload();
@@ -68,7 +67,9 @@ function callback(response, callback_arg){
     else if(callback_arg=="delete_clicked"){
         // When delete clicked
     }
-    
+    else if(callback_arg=="save"){
+        console.log(response);    ///this is shown to user
+    }
 }
 
 
@@ -119,39 +120,9 @@ function createCookie(ck_name, expire,ck_for){
 //function to push,edit array data
 function data_add(id){
     data[id][0]=document.getElementById('u_name').value;
-    okEditFormClicked(id);                                                           ///no else condition as no upload gives previous image
+    okEditFormClicked(id);
+    update_cache();                                                   
 popUpClose();
-}
-
-// Delete button clicked
-function delete_clicked(){
-    createCookie(ck_name="trash_data", expire=24*60*60, ck_for="data");
-    delete_cookie(ck_name="tree_data");
-
-    var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}&delete=1`;
-
-    var request = makeRequest('GET', url);
-    request.onreadystatechange = () => {
-        if(request.readystate == 4 && request.status == 200){
-            callback(response.responseText, callback_arg="reload");
-        } else if(request.readyState==4&&request.status!=200){
-            console.log("Error occured!!!");
-        }
-    };
-    request.send();
-}
-
-///function to delete box
-function delete_box(id){
-    data[id][3]=0;
-    var tmp_id=id;
-    tmp_id=tmp_id.split("");
-    var rmv=tmp_id.pop();
-        console.log(rmv+"::removed");
-    tmp_id=tmp_id.join("");
-    var parent=tmp_id;
-    merge(parent);
-    expand(parent);
 }
 
 // Delete cookie by name
@@ -177,7 +148,7 @@ function getCookie(ck_name){
 
 // Json send from get_json
 function get_json(){
-    var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}&get_json=1`;
+    var url = `http://127.0.0.1:8081/main.php?user=${getCookie("tree_cookie")}&get_json=1`;
 
     var request = makeRequest('GET', url);
     if(!request) {
@@ -314,7 +285,7 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
                 appear_btn(box.id,1);
             }
     //increasing child box count
-        if(!view_only){
+        if(!view_only && !data[box.id]){
             console.log("data object created");
             data[box.id]=[];
             ///name is blank in first
@@ -323,6 +294,7 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
             data[box.id][1]="";
             data[box.id][2]=-1;
             data[box.id][3]=1;
+            update_cache();
         }                            
         var p_tag_to_enclose_btn = document.createElement("p");
         var button=button_create("Add",box.id);
@@ -351,7 +323,7 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
                 image.src=temp[box.id];
             }
             else if(data[box.id][1]){
-                image.src="http://13.68.145.80/images/"+data[box.id][1]+".png";
+                image.src="http://127.0.0.1:8081/images/"+data[box.id][1]+".png";
             }
             box.appendChild(image);
         var branch = document.createElement("li");
@@ -364,7 +336,6 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
             data[id][2]++;
             console.log("child added to parent");
         }
-        update_cache();
         if(id!=""){
             var button=document.getElementById('btn_'+id+'_3');
             button.innerHTML="mrge";
@@ -429,7 +400,7 @@ function json_send(){
     var formData = new FormData();
     formData.append('json_file', json_file);
 
-    var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}`;
+    var url = `http://127.0.0.1:8081/main.php?user=${getCookie("tree_cookie")}`;
 
     var request = makeRequest('POST', url);
     if(!request) {
@@ -480,7 +451,7 @@ function okEditFormClicked(id){
         var image_id=getCookie("tree_cookie")+"_"+Date.now();
         data[id][1]=image_id;
         // Server to send data
-        var url = `http://13.68.145.80/main.php?div_id=${image_id}`;
+        var url = `http://127.0.0.1:8081/main.php?div_id=${image_id}`;
 
         var request = makeRequest('POST', url);
         if (!request) {
@@ -569,6 +540,7 @@ function ask_key_popup(for_){
     var inpt = document.createElement("input");
     inpt.type="password";
     inpt.placeholder="Secure Key here...";
+    inpt.id="key_input";
     inpt.autofocus=true;
 
     var confirm_btn = document.createElement("button");
@@ -591,8 +563,10 @@ function share_key_ajax(key, key_of){
     if(key.length!==0){
         var formData = new FormData();
         formData.append('key', key);
-
-        var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}&`;
+        if(key_of=="save"){
+            formData.append('json_file', JSON.stringify(data));
+        }
+        var url = `http://127.0.0.1:8081/main.php?user=${getCookie("tree_cookie")}&`;
         url = key_of=="clone" ? url+"clone=1" : url+"save_pw=1";
 
         var request = makeRequest('POST', url);
@@ -604,6 +578,7 @@ function share_key_ajax(key, key_of){
         request.onreadystatechange = () => {
             if(request.readyState==4&&request.status==200){
                 var response=request.responseText;
+                callback(response,key_of);
             }
             else if(request.readyState==4&&request.status!=200){
                 console.log("Error occured!!!");
@@ -640,7 +615,7 @@ function view(id){
         imagePath=temp[id];
     }
     else if(data[id][1]){
-        imagePath="http://13.68.145.80/images/"+data[id][1]+".png";
+        imagePath="http://127.0.0.1:8081/images/"+data[id][1]+".png";
     }
     else{
         imagePath="";
@@ -664,7 +639,7 @@ function delete_clicked(){
     createCookie(ck_name="trash_data", expire=24*60*60, ck_for="data");
     delete_cookie(ck_name="tree_data");
 
-    var url = `http://13.68.145.80/main.php?user=${getCookie("tree_cookie")}&delete=1`;
+    var url = `http://127.0.0.1:8081/main.php?user=${getCookie("tree_cookie")}&delete=1`;
 }
 
 function zoomIn(e){
@@ -682,6 +657,37 @@ function zoomOut(e){
 function zoomReset(e){
     intial_zoom=1;
     document.getElementById("tree").style.transform=`scale(${intial_zoom})`;
+}
+
+// Delete button clicked
+function delete_clicked(){
+    createCookie(ck_name="trash_data", expire=24*60*60, ck_for="data");
+    delete_cookie(ck_name="tree_data");
+
+    var url = `http://127.0.0.1:8081/main.php?user=${getCookie("tree_cookie")}&delete=1`;
+
+    var request = makeRequest('GET', url);
+    request.onreadystatechange = () => {
+        if(request.readystate == 4 && request.status == 200){
+            callback(response.responseText, callback_arg="reload");
+        } else if(request.readyState==4&&request.status!=200){
+            console.log("Error occured!!!");
+        }
+    };
+    request.send();
+}
+
+///function to delete box
+function delete_box(id){
+    data[id][3]=0;
+    var tmp_id=id;
+    tmp_id=tmp_id.split("");
+    var rmv=tmp_id.pop();
+        console.log(rmv+"::removed");
+    tmp_id=tmp_id.join("");
+    var parent=tmp_id;
+    merge(parent);
+    expand(parent);
 }
 
 //popup when clone pressed which takes input for key..this is for tree sharing feature

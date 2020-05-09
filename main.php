@@ -20,19 +20,24 @@ header('Access-Control-Allow-Origin: *');
       }
 
       if($_GET['save_pw'] && $_POST['key']){
-        $raw_key=hash("md5",$_POST['key']);
-        $key=$raw_key;
+        $key=hash("md5",$_POST['key'].time());
       }
       else{
         $key="";
       }
-
+      if($_GET['clone'] && $_POST['key']){
+        $clone_key=str_replace(array("'","-"),"",$_POST['key']);
+      }
+      else{
+        $clone_key="";
+      }
       if($_POST['json_file']){
         $json_file_filter=str_replace(array("'","-"),array("&qot","&das"),$_POST['json_file']);
         $qry=mysqli_query($conn,"insert into data values('0',
                                     '".$user."',
                                     '".$json_file_filter."',
-                                    1);");
+                                    1,
+                                    '".$key."');");
         if(!$qry){ echo mysqli_error($conn);die("error"); }
         else{ echo $key; }
       }
@@ -44,7 +49,7 @@ header('Access-Control-Allow-Origin: *');
         }
         else{
           $qry=mysqli_query($conn,"select u_json from data 
-                                    where u_cookie='".$user."' order by sn desc limit 1");
+                                    where u_key='".$clone_key."' order by sn desc limit 1");
         }
         if(!$qry){echo mysqli_error($conn);}
         $data=mysqli_fetch_all($qry);
@@ -56,6 +61,7 @@ header('Access-Control-Allow-Origin: *');
       if($_GET['delete']==1){
         $qry=mysqli_query($conn,"update data set def=0 where u_cookie='".$user."';");
         if(!$qry){echo mysqli_error($conn);}
+        else{ echo $user." deleted"; }
       }
 
 
