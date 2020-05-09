@@ -687,7 +687,34 @@ function delete_box(id){
         expand(parent);
     }
     else{
-        alert('main parent cant be erased');
+        popUpOpen();
+        var confirm_container=document.createElement("div");
+        confirm_container.id="confirm_container"
+        var mssg_container=document.createElement("div");
+        mssg_container.className="conf_mssg_container";
+        mssg_container.innerHTML="Are you sure you want to delete?"
+
+        var yes_btn=document.createElement("button");
+        yes_btn.className="no_btn";
+        yes_btn.innerHTML="Yes";
+        var no_btn=document.createElement("button");
+        no_btn.className="yes_btn";
+        no_btn.innerHTML="No";
+
+        yes_btn.onclick=function(){
+            alert("Delete main root!!!!!!");
+        }
+        no_btn.onclick=function(){
+            popUpClose();
+        }
+        var note_container = document.createElement("p");
+        note_container.innerHTML="*Note:- Allowing this will delete all data from the server permanently.";
+        
+        confirm_container.appendChild(mssg_container);
+        confirm_container.appendChild(no_btn);
+        confirm_container.appendChild(yes_btn);
+        confirm_container.appendChild(note_container);
+        document.getElementById("popup_container").appendChild(confirm_container);
     }
 }
 
