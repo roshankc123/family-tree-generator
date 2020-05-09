@@ -702,7 +702,7 @@ function delete_box(id){
         no_btn.innerHTML="No";
 
         yes_btn.onclick=function(){
-            alert("Delete main root!!!!!!");
+            delete_clicked();
         }
         no_btn.onclick=function(){
             popUpClose();
