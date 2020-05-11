@@ -526,7 +526,6 @@ function ask_key_popup(for_){
 function share_key_ajax(key, key_of){
     if(key.length!==0){
         ajax_call(key_of, key);
-
         popUpClose();
     }
     else{

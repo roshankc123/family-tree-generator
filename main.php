@@ -78,7 +78,8 @@
                                             '".$this->user."',
                                             '".$json_file_filter."',
                                             1,
-                                            '".$key."');");
+                                            '".$key."',
+                                            '".$tree_name."');");
                 if(!$qry){ echo mysqli_error($this->sql);die("error"); }
                 else{ return $key; }
             }
