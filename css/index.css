@@ -67,9 +67,9 @@ button {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    width: 30px;
-    height: 35px;
-    border: 1px solid #000;
+    width: 20px;
+    height: 25px;
+    border: 1px solid #555;
     font-size: 5px;
     border-radius: 5px;
     padding: 3px;
@@ -121,6 +121,19 @@ button {
 }
 .main-push:nth-child(3){
     background-color: #FFCC33;
+}
+#n-status {
+    display: none;
+    color: #fff;
+    position: absolute;
+    margin-top: -10px;
+    margin-left: 12px;
+    border-radius: 50%;
+    background-color: #ff726f;
+    text-align: center;
+    line-height: 20px;
+    width: 20px;
+    height: 20px;
 }
 .zoom-btns {
     position: fixed;
