@@ -4,7 +4,7 @@
         public $user;
         function main_tree($raw_user){
             if($raw_user){
-                $this->user= $this->sql_filter($raw_user,1);
+                $this->user=$this->sql_filter($raw_user,1);
               }
         }
 
@@ -27,10 +27,9 @@
                 $qry=mysqli_query($this->sql,"select u_json from data 
                                           where u_key='".$key."' order by sn desc limit 1");
               }
-              echo $key;
               if(!$qry){echo mysqli_error($this->sql);}
               $data=mysqli_fetch_all($qry);
-              return($this->sql_filter($data[0][0],0));
+              return $this->sql_filter($data[0][0],0);
         }
 
         function sql_filter($value,$for_sql){
@@ -48,7 +47,7 @@
         function delete_data(){
                 $qry=mysqli_query($this->sql,"update data set def=0 where u_cookie='".$this->user."';");
                 if(!$qry){echo mysqli_error($this->sql);}
-                else{ echo $this->user." deleted"; }
+                else{ return $this->user." deleted"; }
         }
 
         function image_add($box_id){ 
@@ -81,13 +80,13 @@
                                             1,
                                             '".$key."');");
                 if(!$qry){ echo mysqli_error($this->sql);die("error"); }
-                else{ echo $key; }
-              }
+                else{ return $key; }
+            }
         }
 
     }
-?>
 
+?>
 <?php
     $tree=new main_tree($_POST['user']);
     if($_POST['action']=="save_image"){
@@ -99,7 +98,10 @@
                 case 'delete':
                     echo $tree->delete_data();
                 break;
-                case 'get_json' || 'clone':
+                case 'get_json':
+                    echo $tree->clone_data();
+                break;
+                case 'clone':
                     echo $tree->clone_data();
                 break;
                 case 'save_json':
@@ -110,4 +112,5 @@
             }
         }
     }
+
 ?>

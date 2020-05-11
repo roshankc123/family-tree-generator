@@ -65,6 +65,7 @@ function callback(response, callback_arg){
         location.reload();  
     }
     else if(callback_arg=="save"){
+        popUpClose();
         show_key_to_copy(response);
     }
     else if(callback_arg=="json_send"){
@@ -712,7 +713,7 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
             formData.append('key',args);
             formData.append("action",'clone');
             break;
-        case 'save_pw':
+        case 'save':
             formData.append('tree_name',args);
             formData.append('json_file', JSON.stringify(data));
             formData.append("action",'save_json');
@@ -731,26 +732,30 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
     // Handle the requests
     request.onreadystatechange = () => {
         if(request.readyState==4&&request.status==200){
-            var response=request.responseText;
+            var resp=request.responseText;
             switch (ajax_for) {
                 case 'get_json':
-                    if(response!=""){
-                        callback(response,"get_json");
+                    if(resp!=""){
+                        callback(resp,"get_json");
                     }
                     break;
                 case 'json_send':
                     backed_up=1;
-                    callback(response,"json_send");
+                    callback(resp,"json_send");
                     break;
                 case 'okEditFormClicked':
-                    callback({'response':response,'box_id':args},"image_uploaded");
+                    callback({'response':resp,'box_id':args},"image_uploaded");
                     break;
-                case 'clone' || 'save_pw':
+                case 'clone' :
                     backed_up=1;
-                    callback(response,ajax_for);
+                    callback(resp,ajax_for);
+                    break;
+                case 'save':
+                    backed_up=1;
+                    callback(resp,ajax_for);
                     break;
                 case 'delete':
-                    callback(response, "reload");
+                    callback(resp, "reload");
                     break;
                 default:
                     break;
