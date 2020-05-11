@@ -26,7 +26,7 @@ window.onload = () => {
         }
         else{
         // get_json return the data that is from server, if server sent json data then now we can JSON.parse(get_json())
-            ajax_call("get_json","")
+            ajax_call("get_json","");
             console.log("data from server");
         }
 
@@ -58,8 +58,14 @@ function appear_btn(id,action){
 // call back for get_json 
 function callback(response, callback_arg){
     if(callback_arg=="get_json" || callback_arg=="clone"){
-        data=JSON.parse(response);
-        document.getElementById('img_A').src="images/"+data['A'][1]+".png";
+        if(response){
+            data=JSON.parse(response);
+            document.getElementById('img_A').src="images/"+data['A'][1]+".png";
+        }
+        else{
+            alert("no data from server");
+        }
+        update_cache();
     }
     else if(callback_arg=="reload"){
         location.reload();  
@@ -73,8 +79,8 @@ function callback(response, callback_arg){
     }
     else if(callback_arg=="image_uploaded"){
         data[response.box_id][1]=response.response;
+        update_cache();
     }
-    update_cache();
 }
 
 // Menu button clicked

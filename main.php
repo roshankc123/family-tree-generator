@@ -79,10 +79,19 @@
                                             '".$json_file_filter."',
                                             1,
                                             '".$key."',
-                                            '".$tree_name."');");
+                                            '".$tree_name."',
+                                            '".Date('20y-m-d H-i-s')."');");
                 if(!$qry){ echo mysqli_error($this->sql);die("error"); }
                 else{ return $key; }
             }
+        }
+
+        function get_note(){
+            $qry=mysqli_query($this->sql,"select tree_name,u_key,added_time from data 
+                                          where u_cookie='".$this->user."' order by added_time desc limit 10");
+              if(!$qry){echo mysqli_error($this->sql);}
+              $data=mysqli_fetch_all($qry);
+              return $this->sql_filter(json_encode($data),0);
         }
 
     }
@@ -107,6 +116,9 @@
                 break;
                 case 'save_json':
                     echo $tree->save_data();
+                break;
+                case 'get_note':
+                    echo $tree->get_note();
                 break;
                 default:
                 break;
