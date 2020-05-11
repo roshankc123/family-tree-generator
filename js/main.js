@@ -104,7 +104,7 @@ function menu_clicked(e){
 
 function notice_clicked(e){
     if(!e.classList.contains('is_open')){
-        document.getElementById("notif-contents").style.width="175px";
+        document.getElementById("notif-contents").style.width="300px";
         e.className="is_open";
         e.style.fontSize="36px";
         e.style.fontWeight="1000";
@@ -114,7 +114,7 @@ function notice_clicked(e){
         document.getElementById("notif-contents").style.width="0";
         e.className="";
         e.style="";
-        e.innerHTML="Notes--------------------------------------------------------";
+        e.innerHTML="-----------------------------------------------------";
         document.querySelector(".nf-tp-out").style="";
     }
 }
