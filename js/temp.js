@@ -59,11 +59,7 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
                     backed_up=1;
                     callback(response,"json_send");
                     break;
-<<<<<<< HEAD
                 case 'okEditFormClicked':
-=======
-                case 'okeditformclicked':
->>>>>>> refs/remotes/origin/master
                     callback(response,"image_uploaded");
                     break;
                 case 'clone' || 'save_pw':
