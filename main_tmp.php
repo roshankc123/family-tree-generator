@@ -4,10 +4,6 @@
         public $user;
         function main_tree($raw_user){
             if($raw_user){
-                if($this->sql()!=1){
-                   die("error connecting with data base"); 
-                }
-                echo "helo";
                 $this->user= $this->sql_filter($raw_user,1);
               }
         }
@@ -21,8 +17,8 @@
             }
         }
 
-        function clone_data($raw_key){
-            $key=$this->sql_filter($raw_key,1);
+        function clone_data(){
+            $key=$this->sql_filter($_POST['key'],1);
             if($key=="" || !$key){
                 $qry=mysqli_query($this->sql,"select u_json from data 
                                           where def=1 and u_cookie='".$this->user."' order by sn desc limit 1");
@@ -54,39 +50,63 @@
                 else{ echo $this->user." deleted"; }
         }
 
-        function save_data($raw_tree_name){
-
-        }
-
-    }
-    class image_upload extends main_tree{
-        public $sub_name;
-        public $file;
-        function image_upload($raw_user,$raw_sub_name,$file){  ///$file=$_FILES['u_name']
-            $this->user=$this->sql_filter($raw_user,1);
-            $this->sub_name=$this->sql_filter($raw_sub_name,1);
-            $this->file=$file;
-            $this->image_add();
-        }
-
-        function image_add(){ 
-            if(isset($this->file['tmp_name'])){
-                $image="images/".$this->user."_".$this->sub_name.".png";
-                $fp=fopen($this->file['tmp_name'],'r');
+        function image_add($box_id){ 
+            $image_name=$this->user."_".time()."_".$this->sql_filter($box_id,1);
+            if(isset($_FILES['u_image']['tmp_name'])){
+                $image="images/".$image_name.".png";
+                $fp=fopen($_FILES['u_image']['tmp_name'],'r');
                 $fp_w=fopen($image,'w');
-                $x=fread($fp,$this->file['size']);
-                fwrite($fp_w,$x);
+                $x=fread($fp,$_FILES['u_image']['size']);
+                $action=fwrite($fp_w,$x);
                 fclose($fp_w);
                 fclose($fp);
+                if($action==FALSE){
+                    return "file saving error";
+                }
+                else{
+                    return $image_name;
+                }
             }
+        }
+
+        function save_data(){
+            if($_POST['json_file']){
+                $tree_name=$this->sql_filter($_POST['tree_name']);
+                $key=hash("md5",$_POST['tree_name'].$user.time());
+                $json_file_filter=str_replace(array("'","-"),array("&qot","&das"),$_POST['json_file']);
+                $qry=mysqli_query($conn,"insert into data values('0',
+                                            '".$user."',
+                                            '".$json_file_filter."',
+                                            1,
+                                            '".$key."');");
+                if(!$qry){ echo mysqli_error($conn);die("error"); }
+                else{ echo $key; }
+              }
         }
 
     }
 ?>
 
 <?php
-    $a=new image_upload("hel",1,"ppp");
-    $b="image_add";
-    //print_r($a->clone_data("794264b09e47ec110e938926eac69376"));
-    //echo $a->$b("");
+    $tree=new main_tree($_POST['user']);
+    if($_POST['action']=="save_image"){
+        echo $tree->image_add($_POST['box_id']);
+    }
+    else{
+        if($tree->sql()){
+            switch ($_POST['action']){
+                case 'delete':
+                    echo $tree->delete_data();
+                break;
+                case 'get_json' || 'clone':
+                    echo $tree->clone_data();
+                break;
+                case 'save_json':
+                    echo $tree->save_data();
+                break;
+                default:
+                break;
+            }
+        }
+    }
 ?>

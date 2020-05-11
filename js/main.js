@@ -70,6 +70,9 @@ function callback(response, callback_arg){
     else if(callback_arg=="save"){
         show_key_to_copy(response);
     }
+    else if(callback_arg=="json_send"){
+
+    }
 }
 
 // Menu button clicked
@@ -164,7 +167,7 @@ function getCookie(ck_name){
     return null;
 }
 
-// Json send from get_json
+// Json send from get_json   ///ok ajax_call("get_json","")
 function get_json(){
     var url = `http://127.0.0.1:8081/main.php?user=${getCookie("tree_cookie")}&get_json=1`;
 
@@ -413,7 +416,7 @@ function merge(id){
 }
 
 
-///function to send data added
+///function to send data added  //ok //ajax_call("json_send","")
 function json_send(){
     var json_file=JSON.stringify(data);
 

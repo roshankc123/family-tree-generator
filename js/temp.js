@@ -6,10 +6,11 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
     formData.append('user', user);
     switch (ajax_for) {
         case 'get_json':
-            
+            formData.append("action","get_json");
             break;
         case 'json_send':
             formData.append('json_file', JSON.stringify(data));
+            formData.append("action",'save_json');
             break;
         case 'okeditformclicked':
             var id=args;
@@ -20,17 +21,20 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
                 document.getElementById('img_'+id).src=temp[id];
                 formData.append("u_image", image.files[0]);
                 formData.append("box_id",id);
-                formData.append("time",Date.now());
+                formData.append("action","save_image");
             }
             break;
         case 'clone':
             formData.append('key',args);
+            formData.append("action",'clone');
             break;
         case 'save_pw':
-            formData.append('key',args);
+            formData.append('tree_name',args);
             formData.append('json_file', JSON.stringify(data));
+            formData.append("action",'save_json');
             break;
         case 'delete':
+            formData.append("action",'delete');
             break;
         default:
             break;
