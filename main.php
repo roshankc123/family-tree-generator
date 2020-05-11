@@ -18,13 +18,8 @@ header('Access-Control-Allow-Origin: *');
         if(!$conn){ die(mysqli_connect_error());}
         $user=str_replace(array("'","-"),array("&qot","&das"),$_GET['user']);
       }
-
-      if($_GET['save_pw'] && $_POST['key']){
-        $key=hash("md5",$_POST['key'].time());
-      }
-      else{
-        $key="";
-      }
+      
+    
       if($_GET['clone'] && $_POST['key']){
         $clone_key=str_replace(array("'","-"),"",$_POST['key']);
       }
@@ -32,6 +27,7 @@ header('Access-Control-Allow-Origin: *');
         $clone_key="";
       }
       if($_POST['json_file']){
+        $key=hash("md5",$_POST['key'].$user.time());
         $json_file_filter=str_replace(array("'","-"),array("&qot","&das"),$_POST['json_file']);
         $qry=mysqli_query($conn,"insert into data values('0',
                                     '".$user."',
@@ -64,5 +60,6 @@ header('Access-Control-Allow-Origin: *');
         else{ echo $user." deleted"; }
       }
 
-
+  ///tree name and created time ,,tree name is it's main parent name
 ?>
+

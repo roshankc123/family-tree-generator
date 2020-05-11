@@ -148,7 +148,7 @@ function getCookie(ck_name){
 
 // Json send from get_json
 function get_json(){
-    var url = `http://tree.eastus.cloudapp.azure.com/main.php?user=${getCookie("tree_cookie")}&get_json=1`;
+    var url = `http://127.0.0.1:8081/main.php?user=${getCookie("tree_cookie")}&get_json=1`;
 
     var request = makeRequest('GET', url);
     if(!request) {
@@ -322,7 +322,7 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
                 image.src=temp[box.id];
             }
             else if(data[box.id][1]){
-                image.src="http://tree.eastus.cloudapp.azure.com/images/"+data[box.id][1]+".png";
+                image.src="http://127.0.0.1:8081/images/"+data[box.id][1]+".png";
             }
             box.appendChild(image);
         var branch = document.createElement("li");
@@ -402,7 +402,7 @@ function json_send(){
     var formData = new FormData();
     formData.append('json_file', json_file);
 
-    var url = `http://tree.eastus.cloudapp.azure.com/main.php?user=${getCookie("tree_cookie")}`;
+    var url = `http://127.0.0.1:8081/main.php?user=${getCookie("tree_cookie")}`;
 
     var request = makeRequest('POST', url);
     if(!request) {
@@ -453,7 +453,7 @@ function okEditFormClicked(id){
         var image_id=getCookie("tree_cookie")+"_"+Date.now();
         data[id][1]=image_id;
         // Server to send data
-        var url = `http://tree.eastus.cloudapp.azure.com/main.php?div_id=${image_id}`;
+        var url = `http://127.0.0.1:8081/main.php?div_id=${image_id}`;
 
         var request = makeRequest('POST', url);
         if (!request) {
@@ -568,7 +568,7 @@ function share_key_ajax(key, key_of){
         if(key_of=="save"){
             formData.append('json_file', JSON.stringify(data));
         }
-        var url = `http://tree.eastus.cloudapp.azure.com/main.php?user=${getCookie("tree_cookie")}&`;
+        var url = `http://127.0.0.1:8081/main.php?user=${getCookie("tree_cookie")}&`;
         url = key_of=="clone" ? url+"clone=1" : url+"save_pw=1";
 
         var request = makeRequest('POST', url);
@@ -618,7 +618,7 @@ function view(id){
         imagePath=temp[id];
     }
     else if(data[id][1]){
-        imagePath="http://tree.eastus.cloudapp.azure.com/images/"+data[id][1]+".png";
+        imagePath="http://127.0.0.1:8081/images/"+data[id][1]+".png";
     }
     else{
         imagePath="";
@@ -658,7 +658,7 @@ function zoomReset(e){
 function delete_clicked(){
     createCookie(ck_name="trash_data", expire=24*60*60, ck_for="data");
     delete_cookie(ck_name="tree_data");
-    var url = `http://tree.eastus.cloudapp.azure.com/main.php?user=${getCookie("tree_cookie")}&delete=1`;
+    var url = `http://127.0.0.1:8081/main.php?user=${getCookie("tree_cookie")}&delete=1`;
 
     var request = makeRequest('GET', url);
     request.onreadystatechange = () => {
