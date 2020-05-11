@@ -95,6 +95,23 @@ function menu_clicked(e){
     }
 }
 
+function notice_clicked(e){
+    if(!e.classList.contains('is_open')){
+        document.getElementById("notif-contents").style.width="175px";
+        e.className="is_open";
+        e.style.fontSize="36px";
+        e.style.fontWeight="1000";
+        e.innerHTML="&times;";
+        document.querySelector(".nf-tp-out").style.boxShadow="-6px 0px 8px -4px #ddd";
+    } else {
+        document.getElementById("notif-contents").style.width="0";
+        e.className="";
+        e.style="";
+        e.innerHTML="Notes--------------------------------------------------------";
+        document.querySelector(".nf-tp-out").style="";
+    }
+}
+
 // Yes on share option
 function confirm_share(){
     document.getElementById("popup_container").lastChild.remove();

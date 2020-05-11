@@ -18,12 +18,21 @@
                 <span></span>
             </div>
         </div>
-        <div id="menu-contents">
-            <button onclick="popUpOpen(type='share_option')" class="main-push" title="Upload all new changes">Save</button>
-            <button onclick="delete_clicked()" class="main-push" title="Delete">Delete</button>
-            <button class="main-push" onclick="clone_clicked()">clone</button>
+        <div class="nf-tp-out">
+            <div id="notif-btn" onclick="notice_clicked(this)">
+                Notes--------------------------------------------------------
+            </div>
         </div>
     </div>
+    <div id="menu-contents">
+        <button onclick="popUpOpen(type='share_option')" class="main-push" title="Upload all new changes">Save</button>
+        <button onclick="delete_clicked()" class="main-push" title="Delete">Delete</button>
+        <button class="main-push" onclick="clone_clicked()">clone</button>
+    </div>
+    <div id="notif-contents">
+        djklfsjl
+    </div>
+    
     <div class="zoom-btns">
         <button id="zoom-in" onclick="zoomIn(this)" title="Zoom-In">
             <span class="minus"></span>
