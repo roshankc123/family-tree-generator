@@ -12,7 +12,7 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
             formData.append('json_file', JSON.stringify(data));
             formData.append("action",'save_json');
             break;
-        case 'okeditformclicked':
+        case 'okEditFormClicked':
             var id=args;
             var file_is_present = document.getElementById('u_image').value.trim();
             if(file_is_present){
@@ -51,14 +51,15 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
             switch (ajax_for) {
                 case 'get_json':
                     if(response!=""){
-                        callback(response,"get_json");
+                        console.log(response);
+                        //callback(response,"get_json");
                     }
                     break;
                 case 'json_send':
                     backed_up=1;
                     callback(response,"json_send");
                     break;
-                case 'editform clicked':
+                case 'okEditFormClicked':
                     callback(response,"image_uploaded");
                     break;
                 case 'clone' || 'save_pw':

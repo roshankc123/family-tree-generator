@@ -26,7 +26,7 @@ window.onload = () => {
         }
         else{
         // get_json return the data that is from server, if server sent json data then now we can JSON.parse(get_json())
-            get_json();
+            ajax_call("get_json","")
             console.log("data from server");
         }
 
@@ -62,10 +62,7 @@ function callback(response, callback_arg){
         document.getElementById('img_A').src="images/"+data['A'][1]+".png";
     }
     else if(callback_arg=="reload"){
-        location.reload();
-    }
-    else if(callback_arg=="delete_clicked"){
-        // When delete clicked
+        location.reload();  
     }
     else if(callback_arg=="save"){
         show_key_to_copy(response);
@@ -73,6 +70,10 @@ function callback(response, callback_arg){
     else if(callback_arg=="json_send"){
 
     }
+    else if(callback_arg=="image_uploaded"){
+        data[response.box_id][1]=response.response;
+    }
+    update_cache();
 }
 
 // Menu button clicked
@@ -134,14 +135,14 @@ function createCookie(ck_name, expire,ck_for){
         var ck_value = JSON.stringify(data);
     }
     date.setTime(date.getTime() + (expire*1000));
-    document.cookie = `${ck_name}=${ck_value};expires=${date.toUTCString()};path=/`;
+    document.cookie = `${ck_name}=${ck_value};expires=${date.toUTCString()};key=value; SameSite=Strict;path=/;`;
 }
 
 
 //function to push,edit array data
 function data_add(id){
     data[id][0]=document.getElementById('u_name').value;
-    okEditFormClicked(id);
+    ajax_call("okEditFormClicked",id);
     update_cache();                                                   
 popUpClose();
 }
@@ -166,30 +167,6 @@ function getCookie(ck_name){
     }
     return null;
 }
-
-// Json send from get_json   ///ok ajax_call("get_json","")
-function get_json(){
-    var url = `http://127.0.0.1:8081/main.php?user=${getCookie("tree_cookie")}&get_json=1`;
-
-    var request = makeRequest('GET', url);
-    if(!request) {
-        return;
-    }
-    // Handle the requests
-    request.onreadystatechange = () => {
-        if(request.readyState==4&&request.status==200){
-            var response=request.responseText;
-            if(response!=""){
-                callback(response, "get_json");
-            }
-        }
-    };
-    request.send();
-}
-
-
-
-
 
 // If cookie is set return true, false otherwise
 function isCookieSet(ck_name='tree_cookie'){
@@ -342,7 +319,7 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
             if(temp[box.id]){
                 image.src=temp[box.id];
             }
-            else if(data[box.id][1]){
+            else if(!temp[box.id] && data[box.id][1]){
                 image.src="http://127.0.0.1:8081/images/"+data[box.id][1]+".png";
             }
             box.appendChild(image);
@@ -416,34 +393,6 @@ function merge(id){
 }
 
 
-///function to send data added  //ok //ajax_call("json_send","")
-function json_send(){
-    var json_file=JSON.stringify(data);
-
-    var formData = new FormData();
-    formData.append('json_file', json_file);
-
-    var url = `http://127.0.0.1:8081/main.php?user=${getCookie("tree_cookie")}`;
-
-    var request = makeRequest('POST', url);
-    if(!request) {
-        console.log('Request not supported');
-        return;
-    }
-    // Handle the requests
-    request.onreadystatechange = () => {
-        if(request.readyState==4&&request.status==200){
-            backed_up=1;
-            var response=request.responseText;
-        }
-        else if(request.readyState==4&&request.status!=200){
-            console.log("Error occured!!!");
-        }
-    };
-    request.send(formData);
-    
-}
-
 // Create the ajax request object.
 function makeRequest(method, url) {
     var request = new XMLHttpRequest();
@@ -457,43 +406,6 @@ function makeRequest(method, url) {
         request = null;
     }
     return request;
-}
-
-
-// When ok button is clicked in edit
-function okEditFormClicked(id){
-    var file_is_present = document.getElementById('u_image').value.trim();
-
-    if(file_is_present){
-        var allData = new FormData();
-
-        var image=document.getElementById('u_image');
-        temp[id]=window.URL.createObjectURL(image.files[0]);
-        document.getElementById('img_'+id).src=temp[id];
-        allData.append("u_image", image.files[0]);
-        var image_id=getCookie("tree_cookie")+"_"+Date.now();
-        data[id][1]=image_id;
-        // Server to send data
-        var url = `http://127.0.0.1:8081/main.php?div_id=${image_id}`;
-
-        var request = makeRequest('POST', url);
-        if (!request) {
-            return;
-        }
-
-        // Handle the requests
-        request.onreadystatechange = () => {
-            if(request.readystate == 4 && request.status == 200){
-                return true;
-            } else if(request.status != 200 && request.readystate == 4){
-                return false;
-            }
-        };
-        request.send(allData);
-    }
-    else {
-        return false;
-    }
 }
 
 ///function for making popup appear
@@ -538,7 +450,7 @@ function share_option(){
         ask_key_popup("save");
     }
     no_btn.onclick=function(){
-        json_send();
+        ajax_call("json_send","");
         popUpClose();
     }
     var note_container = document.createElement("p");
@@ -577,50 +489,18 @@ function ask_key_popup(for_){
     confirm_btn.innerHTML="Okay";
 
     confirm_btn.onclick = function(){
-        share_key_ajax(key=inpt.value, key_of=for_);        
+        if(inpt.value.length!=0){
+            ajax_call(for_,inpt.value);
+        }   
+        else{
+            inpt.placeholder="please dont leave it blank";
+        }   
     };
 
     confirm_container.appendChild(mssg_container);
     confirm_container.appendChild(inpt);
     confirm_container.appendChild(confirm_btn);
     document.getElementById("popup_container").appendChild(confirm_container);
-}
-
-// Final share save button is clicked
-// key, input value and key_of = clone or save
-function share_key_ajax(key, key_of){
-    if(key.length!==0){
-        var formData = new FormData();
-        formData.append('key', key);
-        if(key_of=="save"){
-            formData.append('json_file', JSON.stringify(data));
-        }
-        var url = `http://127.0.0.1:8081/main.php?user=${getCookie("tree_cookie")}&`;
-        url = key_of=="clone" ? url+"clone=1" : url+"save_pw=1";
-
-        var request = makeRequest('POST', url);
-        if(!request) {
-            console.log('Request not supported');
-            return;
-        }
-        // Handle the requests
-        request.onreadystatechange = () => {
-            if(request.readyState==4&&request.status==200){
-                backed_up=1;
-                var response=request.responseText;
-                callback(response,key_of);
-            }
-            else if(request.readyState==4&&request.status!=200){
-                console.log("Error occured!!!");
-            }
-        };
-        request.send(formData);
-
-        popUpClose();
-    }
-    else{
-        document.getElementById('key_input').placeholder="please enter key first";
-    }
 }
 
 ///function to update data in cookie
@@ -644,13 +524,15 @@ function view(id){
     if(temp[id]){
         imagePath=temp[id];
     }
-    else if(data[id][1]){
+    else if(!temp[id] && data[id][1]){
         imagePath="http://127.0.0.1:8081/images/"+data[id][1]+".png";
     }
     else{
         imagePath="";
     }
-    view_container.style.backgroundImage = `url('${imagePath}')`;
+    if(imagePath){
+        view_container.style.backgroundImage = `url('${imagePath}')`;
+    }
     // div for name of user
     var div_0=document.createElement("div");
     div_0.id="view_name_div";
@@ -681,21 +563,11 @@ function zoomReset(e){
     document.getElementById("tree").style.transform=`scale(${intial_zoom})`;
 }
 
-// Delete button clicked
+// Delete button clicked  //ok //ajax_call("delete","")
 function delete_clicked(){
     createCookie(ck_name="trash_data", expire=24*60*60, ck_for="data");
     delete_cookie(ck_name="tree_data");
-    var url = `http://127.0.0.1:8081/main.php?user=${getCookie("tree_cookie")}&delete=1`;
-
-    var request = makeRequest('GET', url);
-    request.onreadystatechange = () => {
-        if(request.readyState == 4 && request.status == 200){
-            callback(request.responseText, callback_arg="reload");
-        } else if(request.readyState==4&&request.status!=200){
-            console.log("Error occured!!!");
-        }
-    };
-    request.send();
+    ajax_call("delete","");
 }
 
 ///function to delete box
@@ -790,4 +662,87 @@ function show_key_to_copy(response_key){
     document.getElementById("popup_container").appendChild(confirm_container);
 }
 
-//popup when clone pressed which takes input for key..this is for tree sharing feature
+
+function ajax_call(ajax_for,args){     ///args represent any argument to be passed
+    var user=getCookie("tree_cookie");
+    var url="http://127.0.0.1:8081/main.php";
+    var formData = new FormData();
+    formData.append('user', user);
+    switch (ajax_for) {
+        case 'get_json':
+            formData.append("action","get_json");
+            break;
+        case 'json_send':
+            formData.append('json_file', JSON.stringify(data));
+            formData.append("action",'save_json');
+            break;
+        case 'okEditFormClicked':
+            var id=args;
+            var file_is_present = document.getElementById('u_image').value.trim();
+            if(file_is_present){
+                var image=document.getElementById('u_image');
+                temp[id]=window.URL.createObjectURL(image.files[0]);
+                document.getElementById('img_'+id).src=temp[id];
+                formData.append("u_image", image.files[0]);
+                formData.append("box_id",id);
+                formData.append("action","save_image");
+            }
+            else{
+                return 0;
+            }
+            break;
+        case 'clone':
+            formData.append('key',args);
+            formData.append("action",'clone');
+            break;
+        case 'save_pw':
+            formData.append('tree_name',args);
+            formData.append('json_file', JSON.stringify(data));
+            formData.append("action",'save_json');
+            break;
+        case 'delete':
+            formData.append("action",'delete');
+            break;
+        default:
+            break;
+    }
+    var request = makeRequest('POST', url);
+    if(!request) {
+        console.log('Request not supported');
+        return;
+    }
+    // Handle the requests
+    request.onreadystatechange = () => {
+        if(request.readyState==4&&request.status==200){
+            var response=request.responseText;
+            switch (ajax_for) {
+                case 'get_json':
+                    if(response!=""){
+                        callback(response,"get_json");
+                    }
+                    break;
+                case 'json_send':
+                    backed_up=1;
+                    callback(response,"json_send");
+                    break;
+                case 'okEditFormClicked':
+                    callback({'response':response,'box_id':args},"image_uploaded");
+                    break;
+                case 'clone' || 'save_pw':
+                    backed_up=1;
+                    callback(response,ajax_for);
+                    break;
+                case 'delete':
+                    callback(response, "reload");
+                    break;
+                default:
+                    break;
+            }
+        }
+        else if(request.readyState==4&&request.status!=200){
+            console.log("Error occured!!!");
+        }
+    };
+    request.send(formData);
+}
+
