@@ -168,6 +168,14 @@ function getCookie(ck_name){
     return null;
 }
 
+<<<<<<< HEAD
+=======
+// Json send from get_json   ///ok ajax_call("get_json","")
+function get_json(){
+    ajax_call("get_json");
+}
+
+>>>>>>> refs/remotes/origin/master
 // If cookie is set return true, false otherwise
 function isCookieSet(ck_name='tree_cookie'){
     return document.cookie.indexOf(`${ck_name}=`)>=0;
@@ -393,6 +401,14 @@ function merge(id){
 }
 
 
+<<<<<<< HEAD
+=======
+///function to send data added  //ok //ajax_call("json_send","")
+function json_send(){
+    ajax_call("json_send");
+}
+
+>>>>>>> refs/remotes/origin/master
 // Create the ajax request object.
 function makeRequest(method, url) {
     var request = new XMLHttpRequest();
@@ -408,6 +424,14 @@ function makeRequest(method, url) {
     return request;
 }
 
+<<<<<<< HEAD
+=======
+// When ok button is clicked in edit
+function okEditFormClicked(id){
+    ajax_call("okeditformclicked", id);
+}
+
+>>>>>>> refs/remotes/origin/master
 ///function for making popup appear
 function popUpOpen(type,id){
     document.getElementById("popup_div").style.display = "flex";
@@ -503,6 +527,22 @@ function ask_key_popup(for_){
     document.getElementById("popup_container").appendChild(confirm_container);
 }
 
+<<<<<<< HEAD
+=======
+// Final share save button is clicked
+// key, input value and key_of = clone or save
+function share_key_ajax(key, key_of){
+    if(key.length!==0){
+        ajax_call(key_of, key);
+
+        popUpClose();
+    }
+    else{
+        document.getElementById('key_input').placeholder="please enter key first";
+    }
+}
+
+>>>>>>> refs/remotes/origin/master
 ///function to update data in cookie
 function update_cache(){
     createCookie("tree_data",86400,"data");
@@ -567,7 +607,12 @@ function zoomReset(e){
 function delete_clicked(){
     createCookie(ck_name="trash_data", expire=24*60*60, ck_for="data");
     delete_cookie(ck_name="tree_data");
+<<<<<<< HEAD
     ajax_call("delete","");
+=======
+    
+    ajax_call("delete");
+>>>>>>> refs/remotes/origin/master
 }
 
 ///function to delete box
@@ -662,6 +707,13 @@ function show_key_to_copy(response_key){
     document.getElementById("popup_container").appendChild(confirm_container);
 }
 
+<<<<<<< HEAD
+=======
+//popup when clone pressed which takes input for key..this is for tree sharing feature
+
+
+/* Ajax call */
+>>>>>>> refs/remotes/origin/master
 
 function ajax_call(ajax_for,args){     ///args represent any argument to be passed
     var user=getCookie("tree_cookie");
@@ -676,7 +728,11 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
             formData.append('json_file', JSON.stringify(data));
             formData.append("action",'save_json');
             break;
+<<<<<<< HEAD
         case 'okEditFormClicked':
+=======
+        case 'okeditformclicked':
+>>>>>>> refs/remotes/origin/master
             var id=args;
             var file_is_present = document.getElementById('u_image').value.trim();
             if(file_is_present){
@@ -687,9 +743,12 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
                 formData.append("box_id",id);
                 formData.append("action","save_image");
             }
+<<<<<<< HEAD
             else{
                 return 0;
             }
+=======
+>>>>>>> refs/remotes/origin/master
             break;
         case 'clone':
             formData.append('key',args);
@@ -725,8 +784,13 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
                     backed_up=1;
                     callback(response,"json_send");
                     break;
+<<<<<<< HEAD
                 case 'okEditFormClicked':
                     callback({'response':response,'box_id':args},"image_uploaded");
+=======
+                case 'okeditformclicked':
+                    callback(response,"image_uploaded");
+>>>>>>> refs/remotes/origin/master
                     break;
                 case 'clone' || 'save_pw':
                     backed_up=1;
@@ -744,5 +808,9 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
         }
     };
     request.send(formData);
+<<<<<<< HEAD
 }
 
+=======
+}
+>>>>>>> refs/remotes/origin/master
