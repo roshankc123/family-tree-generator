@@ -558,11 +558,17 @@ function ask_key_popup(for_){
     confirm_container.id="confirm_container";
     var mssg_container=document.createElement("div");
     mssg_container.className="conf_mssg_container";
-    mssg_container.innerHTML="Please enter a secure key to share the content";
 
     var inpt = document.createElement("input");
-    inpt.type="password";
-    inpt.placeholder="Secure Key here...";
+    if(for_=="clone"){
+        mssg_container.innerHTML="Please enter the secure key";
+        inpt.type="password";
+        inpt.placeholder="Secure key here...";
+    } else {
+        mssg_container.innerHTML="Please enter the name of tree";
+        inpt.type="text";
+        inpt.placeholder="Name of tree...";
+    }
     inpt.id="key_input";
     inpt.autofocus=true;
 
