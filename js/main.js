@@ -169,27 +169,8 @@ function getCookie(ck_name){
 
 // Json send from get_json   ///ok ajax_call("get_json","")
 function get_json(){
-    var url = `http://127.0.0.1:8081/main.php?user=${getCookie("tree_cookie")}&get_json=1`;
-
-    var request = makeRequest('GET', url);
-    if(!request) {
-        return;
-    }
-    // Handle the requests
-    request.onreadystatechange = () => {
-        if(request.readyState==4&&request.status==200){
-            var response=request.responseText;
-            if(response!=""){
-                callback(response, "get_json");
-            }
-        }
-    };
-    request.send();
+    ajax_call("get_json");
 }
-
-
-
-
 
 // If cookie is set return true, false otherwise
 function isCookieSet(ck_name='tree_cookie'){
@@ -418,30 +399,7 @@ function merge(id){
 
 ///function to send data added  //ok //ajax_call("json_send","")
 function json_send(){
-    var json_file=JSON.stringify(data);
-
-    var formData = new FormData();
-    formData.append('json_file', json_file);
-
-    var url = `http://127.0.0.1:8081/main.php?user=${getCookie("tree_cookie")}`;
-
-    var request = makeRequest('POST', url);
-    if(!request) {
-        console.log('Request not supported');
-        return;
-    }
-    // Handle the requests
-    request.onreadystatechange = () => {
-        if(request.readyState==4&&request.status==200){
-            backed_up=1;
-            var response=request.responseText;
-        }
-        else if(request.readyState==4&&request.status!=200){
-            console.log("Error occured!!!");
-        }
-    };
-    request.send(formData);
-    
+    ajax_call("json_send");
 }
 
 // Create the ajax request object.
@@ -459,41 +417,9 @@ function makeRequest(method, url) {
     return request;
 }
 
-
 // When ok button is clicked in edit
 function okEditFormClicked(id){
-    var file_is_present = document.getElementById('u_image').value.trim();
-
-    if(file_is_present){
-        var allData = new FormData();
-
-        var image=document.getElementById('u_image');
-        temp[id]=window.URL.createObjectURL(image.files[0]);
-        document.getElementById('img_'+id).src=temp[id];
-        allData.append("u_image", image.files[0]);
-        var image_id=getCookie("tree_cookie")+"_"+Date.now();
-        data[id][1]=image_id;
-        // Server to send data
-        var url = `http://127.0.0.1:8081/main.php?div_id=${image_id}`;
-
-        var request = makeRequest('POST', url);
-        if (!request) {
-            return;
-        }
-
-        // Handle the requests
-        request.onreadystatechange = () => {
-            if(request.readystate == 4 && request.status == 200){
-                return true;
-            } else if(request.status != 200 && request.readystate == 4){
-                return false;
-            }
-        };
-        request.send(allData);
-    }
-    else {
-        return false;
-    }
+    ajax_call("okeditformclicked", id);
 }
 
 ///function for making popup appear
@@ -590,31 +516,7 @@ function ask_key_popup(for_){
 // key, input value and key_of = clone or save
 function share_key_ajax(key, key_of){
     if(key.length!==0){
-        var formData = new FormData();
-        formData.append('key', key);
-        if(key_of=="save"){
-            formData.append('json_file', JSON.stringify(data));
-        }
-        var url = `http://127.0.0.1:8081/main.php?user=${getCookie("tree_cookie")}&`;
-        url = key_of=="clone" ? url+"clone=1" : url+"save_pw=1";
-
-        var request = makeRequest('POST', url);
-        if(!request) {
-            console.log('Request not supported');
-            return;
-        }
-        // Handle the requests
-        request.onreadystatechange = () => {
-            if(request.readyState==4&&request.status==200){
-                backed_up=1;
-                var response=request.responseText;
-                callback(response,key_of);
-            }
-            else if(request.readyState==4&&request.status!=200){
-                console.log("Error occured!!!");
-            }
-        };
-        request.send(formData);
+        ajax_call(key_of, key);
 
         popUpClose();
     }
@@ -685,17 +587,8 @@ function zoomReset(e){
 function delete_clicked(){
     createCookie(ck_name="trash_data", expire=24*60*60, ck_for="data");
     delete_cookie(ck_name="tree_data");
-    var url = `http://127.0.0.1:8081/main.php?user=${getCookie("tree_cookie")}&delete=1`;
-
-    var request = makeRequest('GET', url);
-    request.onreadystatechange = () => {
-        if(request.readyState == 4 && request.status == 200){
-            callback(request.responseText, callback_arg="reload");
-        } else if(request.readyState==4&&request.status!=200){
-            console.log("Error occured!!!");
-        }
-    };
-    request.send();
+    
+    ajax_call("delete");
 }
 
 ///function to delete box
@@ -791,3 +684,86 @@ function show_key_to_copy(response_key){
 }
 
 //popup when clone pressed which takes input for key..this is for tree sharing feature
+
+
+/* Ajax call */
+
+function ajax_call(ajax_for,args){     ///args represent any argument to be passed
+    var user=getCookie("tree_cookie");
+    var url="http://127.0.0.1:8081/main.php";
+    var formData = new FormData();
+    formData.append('user', user);
+    switch (ajax_for) {
+        case 'get_json':
+            formData.append("action","get_json");
+            break;
+        case 'json_send':
+            formData.append('json_file', JSON.stringify(data));
+            formData.append("action",'save_json');
+            break;
+        case 'okeditformclicked':
+            var id=args;
+            var file_is_present = document.getElementById('u_image').value.trim();
+            if(file_is_present){
+                var image=document.getElementById('u_image');
+                temp[id]=window.URL.createObjectURL(image.files[0]);
+                document.getElementById('img_'+id).src=temp[id];
+                formData.append("u_image", image.files[0]);
+                formData.append("box_id",id);
+                formData.append("action","save_image");
+            }
+            break;
+        case 'clone':
+            formData.append('key',args);
+            formData.append("action",'clone');
+            break;
+        case 'save_pw':
+            formData.append('tree_name',args);
+            formData.append('json_file', JSON.stringify(data));
+            formData.append("action",'save_json');
+            break;
+        case 'delete':
+            formData.append("action",'delete');
+            break;
+        default:
+            break;
+    }
+    var request = makeRequest('POST', url);
+    if(!request) {
+        console.log('Request not supported');
+        return;
+    }
+    // Handle the requests
+    request.onreadystatechange = () => {
+        if(request.readyState==4&&request.status==200){
+            var response=request.responseText;
+            switch (ajax_for) {
+                case 'get_json':
+                    if(response!=""){
+                        callback(response,"get_json");
+                    }
+                    break;
+                case 'json_send':
+                    backed_up=1;
+                    callback(response,"json_send");
+                    break;
+                case 'okeditformclicked':
+                    callback(response,"image_uploaded");
+                    break;
+                case 'clone' || 'save_pw':
+                    backed_up=1;
+                    callback(response,ajax_for);
+                    break;
+                case 'delete':
+                    callback(response, "reload");
+                    break;
+                default:
+                    break;
+            }
+        }
+        else if(request.readyState==4&&request.status!=200){
+            console.log("Error occured!!!");
+        }
+    };
+    request.send(formData);
+}
