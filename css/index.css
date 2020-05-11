@@ -31,19 +31,58 @@ button {
     border: 0;
     cursor: pointer;
 }
-
-.top-all-btns {
-    display: flex;
-    justify-content: space-around;
+.nav {
     position: fixed;
     width: 100%;
     top: 0;
     z-index: 3;
-    box-shadow: 0px 2px 5px #ccc;
+    /*box-shadow: 0px 2px 5px #ccc;*/
+}
+.mn-tp-out {
+    float: right;
+    display: flex;
+    justify-content: center;
+    padding: 6px 21px;
+}
+#menu-btn {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    padding-top: 5px;
+    width: 55px;
+    height: 50px;
+}
+#menu-btn:hover, #menu-btn:active {
+    box-shadow: 0 0 5px #ccc;
+}
+#menu-btn span {
+    display: block;
+    margin-bottom: 5px;
+    width: 25px;
+    height: 2px;
+    background-color: #000;
+    transition: transform linear 0.2s;
+}
+#menu-contents {
+    display: flex;
+    background-color: #fff;
+    flex-direction: column;
+    position: absolute;
+    top: 65px;
+    right: 0;
+    box-shadow: -6px 0px 8px -4px #ddd;
+    border: 1px solid #ddd;
+    border-left: 0;
+    width: 0;
+    transition: width 0.3s linear;
 }
 .main-push {
-    margin: 5px;
-    padding: 15px;
+    margin: 5px 10px;
+    padding: 10px 0;
+    width: 70px;
     text-align: center;
     background-color: #fff;
     color: #000;
@@ -51,7 +90,7 @@ button {
     outline: none;
 }
 .main-push:hover {
-    box-shadow: 0px 0px 29px #ccc;
+    transform: scale(1.1);
 }
 .main-push:first-child {
     background-color: #76FF7A;
@@ -63,28 +102,42 @@ button {
     background-color: #FFCC33;
 }
 .zoom-btns {
-    box-shadow: 2px 0px 5px #ccc;
     position: fixed;
-    width: 100%;
-    bottom: 0;
-    display: flex;
-    justify-content: space-around;
+    right: 5px;
+    bottom: 5px;
     z-index: 3;
 }
 #zoom-in, #zoom-out, #zoom-reset {
+    color: #555;
+    position: relative;
+    display: block;
     margin: 5px;
-    padding: 15px 5px;
-    border-radius: 10px;
+    border-radius: 50%;
+    background-color: transparent;
+    box-shadow: 0 0 3px #000;
+    font-weight: 1000;
+    height: 40px;
+    width: 40px;
 }
-#zoom-in {
-    background-color: #99FFFF;
+#zoom-in:hover, #zoom-out:hover, #zoom-reset:hover {
+    background-color: #efefef;
 }
-#zoom-out {
-    background-color: 	#76FF7A;
+.minus, .minus-ver {
+    display: inline-block;
+    width: 12px;
+    height: 3px;
+    background-color: #555;
+    position: relative;
+    top: -4px;
 }
-#zoom-reset {
-    background-color: #FFCC33
+.minus-ver {
+    position: absolute;
+    top: 19px;
+    right: 14px;
+    transform: rotate(90deg);
 }
+
+
 .box {
     position: relative;
     width: 130px;
