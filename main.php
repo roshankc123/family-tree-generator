@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
     class main_tree{
         public $sql;
         public $user;
