@@ -84,8 +84,13 @@ function callback(response, callback_arg){
         update_cache();
     }
     else if(callback_arg="get_note"){
-        $response_json=JSON.parse(response);
-        console.log($response_json);
+        var response_json=JSON.parse(response);
+        console.log(response_json);
+        var i=0;
+        while(response_json[i]){
+            note_div("main-notif-cont",response_json[i]);
+            i++;
+        }
     }
 }
 
@@ -821,13 +826,17 @@ function note_div(div_for,does){
     }
     else if(div_for=="main-notif-cont"){
         var division_3=document.createElement('div');
-        var button_1=document.createElement('BUTTON');
-        division_1.innerHTML="tree_name";
-        division_2.innerHTML="key";
-        division_3.innerHTML="date";
-        button_1.innerHTML="copy";
+        var button_2=document.createElement('BUTTON');
+        division_1.innerHTML="name:"+does[0];
+        division_2.innerHTML=does[1];
+        division_3.innerHTML=does[2];
+        button_2.innerHTML="copy key";
+        button_2.className="copy_key";
+        button_2.onclick=function(){
+            notif_copy_key(this);
+        }
         button_1.innerHTML="delete";
-        division_3.appendChild(button_1);
+        division_3.appendChild(button_2);
         division_3.appendChild(button_1);
         main_division.appendChild(division_1);
         main_division.appendChild(division_2);
@@ -873,6 +882,7 @@ function notice_clicked(){
         that.parentNode.style="";
         document.getElementById("notif-cont").style="";     
     }
+    ajax_call('get_note',"");
 }
 
 // Actions tab clicked
