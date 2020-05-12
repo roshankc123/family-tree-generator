@@ -83,6 +83,10 @@ function callback(response, callback_arg){
         data[response.box_id][1]=response.response;
         update_cache();
     }
+    else if(callback_arg="get_note"){
+        $response_json=JSON.parse(response);
+        console.log($response_json);
+    }
 }
 
 // Menu button clicked
@@ -746,6 +750,9 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
         case 'delete':
             formData.append("action",'delete');
             break;
+        case 'get_note':
+                formData.append('action','get_note');
+            break;
         default:
             break;
     }
@@ -758,31 +765,34 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
     // Handle the requests
     request.onreadystatechange = () => {
         if(request.readyState==4&&request.status==200){
-            var resp=request.responseText;
+            var response=request.responseText;
             switch (ajax_for) {
                 case 'get_json':
-                    if(resp!=""){
-                        callback(resp,"get_json");
+                    if(response!=""){
+                        callback(response,"get_json");
                     }
                     break;
                 case 'json_send':
                     backed_up=1;
-                    callback(resp,"json_send");
+                    callback(response,"json_send");
                     break;
                 case 'okEditFormClicked':
-                    callback({'response':resp,'box_id':args},"image_uploaded");
+                    callback({'response':response,'box_id':args},"image_uploaded");
                     actions("image uploaded to server");
                     break;
                 case 'clone' :
                     backed_up=1;
-                    callback(resp,ajax_for);
+                    callback(response,ajax_for);
                     break;
                 case 'save':
                     backed_up=1;
-                    callback(resp,ajax_for);
+                    callback(response,ajax_for);
                     break;
                 case 'delete':
-                    callback(resp, "reload");
+                    callback(response, "reload");
+                    break;
+                case 'get_note':
+                    callback(response,"get_note");
                     break;
                 default:
                     break;
