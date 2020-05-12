@@ -104,35 +104,67 @@ function menu_clicked(e){
 
 // Notice clicked
 function notice_clicked(){
-    document.querySelector(".notif-tabs").style.display="flex";
-    document.getElementById("notif-contents").style.width="300px";
-    document.querySelector(".small-notif-cont").style.display="block";
-}
-
-// Close notifications
-function close_notif(){
-    document.getElementById("notif-contents").style.width="0";
-    document.getElementById("notif-btn").style="";
-    document.querySelector(".notif-tabs").style.display="none";
-    document.querySelector(".small-notif-cont").style.display="none";
-    notif_tab_clicked();
+    var that = document.getElementById("notif-btn");
+    if(!that.classList.contains("is_open")){
+        action_tab();
+        that.className="is_open";
+        that.innerHTML="&times;";
+        that.style.fontWeight="1000";
+        that.style.fontSize="2.5em";
+        that.parentNode.style.boxShadow="-6px 0px 8px -4px #ddd";
+        document.getElementById("notif-cont").style.width="480px";     
+    } else {
+        that.className="";
+        that.innerHTML="-----------------------------------------------------";
+        that.style="";
+        that.parentNode.style="";
+        document.getElementById("notif-cont").style="";     
+    }
 }
 
 // Actions tab clicked
-function action_tab_clicked(){
-    document.getElementById("action_tab").setAttribute("class", "active-tab");
-    document.getElementById("notif_tab").setAttribute("class", "");
-
-    document.querySelector(".small-notif-cont").style.display="none";
-    document.querySelector(".action").style.display="block";
+function action_tab(){
+    var that = document.getElementById("action_tab");
+    that.className="active_tab";
+    document.getElementById("main-action-cont").style.display="block";
+    document.getElementById("main-notif-cont").style.display="none";
+    document.getElementById("notif_tab").className="";
 }
 
 // Notifications tab clicked
-function notif_tab_clicked(){
-    document.getElementById("notif_tab").setAttribute("class", "active-tab");
-    document.getElementById("action_tab").setAttribute("class", "");
-    document.querySelector(".small-notif-cont").style.display="block";
-    document.querySelector(".action").style.display="none";
+function notif_tab(){
+    var that = document.getElementById("notif_tab");
+    that.className="active_tab";
+    document.getElementById("main-notif-cont").style.display="block";
+    document.getElementById("main-action-cont").style.display="none";
+    document.getElementById("action_tab").className="";
+}
+
+// Copy key of notification
+function notif_copy_key(obj){
+    var key_div = obj.parentNode.previousElementSibling;
+    copy_to_clipboard(key_div);
+}
+
+// Copy to clipboard
+function copy_to_clipboard(copy_from_div){
+    // Copy response_text to clipboard
+    if(document.body.createTextRange) {
+        // IE
+        var range = document.body.createTextRange();
+        range.moveToElementText(copy_from_div);
+        range.select();
+        document.execCommand("Copy");
+    }
+    else {
+        // other browsers
+        var selection = window.getSelection();
+        var range = document.createRange();
+        range.selectNodeContents(copy_from_div);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        document.execCommand("Copy");
+    }
 }
 
 // Yes on share option
@@ -690,23 +722,7 @@ function show_key_to_copy(response_key){
     yes_btn.style.backgroundColor="#00c9FE";
 
     yes_btn.onclick=function(){
-        // Copy response_text to clipboard
-        if(document.body.createTextRange) {
-            // IE
-            var range = document.body.createTextRange();
-            range.moveToElementText(main_key_cont);
-            range.select();
-            document.execCommand("Copy");
-        }
-        else {
-            // other browsers
-            var selection = window.getSelection();
-            var range = document.createRange();
-            range.selectNodeContents(main_key_cont);
-            selection.removeAllRanges();
-            selection.addRange(range);
-            document.execCommand("Copy");
-        }
+        copy_to_clipboard(main_key_cont);
     }    
     confirm_container.appendChild(mssg_container);
     confirm_container.appendChild(main_key_cont);

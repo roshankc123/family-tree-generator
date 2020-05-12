@@ -8,7 +8,6 @@ body {
     transform: scale(1);
     transform-origin: top left;
     transition: transform 0.2s linear;
-    padding-bottom: 60px;
 }
 #tree div {
     display: inline-block;
@@ -35,15 +34,19 @@ button {
     position: fixed;
     width: 100%;
     top: 0;
-    z-index: 3;
+    z-index: 6;
     /*box-shadow: 0px 2px 5px #ccc;*/
 }
-
 .mn-tp-out, .nf-tp-out {
     float: right;
     display: flex;
     justify-content: center;
+    background-color: #fff;
     padding: 6px 21px;
+}
+.nf-tp-out {
+    padding: 17px 21px;
+    margin-right: 3px;
 }
 #menu-btn {
     cursor: pointer;
@@ -55,6 +58,7 @@ button {
     padding-top: 5px;
     width: 55px;
     height: 50px;
+    z-index: 6;
 }
 #menu-btn:hover, #menu-btn:active {
     box-shadow: 0 0 5px #ccc;
@@ -67,12 +71,12 @@ button {
     background-color: #000;
     transition: transform linear 0.2s;
 }
-#menu-contents, #notif-contents {
+#menu-contents{
     display: flex;
     background-color: #fff;
     flex-direction: column;
     position: fixed;
-    top: 65px;
+    top: 68px;
     right: 0;
     box-shadow: -6px 0px 8px -4px #ddd;
     border: 1px solid #ddd;
@@ -80,9 +84,6 @@ button {
     width: 0;
     transition: width 0.3s linear;
     z-index: 6;
-}
-.nf-tp-out {
-    padding: 15px 21px;
 }
 #notif-btn {
     display: flex;
@@ -96,79 +97,79 @@ button {
     border-radius: 5px;
     user-select: none;
     padding: 3px;
+    z-index: 6;
 }
-#notif-contents {
+#notif-btn:hover {
+    box-shadow: 0 0 5px #ccc;
+}
+.notif-outer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    box-sizing: border-box;
+    padding-top: 70px;
     height: 100%;
-    top: 0;
-    overflow-x: hidden;
     z-index: 5;
+    background-color: #fff;
 }
-.notif-tabs-n-close {
-    position: sticky;
-    top: 0;
-    left: 0;
+#notif-cont {
+    top: -2px;
+    position: relative;
+    height: 100%;
+    overflow: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-left: 0;
+    box-shadow: 0px 2px 5px #ccc;
+    width: 0;
+    transition: width 0.3s linear;
 }
-.notif-tabs {
+.tabs {
     display: flex;
     justify-content: space-around;
     width: 100%;
-    font-size: 25px;
+    position: sticky;
+    top: 0;
     background-color: #fff;
 }
-#notif-close {
-    position: relative;
-    border-bottom: 1px solid #ccc;
-    padding: 5px;
-    cursor: pointer;
-    font-weight: 1000;
-    background-color: #fff;
-    padding-bottom: 10px;
-}
-#notif-close span {
-    background-color: #000;
+.tabs button {
+    width: 30%;
+    color: #555;
     display: inline-block;
-    position: relative;
-    top: 0px;
-    right: 0px;
-    width: 1.5em;
-    height: 2px;
-    transform: rotate(45deg);
+    padding: 8px 0;
+    font-size: 1em;
 }
-#notif-close span:last-child {
-    right: 1.75em;
-    transform: rotate(-45deg);
+.tabs button:hover {
+    color: #000;
 }
-.notif-tabs button{
-    display: block;
-    width: 50%;
-    box-sizing: border-box;
-    padding: 8px;
-    font-size: 0.65em;
-    color: #666;
+.active_tab {
+    border-bottom: 1px solid #000;
 }
-.active-tab {
-    border-bottom: 1px solid #666;
-}
-.small-notif-cont {
+#main-action-cont, #main-notif-cont {
     display: none;
-    margin-top: 10px;
-    font-family: sans-serif;
 }
-.notif-one {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 5px 0;
+#main-action-cont > div,#main-notif-cont > div {
+    padding: 5px;
+    font-size: 1.05em;
 }
-.notif-one div {
-    padding: 0 5px;
+#main-action-cont div div:last-child, #main-notif-cont div div:last-child {
+    color: #777;
 }
-.notif-one div span{
-    font-weight: 600;
+#main-action-cont div div:last-child button, #main-notif-cont div div:last-child button {
+    color: #ff726f;
+    padding: 0 10px;
 }
-.notif-one div:last-child {
-    display: block;
-    width: 100%;
+#main-notif-cont div div:first-child span:first-child {
+    padding-right: 10px;
 }
+#main-notif-cont div div:first-child span:last-child {
+    padding-left: 10px;
+}
+.copy_key {
+    color: #0084FF !important;
+}
+
 .main-push {
     margin: 5px 10px;
     padding: 10px 0;
@@ -208,7 +209,7 @@ button {
     position: fixed;
     right: 5px;
     bottom: 5px;
-    z-index: 3;
+    z-index: 4;
 }
 #zoom-in, #zoom-out, #zoom-reset {
     color: #555;

@@ -32,53 +32,38 @@
         <button onclick="delete_clicked()" class="main-push" title="Delete">Delete</button>
         <button class="main-push" onclick="clone_clicked()">clone</button>
     </div>
-    <div id="notif-contents">
-        <div class="notif-tabs-n-close">
-            <div id="notif-close" onclick="close_notif()">
-                <span></span>
-                <span></span>
+    <div class="notif-outer">
+        <div id="notif-cont">
+            <div class="tabs">
+                <button id="action_tab" class="active_tab" onclick="action_tab()">Actions</button>
+                <button id="notif_tab" onclick="notif_tab()">Notifications</button>
             </div>
-            <div class="notif-tabs">
-                <button onclick="action_tab_clicked()" id="action_tab">Actions</button>
-                <button class="active-tab" onclick="notif_tab_clicked()" id="notif_tab">Notifications</button>
+            <div id="main-action-cont">
+                <div>
+                    <div>Data from local storage </div>
+                    <div>1 min <button>Delete</button></div>
+                </div>
+                <div>
+                    <div>Data from local storage </div>
+                    <div>1 min <button>Delete</button></div>
+                </div>
             </div>
-        </div>
-        <div class="action-cont">
 
-        </div>
-        <div class="small-notif-cont">
-            <div class="notif-one">
-                <div><span>Name:</span> Biplove Lamichhane</div>
-                <div><span>Id:</span> sjkflsdjfksldfj</div>
-                <div><span>Key:</span> 6448f80218f32043296ca309605356f6</div> 
-                <div>2017/09/18</div>
-            </div>
-            <div class="notif-one">
-                <div><span>Name:</span> Biplove Lamichhane</div>
-                <div><span>Id:</span> sjkflsdjfksldfj</div>
-                <div><span>Key:</span> 6448f80218f32043296ca309605356f6</div> 
-                <div>2017/09/18</div>
-            </div>
-            <div class="notif-one">
-                <div><span>Name:</span> Biplove Lamichhane</div>
-                <div><span>Id:</span> sjkflsdjfksldfj</div>
-                <div><span>Key:</span> 6448f80218f32043296ca309605356f6</div> 
-                <div>2017/09/18</div>
-            </div>
-            <div class="notif-one">
-                <div><span>Name:</span> Biplove Lamichhane</div>
-                <div><span>Id:</span> sjkflsdjfksldfj</div>
-                <div><span>Key:</span> 6448f80218f32043296ca309605356f6</div> 
-                <div>2017/09/18</div>
-            </div>
-            <div class="notif-one">
-                <div><span>Name:</span> Biplove Lamichhane</div>
-                <div><span>Id:</span> sjkflsdjfksldfj</div>
-                <div><span>Key:</span> 6448f80218f32043296ca309605356f6</div> 
-                <div>2017/09/18</div>
+            <div id="main-notif-cont">
+                <div>
+                    <div><span>Biplove tree</span> | <span>ASljfdslfjkl</span> </div>
+                    <div>9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c99c</div>
+                    <div>1 min <button class="copy_key" onclick="notif_copy_key(this)">Copy key</button> <button>Delete</button></div>
+                </div>
+                <div>
+                    <div><span>Biplove tree</span> | <span>ASljfdslfjkl</span> </div>
+                    <div>9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9fffffffc9c9c99c</div>
+                    <div>1 min <button class="copy_key" onclick="notif_copy_key(this)">Copy key</button> <button>Delete</button></div>
+                </div>
             </div>
         </div>
     </div>
+    
     
     <div class="zoom-btns">
         <button id="zoom-in" onclick="zoomIn(this)" title="Zoom-In">
