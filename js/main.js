@@ -806,6 +806,91 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
     request.send(formData);
 }
 
+
+// Menu button clicked
+function menu_clicked(e){
+    if(e.childElementCount===3){
+        document.getElementById("menu-contents").style.width="95px";
+        document.querySelector("#menu-btn span:nth-child(3)").remove();
+        document.querySelector("#menu-btn span:first-child").style.transform="rotate(45deg)";
+        document.querySelector("#menu-btn span:first-child").style.marginBottom="-2px";
+        document.querySelector("#menu-btn span:last-child").style.transform="rotate(-45deg)";
+        document.querySelector(".mn-tp-out").style.boxShadow="-6px 0px 8px -4px #ddd";
+    } else {
+        document.querySelector(".mn-tp-out").style="";
+        document.getElementById("menu-contents").style.width="0";
+        document.querySelector("#menu-btn span:first-child").style="";
+        document.querySelector("#menu-btn span:first-child").after(document.createElement("span"));        
+        document.querySelector("#menu-btn span:first-child").style.transform="rotate(0deg)";
+        document.querySelector("#menu-btn span:last-child").style.transform="rotate(0deg)";
+    }
+}
+
+// Notice clicked
+function notice_clicked(){
+    var that = document.getElementById("notif-btn");
+    if(!that.classList.contains("is_open")){
+        action_tab();
+        that.className="is_open";
+        that.innerHTML="&times;";
+        that.style.fontWeight="1000";
+        that.style.fontSize="2.5em";
+        that.parentNode.style.boxShadow="-6px 0px 8px -4px #ddd";
+        document.getElementById("notif-cont").style.width="480px";     
+    } else {
+        that.className="";
+        that.innerHTML="-----------------------------------------------------";
+        that.style="";
+        that.parentNode.style="";
+        document.getElementById("notif-cont").style="";     
+    }
+}
+
+// Actions tab clicked
+function action_tab(){
+    var that = document.getElementById("action_tab");
+    that.className="active_tab";
+    document.getElementById("main-action-cont").style.display="block";
+    document.getElementById("main-notif-cont").style.display="none";
+    document.getElementById("notif_tab").className="";
+}
+
+// Notifications tab clicked
+function notif_tab(){
+    var that = document.getElementById("notif_tab");
+    that.className="active_tab";
+    document.getElementById("main-notif-cont").style.display="block";
+    document.getElementById("main-action-cont").style.display="none";
+    document.getElementById("action_tab").className="";
+}
+
+// Copy key of notification
+function notif_copy_key(obj){
+    var key_div = obj.parentNode.previousElementSibling;
+    copy_to_clipboard(key_div);
+}
+
+// Copy to clipboard
+function copy_to_clipboard(copy_from_div){
+    // Copy response_text to clipboard
+    if(document.body.createTextRange) {
+        // IE
+        var range = document.body.createTextRange();
+        range.moveToElementText(copy_from_div);
+        range.select();
+        document.execCommand("Copy");
+    }
+    else {
+        // other browsers
+        var selection = window.getSelection();
+        var range = document.createRange();
+        range.selectNodeContents(copy_from_div);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        document.execCommand("Copy");
+    }
+}
+
 function actions(does){
     var division=document.createElement('div');
     var rows=document.createElement('p');

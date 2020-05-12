@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="nf-tp-out">
-            <div id="notif-btn" onclick="notice_clicked(this)">
+            <div id="notif-btn" onclick="notice_clicked()">
                 -----------------------------------------------------
             </div>
             <div id="n-status">
@@ -32,8 +32,36 @@
         <button onclick="delete_clicked()" class="main-push" title="Delete">Delete</button>
         <button class="main-push" onclick="clone_clicked()">clone</button>
     </div>
-    <div id="notif-contents">
-        djklfsjl
+    <div class="notif-outer">
+        <div id="notif-cont">
+            <div class="tabs">
+                <button id="action_tab" class="active_tab" onclick="action_tab()">Actions</button>
+                <button id="notif_tab" onclick="notif_tab()">Notifications</button>
+            </div>
+            <div id="main-action-cont">
+                <div>
+                    <div>Data from local storage </div>
+                    <div>1 min <button>Delete</button></div>
+                </div>
+                <div>
+                    <div>Data from local storage </div>
+                    <div>1 min <button>Delete</button></div>
+                </div>
+            </div>
+
+            <div id="main-notif-cont">
+                <div>
+                    <div><span>Biplove tree</span> | <span>ASljfdslfjkl</span> </div>
+                    <div>9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c99c</div>
+                    <div>1 min <button class="copy_key" onclick="notif_copy_key(this)">Copy key</button> <button>Delete</button></div>
+                </div>
+                <div>
+                    <div><span>Biplove tree</span> | <span>ASljfdslfjkl</span> </div>
+                    <div>9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9fffffffc9c9c99c</div>
+                    <div>1 min <button class="copy_key" onclick="notif_copy_key(this)">Copy key</button> <button>Delete</button></div>
+                </div>
+            </div>
+        </div>
     </div>
     
     <div class="zoom-btns">
