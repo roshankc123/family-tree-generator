@@ -874,7 +874,8 @@ function notice_clicked(){
         that.style.fontWeight="1000";
         that.style.fontSize="2.5em";
         that.parentNode.style.boxShadow="-6px 0px 8px -4px #ddd";
-        document.getElementById("notif-cont").style.width="480px";     
+        document.getElementById("notif-cont").style.width="480px"; 
+        ajax_call('get_note',"");    
     } else {
         that.className="";
         that.innerHTML="-----------------------------------------------------";
@@ -882,7 +883,6 @@ function notice_clicked(){
         that.parentNode.style="";
         document.getElementById("notif-cont").style="";     
     }
-    ajax_call('get_note',"");
 }
 
 // Actions tab clicked
