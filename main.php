@@ -1,5 +1,6 @@
 <?php
 error_reporting(0);
+header("Access-Control-Allow-Origin: *");
     class main_tree{
         public $sql;
         public $user;
