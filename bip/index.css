@@ -79,8 +79,7 @@ button {
     border-left: 0;
     width: 0;
     transition: width 0.3s linear;
-    z-index: 4;
-    height: 100%;
+    z-index: 6;
 }
 .nf-tp-out {
     padding: 15px 21px;
@@ -99,6 +98,7 @@ button {
     padding: 3px;
 }
 #notif-contents {
+    height: 100%;
     top: 0;
     overflow-x: hidden;
     z-index: 5;
