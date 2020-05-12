@@ -820,6 +820,9 @@ function note_div(div_for,does){
         division_1.innerHTML=does;
         division_2.innerHTML=Date();
         button_1.innerHTML="delete";
+        button_1.onclick=function(){
+            this.parentNode.parentNode.remove();
+        }
         division_2.appendChild(button_1);
         main_division.appendChild(division_1);
         main_division.appendChild(division_2);
