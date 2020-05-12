@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>index</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- <link rel="stylesheet" href="css/index.css"> -->
+        <link rel="stylesheet" href="index.css">
+        <script src="js/md5.js"></script>
+        <script src="main.js"></script> 
+    </head>
+<body>
+    <div class="nav">
+        <div class="mn-tp-out">
+            <div id="menu-btn" onclick="menu_clicked(this)">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div class="nf-tp-out">
+            <div id="notif-btn" onclick="notice_clicked()">
+                -----------------------------------------------------
+            </div>
+            <div id="n-status">
+                !
+            </div>
+        </div>
+    </div>
+    <div id="menu-contents">
+        <button onclick="popUpOpen(type='share_option')" class="main-push" title="Upload all new changes">Save</button>
+        <button onclick="delete_clicked()" class="main-push" title="Delete">Delete</button>
+        <button class="main-push" onclick="clone_clicked()">clone</button>
+    </div>
+    <div id="notif-contents">
+        <div class="notif-tabs-n-close">
+            <div id="notif-close" onclick="close_notif()">
+                <span></span>
+                <span></span>
+            </div>
+            <div class="notif-tabs">
+                <button onclick="action_tab_clicked()" id="action_tab">Actions</button>
+                <button class="active-tab" onclick="notif_tab_clicked()" id="notif_tab">Notifications</button>
+            </div>
+        </div>
+        <div class="action-cont">
+
+        </div>
+        <div class="small-notif-cont">
+            <div class="notif-one">
+                <div><span>Name:</span> Biplove Lamichhane</div>
+                <div><span>Id:</span> sjkflsdjfksldfj</div>
+                <div><span>Key:</span> 6448f80218f32043296ca309605356f6</div> 
+                <div>2017/09/18</div>
+            </div>
+            <div class="notif-one">
+                <div><span>Name:</span> Biplove Lamichhane</div>
+                <div><span>Id:</span> sjkflsdjfksldfj</div>
+                <div><span>Key:</span> 6448f80218f32043296ca309605356f6</div> 
+                <div>2017/09/18</div>
+            </div>
+            <div class="notif-one">
+                <div><span>Name:</span> Biplove Lamichhane</div>
+                <div><span>Id:</span> sjkflsdjfksldfj</div>
+                <div><span>Key:</span> 6448f80218f32043296ca309605356f6</div> 
+                <div>2017/09/18</div>
+            </div>
+            <div class="notif-one">
+                <div><span>Name:</span> Biplove Lamichhane</div>
+                <div><span>Id:</span> sjkflsdjfksldfj</div>
+                <div><span>Key:</span> 6448f80218f32043296ca309605356f6</div> 
+                <div>2017/09/18</div>
+            </div>
+            <div class="notif-one">
+                <div><span>Name:</span> Biplove Lamichhane</div>
+                <div><span>Id:</span> sjkflsdjfksldfj</div>
+                <div><span>Key:</span> 6448f80218f32043296ca309605356f6</div> 
+                <div>2017/09/18</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="zoom-btns">
+        <button id="zoom-in" onclick="zoomIn(this)" title="Zoom-In">
+            <span class="minus"></span>
+            <span class="minus-ver"></span>
+        </button>
+        <button id="zoom-reset" onclick="zoomReset(this)" title="Reset zoom">0</button>
+        <button id="zoom-out" onclick="zoomOut(this)" title="Zoom-out">
+            <span class="minus"></span>
+        </button>
+    </div>
+    <ul id="tree" class="tree">
+    </ul>
+    <div id="popup_div">
+        <div id="popup_container">
+            <button id="pop-close" onclick="popUpClose()" title="Close">&times;</button>       
+        </div>
+    </div>
+</body>
+</html>
