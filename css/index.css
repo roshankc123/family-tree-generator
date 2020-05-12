@@ -8,7 +8,6 @@ body {
     transform: scale(1);
     transform-origin: top left;
     transition: transform 0.2s linear;
-    padding-bottom: 60px;
 }
 #tree div {
     display: inline-block;
@@ -35,15 +34,19 @@ button {
     position: fixed;
     width: 100%;
     top: 0;
-    z-index: 3;
+    z-index: 6;
     /*box-shadow: 0px 2px 5px #ccc;*/
 }
-
 .mn-tp-out, .nf-tp-out {
     float: right;
     display: flex;
     justify-content: center;
+    background-color: #fff;
     padding: 6px 21px;
+}
+.nf-tp-out {
+    padding: 17px 21px;
+    margin-right: 3px;
 }
 #menu-btn {
     cursor: pointer;
@@ -55,12 +58,32 @@ button {
     padding-top: 5px;
     width: 55px;
     height: 50px;
+    z-index: 6;
 }
 #menu-btn:hover, #menu-btn:active {
     box-shadow: 0 0 5px #ccc;
 }
-.nf-tp-out {
-    padding: 15px 21px;
+#menu-btn span {
+    display: block;
+    margin-bottom: 5px;
+    width: 25px;
+    height: 2px;
+    background-color: #000;
+    transition: transform linear 0.2s;
+}
+#menu-contents{
+    display: flex;
+    background-color: #fff;
+    flex-direction: column;
+    position: fixed;
+    top: 68px;
+    right: 0;
+    box-shadow: -6px 0px 8px -4px #ddd;
+    border: 1px solid #ddd;
+    border-left: 0;
+    width: 0;
+    transition: width 0.3s linear;
+    z-index: 6;
 }
 #notif-btn {
     display: flex;
@@ -72,34 +95,81 @@ button {
     border: 1px solid #555;
     font-size: 5px;
     border-radius: 5px;
+    user-select: none;
     padding: 3px;
+    z-index: 6;
 }
-#menu-btn span {
-    display: block;
-    margin-bottom: 5px;
-    width: 25px;
-    height: 2px;
-    background-color: #000;
-    transition: transform linear 0.2s;
+#notif-btn:hover {
+    box-shadow: 0 0 5px #ccc;
 }
-#menu-contents, #notif-contents {
-    display: flex;
-    background-color: #fff;
-    flex-direction: column;
+.notif-outer {
     position: fixed;
-    top: 65px;
+    top: 0;
     right: 0;
-    box-shadow: -6px 0px 8px -4px #ddd;
-    border: 1px solid #ddd;
+    box-sizing: border-box;
+    padding-top: 70px;
+    height: 100%;
+    z-index: 5;
+    background-color: #fff;
+}
+#notif-cont {
+    top: -2px;
+    position: relative;
+    height: 100%;
+    overflow: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
     border-left: 0;
+    box-shadow: 0px 2px 5px #ccc;
     width: 0;
     transition: width 0.3s linear;
-    z-index: 4;
-    height: 100%;
 }
-#notif-contents {
-    z-index: 5;
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    background-color: #fff;
 }
+.tabs button {
+    width: 30%;
+    color: #555;
+    display: inline-block;
+    padding: 8px 0;
+    font-size: 1em;
+}
+.tabs button:hover {
+    color: #000;
+}
+.active_tab {
+    border-bottom: 1px solid #000;
+}
+#main-action-cont, #main-notif-cont {
+    display: none;
+}
+#main-action-cont > div,#main-notif-cont > div {
+    padding: 5px;
+    font-size: 1.05em;
+}
+#main-action-cont div div:last-child, #main-notif-cont div div:last-child {
+    color: #777;
+}
+#main-action-cont div div:last-child button, #main-notif-cont div div:last-child button {
+    color: #ff726f;
+    padding: 0 10px;
+}
+#main-notif-cont div div:first-child span:first-child {
+    padding-right: 10px;
+}
+#main-notif-cont div div:first-child span:last-child {
+    padding-left: 10px;
+}
+.copy_key {
+    color: #0084FF !important;
+}
+
 .main-push {
     margin: 5px 10px;
     padding: 10px 0;
@@ -139,7 +209,7 @@ button {
     position: fixed;
     right: 5px;
     bottom: 5px;
-    z-index: 3;
+    z-index: 4;
 }
 #zoom-in, #zoom-out, #zoom-reset {
     color: #555;
