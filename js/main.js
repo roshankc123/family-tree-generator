@@ -23,11 +23,13 @@ window.onload = () => {
         if(raw_data=getCookie("tree_data")){
             data=JSON.parse(raw_data);
             console.log("cookie data found");
+            actions("data from local storage");
         }
         else{
         // get_json return the data that is from server, if server sent json data then now we can JSON.parse(get_json())
             ajax_call("get_json","");
             console.log("data from server");
+            actions("searching server for data");
         }
 
     }
@@ -63,7 +65,7 @@ function callback(response, callback_arg){
             document.getElementById('img_A').src="images/"+data['A'][1]+".png";
         }
         else{
-            alert("no data from server");
+            actions("no data from server");
         }
         update_cache();
     }
@@ -127,7 +129,6 @@ function confirm_share(){
     var mssg_container=document.createElement("div");
     mssg_container.className="conf_mssg_container";
     mssg_container.innerHTML="Please enter a secure key to share the content"
-
     var inpt = document.createElement("input");
     inpt.type="password";
     inpt.placeholder="Secure Key here...";
@@ -136,11 +137,9 @@ function confirm_share(){
     var confirm_btn = document.createElement("button");
     confirm_btn.id="confirm_share_btn";
     confirm_btn.innerHTML="Okay";
-
     confirm_btn.onclick = function(){
         share_option_clicked(key=inpt.value);        
     };
-
     confirm_container.appendChild(mssg_container);
     confirm_container.appendChild(inpt);
     confirm_container.appendChild(confirm_btn);
@@ -359,6 +358,7 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
             }
             update_cache();
             console.log("child added to parent");
+            actions(parent_child+" added to "+id);
         }
         if(id!=""){
             var button=document.getElementById('btn_'+id+'_3');
@@ -618,6 +618,7 @@ function delete_box(id){
         tmp_id=tmp_id.join("");
         var parent=tmp_id;
         update_cache();
+        actions(id+" removed");
         merge(parent);
         expand(parent);
     }
@@ -715,6 +716,7 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
         case 'json_send':
             formData.append('json_file', JSON.stringify(data));
             formData.append("action",'save_json');
+            actions("uploading data to server");
             break;
         case 'okEditFormClicked':
             var id=args;
@@ -726,6 +728,7 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
                 formData.append("u_image", image.files[0]);
                 formData.append("box_id",id);
                 formData.append("action","save_image");
+                actions("image uploading to server");
             }
             else{
                 return 0;
@@ -749,6 +752,7 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
     var request = makeRequest('POST', url);
     if(!request) {
         console.log('Request not supported');
+        actions('Request not supported');
         return;
     }
     // Handle the requests
@@ -767,6 +771,7 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
                     break;
                 case 'okEditFormClicked':
                     callback({'response':resp,'box_id':args},"image_uploaded");
+                    actions("image uploaded to server");
                     break;
                 case 'clone' :
                     backed_up=1;
@@ -785,7 +790,16 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
         }
         else if(request.readyState==4&&request.status!=200){
             console.log("Error occured!!!");
+            actions("error contacting server");
         }
     };
     request.send(formData);
+}
+
+function actions(does){
+    var division=document.createElement('div');
+    var rows=document.createElement('p');
+    rows.innerHTML=does + " " + Date();
+    division.appendChild(rows);
+    document.getElementById('notif-contents').appendChild(division);
 }
