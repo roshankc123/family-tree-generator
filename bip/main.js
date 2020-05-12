@@ -143,6 +143,7 @@ function notif_tab(){
 // Copy key of notification
 function notif_copy_key(obj){
     var key_div = obj.parentNode.previousElementSibling;
+    console.log(key_div);
     copy_to_clipboard(key_div);
 }
 

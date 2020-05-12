@@ -23,13 +23,13 @@ window.onload = () => {
         if(raw_data=getCookie("tree_data")){
             data=JSON.parse(raw_data);
             console.log("cookie data found");
-            actions("data from local storage");
+            note_div("main-action-cont","data from local storage");
         }
         else{
         // get_json return the data that is from server, if server sent json data then now we can JSON.parse(get_json())
             ajax_call("get_json","");
             console.log("data from server");
-            actions("searching server for data");
+            note_div("main-action-cont","Searching server for data..");
         }
 
     }
@@ -65,7 +65,7 @@ function callback(response, callback_arg){
             document.getElementById('img_A').src="images/"+data['A'][1]+".png";
         }
         else{
-            actions("no data from server");
+            note_div("main-action-cont","No data from server");
         }
         update_cache();
     }
@@ -362,7 +362,7 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
             }
             update_cache();
             console.log("child added to parent");
-            actions(parent_child+" added to "+id);
+            note_div("main-action-cont",parent_child+" added to "+id);
         }
         if(id!=""){
             var button=document.getElementById('btn_'+id+'_3');
@@ -622,7 +622,7 @@ function delete_box(id){
         tmp_id=tmp_id.join("");
         var parent=tmp_id;
         update_cache();
-        actions(id+" removed");
+        note_div("main-action-cont",id+" removed");
         merge(parent);
         expand(parent);
     }
@@ -720,7 +720,7 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
         case 'json_send':
             formData.append('json_file', JSON.stringify(data));
             formData.append("action",'save_json');
-            actions("uploading data to server");
+            note_div("main-action-cont","Uploading data to server");
             break;
         case 'okEditFormClicked':
             var id=args;
@@ -732,7 +732,7 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
                 formData.append("u_image", image.files[0]);
                 formData.append("box_id",id);
                 formData.append("action","save_image");
-                actions("image uploading to server");
+                note_div("main-action-cont","Image uploading to server");
             }
             else{
                 return 0;
@@ -759,7 +759,7 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
     var request = makeRequest('POST', url);
     if(!request) {
         console.log('Request not supported');
-        actions('Request not supported');
+        note_div("main-action-cont",'Request not supported');
         return;
     }
     // Handle the requests
@@ -778,7 +778,7 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
                     break;
                 case 'okEditFormClicked':
                     callback({'response':response,'box_id':args},"image_uploaded");
-                    actions("image uploaded to server");
+                    note_div("main-action-cont","Image uploaded to server");
                     break;
                 case 'clone' :
                     backed_up=1;
@@ -800,16 +800,38 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
         }
         else if(request.readyState==4&&request.status!=200){
             console.log("Error occured!!!");
-            actions("error contacting server");
+            note_div("main-action-cont","Error contacting server");
         }
     };
     request.send(formData);
 }
 
-function actions(does){
-    var division=document.createElement('div');
-    var rows=document.createElement('p');
-    rows.innerHTML=does + " " + Date();
-    division.appendChild(rows);
-    document.getElementById('notif-contents').appendChild(division);
+function note_div(div_for,does){
+    var main_division=document.createElement('div');
+    var division_1=document.createElement('div');
+    var division_2=document.createElement('div');
+    var button_1=document.createElement('BUTTON');
+    if(div_for=="main-action-cont"){
+        division_1.innerHTML=does;
+        division_2.innerHTML=Date();
+        button_1.innerHTML="delete";
+        division_2.appendChild(button_1);
+        main_division.appendChild(division_1);
+        main_division.appendChild(division_2);
+    }
+    else if(div_for=="main-notif-cont"){
+        var division_3=document.createElement('div');
+        var button_1=document.createElement('BUTTON');
+        division_1.innerHTML="tree_name";
+        division_2.innerHTML="key";
+        division_3.innerHTML="date";
+        button_1.innerHTML="copy";
+        button_1.innerHTML="delete";
+        division_3.appendChild(button_1);
+        division_3.appendChild(button_1);
+        main_division.appendChild(division_1);
+        main_division.appendChild(division_2);
+        main_division.appendChild(division_3);
+    }
+    document.getElementById(div_for).appendChild(main_division);
 }
