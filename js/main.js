@@ -352,7 +352,7 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
                 image.src=temp[box.id];
             }
             else if(!temp[box.id] && data[box.id][1]){
-                image.src="http://127.0.0.1:8081/images/"+data[box.id][1]+".png";
+                image.src="http://tree.eastus.cloudapp.azure.com/images/"+data[box.id][1]+".png";
             }
             box.appendChild(image);
         var branch = document.createElement("li");
@@ -570,7 +570,7 @@ function view(id){
         imagePath=temp[id];
     }
     else if(!temp[id] && data[id][1]){
-        imagePath="http://127.0.0.1:8081/images/"+data[id][1]+".png";
+        imagePath="http://tree.eastus.cloudapp.azure.com/images/"+data[id][1]+".png";
     }
     else{
         imagePath="";
@@ -715,7 +715,7 @@ function show_key_to_copy(response_key){
 
 function ajax_call(ajax_for,args){     ///args represent any argument to be passed
     var user=getCookie("tree_cookie");
-    var url="http://127.0.0.1:8081/main.php";
+    var url="http://tree.eastus.cloudapp.azure.com/main.php";
     var formData = new FormData();
     formData.append('user', user);
     switch (ajax_for) {
