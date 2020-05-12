@@ -60,9 +60,13 @@ function appear_btn(id,action){
 // call back for get_json 
 function callback(response, callback_arg){
     if(callback_arg=="get_json" || callback_arg=="clone"){
+        if(callback_arg=="clone"){
+            popUpClose();
+        }
         if(response){
             data=JSON.parse(response);
             document.getElementById('img_A').src="images/"+data['A'][1]+".png";
+            note_div("main-action-cont","Fetched data from server");
         }
         else{
             note_div("main-action-cont","No data from server");
