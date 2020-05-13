@@ -14,6 +14,9 @@ data['A'][2]=-1;    ///for child count
 data['A'][3]=1;    ///available(1 means not deleted)
 temp={};              ///for cache storage of boxes
 backed_up=0;
+var max_tree_time=0;   ////it store the time date of latest tree that is in notification
+var time_display=["sec","min","hour"];
+var local_obj_time={};   ///it store action time for local actions in action tab
 // When window is loaded then only
 window.onload = () => {
     if(!isCookieSet()){
@@ -87,13 +90,20 @@ function callback(response, callback_arg){
         data[response.box_id][1]=response.response;
         update_cache();
     }
-    else if(callback_arg="get_note"){
+    else if(callback_arg=="get_note"){
         var response_json=JSON.parse(response);
         console.log(response_json);
         var i=0;
         while(response_json[i]){
             note_div("main-notif-cont",response_json[i]);
+            max_tree_time=response_json[i][2];
             i++;
+        }
+    }
+    else if(callback_arg=="delete_perm"){
+        var response_json=JSON.parse(response);
+        if(response_json[1]=="deleted"){
+            note_div("main-action-cont","Deleted tree from server");
         }
     }
 }
@@ -719,7 +729,7 @@ function show_key_to_copy(response_key){
 
 function ajax_call(ajax_for,args){     ///args represent any argument to be passed
     var user=getCookie("tree_cookie");
-    var url="http://tree.eastus.cloudapp.azure.com/main.php";
+    var url="http://127.0.0.1:8081/main.php";
     var formData = new FormData();
     formData.append('user', user);
     switch (ajax_for) {
@@ -760,7 +770,12 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
             formData.append("action",'delete');
             break;
         case 'get_note':
-                formData.append('action','get_note');
+            formData.append('action','get_note');
+            formData.append('last_time',args);
+            break;
+        case 'delete_perm':
+            formData.append('action',"delete_perm");
+            formData.append('tree_id',args);
             break;
         default:
             break;
@@ -803,6 +818,9 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
                 case 'get_note':
                     callback(response,"get_note");
                     break;
+                case 'delete_perm':
+                    callback(response,"delete_perm");
+                    break;
                 default:
                     break;
             }
@@ -820,9 +838,15 @@ function note_div(div_for,does){
     var division_1=document.createElement('div');
     var division_2=document.createElement('div');
     var button_1=document.createElement('BUTTON');
+    var time_storage=document.createElement('div');
+    time_storage.style.visibility="hidden";
+    time_storage.style.height="0";
     if(div_for=="main-action-cont"){
+        var temp_time=Date.now();
         division_1.innerHTML=does;
-        division_2.innerHTML=Date();
+        division_2.innerHTML="just now";
+        time_storage.innerHTML=(temp_time/1000)-((temp_time/1000)%1);
+        main_division.appendChild(time_storage);
         button_1.innerHTML="delete";
         button_1.onclick=function(){
             this.parentNode.parentNode.remove();
@@ -836,13 +860,19 @@ function note_div(div_for,does){
         var button_2=document.createElement('BUTTON');
         division_1.innerHTML="name:"+does[0];
         division_2.innerHTML=does[1];
-        division_3.innerHTML=does[2];
+        division_3.innerHTML=show_time(does[2])+" ago";
+        time_storage.innerHTML=does[2];
+        main_division.appendChild(time_storage);
         button_2.innerHTML="copy key";
         button_2.className="copy_key";
         button_2.onclick=function(){
             notif_copy_key(this);
         }
         button_1.innerHTML="delete";
+        button_1.onclick=function(){
+            ajax_call("delete_perm",does[1]);
+            this.parentNode.parentNode.remove();
+        }
         division_3.appendChild(button_2);
         division_3.appendChild(button_1);
         main_division.appendChild(division_1);
@@ -882,7 +912,7 @@ function notice_clicked(){
         that.style.fontSize="2.5em";
         that.parentNode.style.boxShadow="-6px 0px 8px -4px #ddd";
         document.getElementById("notif-cont").style.width="480px"; 
-        ajax_call('get_note',"");    
+        ajax_call('get_note',max_tree_time);    
     } else {
         that.className="";
         that.innerHTML="-----------------------------------------------------";
@@ -896,6 +926,7 @@ function notice_clicked(){
 function action_tab(){
     var that = document.getElementById("action_tab");
     that.className="active_tab";
+    time_update(document.getElementById("main-action-cont"));
     document.getElementById("main-action-cont").style.display="block";
     document.getElementById("main-notif-cont").style.display="none";
     document.getElementById("notif_tab").className="";
@@ -905,6 +936,7 @@ function action_tab(){
 function notif_tab(){
     var that = document.getElementById("notif_tab");
     that.className="active_tab";
+    time_update(document.getElementById("main-notif-cont"));
     document.getElementById("main-notif-cont").style.display="block";
     document.getElementById("main-action-cont").style.display="none";
     document.getElementById("action_tab").className="";
@@ -934,5 +966,27 @@ function copy_to_clipboard(copy_from_div){
         selection.removeAllRanges();
         selection.addRange(range);
         document.execCommand("Copy");
+    }
+}
+
+function show_time(unix_time){
+    var js_time=Date.now();
+    js_time=(js_time/1000)-((js_time/1000)%1);
+    var actual_time=js_time-unix_time;
+    var i=0;
+    while(actual_time>60 && i<=2){
+        actual_time=(actual_time/60)-((actual_time/60)%1);
+        i++;
+    }
+    return actual_time+" "+time_display[i];
+}
+
+function time_update(div_self){
+    var i=0;
+    var result="";
+    while(i<div_self.childElementCount){
+        result=show_time(div_self.childNodes[i].childNodes[0].textContent);
+        div_self.childNodes[i].childNodes[div_self.childNodes[i].childElementCount-1].childNodes[0].textContent=result+" ago";
+        i++;
     }
 }

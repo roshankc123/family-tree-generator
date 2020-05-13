@@ -46,10 +46,18 @@ header("Access-Control-Allow-Origin: *");
             return (str_replace($first,$second,$value));
         }
 
-        function delete_data(){
-                $qry=mysqli_query($this->sql,"update data set def=0 where u_cookie='".$this->user."';");
+        function delete_data($type){
+            if ($type!="perm"){
+                $qry=mysqli_query($this->sql,"update data set def=0 
+                                                where u_cookie='".$this->user."';");
+            }
+            else{
+                $tree_key=$this->sql_filter($_POST['tree_id'],1);
+                $qry=mysqli_query($this->sql,"update data set u_cookie='deleted'
+                                                where u_cookie='".$this->user."' and u_key='".$tree_key."';");
+            }
                 if(!$qry){echo mysqli_error($this->sql);}
-                else{ return $this->user." deleted"; }
+                else{ return json_encode(array($tree_key,"deleted")); }
         }
 
         function image_add($box_id){ 
@@ -82,15 +90,22 @@ header("Access-Control-Allow-Origin: *");
                                             1,
                                             '".$key."',
                                             '".$tree_name."',
-                                            '".Date('20y-m-d H-i-s')."');");
+                                            '".time()."');");
                 if(!$qry){ echo mysqli_error($this->sql);die("error"); }
                 else{ return $key; }
             }
         }
 
         function get_note(){
+            if($_POST['last_time']){
+                $last_time=$this->sql_filter($_POST['last_time'],1);
+            }
+            else{
+                $last_time=time();
+            }
             $qry=mysqli_query($this->sql,"select tree_name,u_key,added_time from data 
-                                          where u_cookie='".$this->user."' order by added_time desc limit 10");
+                                          where u_cookie='".$this->user."' and 
+                                          added_time<'".$last_time."' order by added_time desc limit 10");
               if(!$qry){echo mysqli_error($this->sql);}
               $data=mysqli_fetch_all($qry);
               return $this->sql_filter(json_encode($data),0);
@@ -108,7 +123,7 @@ header("Access-Control-Allow-Origin: *");
         if($tree->sql()){
             switch ($_POST['action']){
                 case 'delete':
-                    echo $tree->delete_data();
+                    echo $tree->delete_data("clean");
                 break;
                 case 'get_json':
                     echo $tree->clone_data();
@@ -121,6 +136,9 @@ header("Access-Control-Allow-Origin: *");
                 break;
                 case 'get_note':
                     echo $tree->get_note();
+                break;
+                case 'delete_perm':
+                    echo $tree->delete_data("perm");
                 break;
                 default:
                 break;
