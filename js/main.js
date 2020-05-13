@@ -82,9 +82,7 @@ function callback(response, callback_arg){
     else if(callback_arg=="save"){
         popUpClose();
         show_key_to_copy(response);
-    }
-    else if(callback_arg=="json_send"){
-
+        note_div("main-action-cont","Tree uploaded to server","GREEN");
     }
     else if(callback_arg=="image_uploaded"){
         data[response.box_id][1]=response.response;
@@ -498,7 +496,7 @@ function share_option(){
         ask_key_popup("save");
     }
     no_btn.onclick=function(){
-        ajax_call("json_send","");
+        ajax_call("save","");
         popUpClose();
     }
     var note_container = document.createElement("p");
@@ -725,9 +723,13 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
         case 'get_json':
             formData.append("action","get_json");
             break;
-        case 'json_send':
+        case 'save':
             formData.append('json_file', JSON.stringify(data));
             formData.append("action",'save_json');
+            if(args==""){
+                args=data['A'][0];
+            }
+            formData.append('tree_name',args);
             note_div("main-action-cont","Uploading data to server", "yellow");
             break;
         case 'okEditFormClicked':
@@ -749,11 +751,6 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
         case 'clone':
             formData.append('key',args);
             formData.append("action",'clone');
-            break;
-        case 'save':
-            formData.append('tree_name',args);
-            formData.append('json_file', JSON.stringify(data));
-            formData.append("action",'save_json');
             break;
         case 'delete':
             formData.append("action",'delete');
@@ -785,19 +782,15 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
                         callback(response,"get_json");
                     }
                     break;
-                case 'json_send':
+                case 'save':
                     backed_up=1;
-                    callback(response,"json_send");
+                    callback(response,"save");
                     break;
                 case 'okEditFormClicked':
                     callback({'response':response,'box_id':args},"image_uploaded");
                     note_div("main-action-cont","Image uploaded to server", "green");
                     break;
                 case 'clone' :
-                    backed_up=1;
-                    callback(response,ajax_for);
-                    break;
-                case 'save':
                     backed_up=1;
                     callback(response,ajax_for);
                     break;
