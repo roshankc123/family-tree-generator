@@ -903,14 +903,14 @@ function notice_clicked(){
         that.style.fontSize="2.5em";
         that.parentNode.style.boxShadow="-6px 0px 8px -4px #ddd";
         document.getElementById("notif-cont").style.width="480px";
-        var div_self=document.getElementById("main-notif-cont");
-        var div_offset=div_self.childElementCount;
-        var for_ajax="";
-        if(div_offset>0){
-            for_ajax=JSON.stringify([div_self.childNodes[0].childNodes[0].textContent,
-                            div_self.childNodes[div_offset-1].childNodes[0].textContent]);
-        }
-        ajax_call('get_note',for_ajax);    
+        // var div_self=document.getElementById("main-notif-cont");
+        // var div_offset=div_self.childElementCount;
+        // var for_ajax="";
+        // if(div_offset>0){
+        //     for_ajax=JSON.stringify([div_self.childNodes[0].childNodes[0].textContent,
+        //                     div_self.childNodes[div_offset-1].childNodes[0].textContent]);
+        // }
+        ajax_call('get_note',max_tree_time);    
     } else {
         that.className="";
         that.innerHTML="-----------------------------------------------------";

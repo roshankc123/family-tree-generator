@@ -98,17 +98,14 @@ header("Access-Control-Allow-Origin: *");
 
         function get_note(){
             if($_POST['last_time']){
-                $raw_last_time=$this->sql_filter($_POST['last_time'],1);
-                $last_time=json_decode($raw_last_time);
+                $last_time=$this->sql_filter($_POST['last_time'],1);
             }
             else{
-                $last_time[0]=time();
-                $last_time[1]=time();
+                $last_time=time();
             }
             $qry=mysqli_query($this->sql,"select tree_name,u_key,added_time from data 
                                           where u_cookie='".$this->user."' and 
-                                          added_time<'".$last_time[1]."' or added_time>'".$last_time[0]."' 
-                                          order by added_time desc limit 10");
+                                          added_time<'".$last_time."' order by added_time desc limit 10");
               if(!$qry){echo mysqli_error($this->sql);}
               $data=mysqli_fetch_all($qry);
               return $this->sql_filter(json_encode($data),0);
