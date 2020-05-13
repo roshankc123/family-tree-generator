@@ -81,8 +81,10 @@ function callback(response, callback_arg){
     }
     else if(callback_arg=="save"){
         popUpClose();
-        show_key_to_copy(response);
-        note_div("main-action-cont","Tree uploaded to server","green");
+        var response_json=JSON.parse(response);
+        show_key_to_copy(response_json[1]);
+        note_div("main-action-cont","Tree ("+response_json[1]+") uploaded to server","green");
+        note_div("main-notif-cont",response_json,"","before");
     }
     else if(callback_arg=="image_uploaded"){
         data[response.box_id][1]=response.response;
@@ -90,7 +92,6 @@ function callback(response, callback_arg){
     }
     else if(callback_arg=="get_note"){
         var response_json=JSON.parse(response);
-        console.log(response_json);
         var i=0;
         while(response_json[i]){
             note_div("main-notif-cont",response_json[i]);
@@ -101,7 +102,7 @@ function callback(response, callback_arg){
     else if(callback_arg=="delete_perm"){
         var response_json=JSON.parse(response);
         if(response_json[1]=="deleted"){
-            note_div("main-action-cont","Deleted tree(key:"+response_json[0]+") from server");
+            note_div("main-action-cont","Deleted tree(key:"+response_json[0]+") from server","green");
         }
     }
     document.getElementById("pop-close").style.display="block";
@@ -814,7 +815,7 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
     request.send(formData);
 }
 
-function note_div(div_for,does,note_type=null){
+function note_div(div_for,does,note_type=null,position="after"){
     var main_division=document.createElement('div');
     var division_1=document.createElement('div');
     var division_2=document.createElement('div');
@@ -862,7 +863,12 @@ function note_div(div_for,does,note_type=null){
         main_division.appendChild(division_2);
         main_division.appendChild(division_3);
     }
-    document.getElementById(div_for).appendChild(main_division);
+    if(position=="before"){
+        document.getElementById(div_for).prepend(main_division);
+    }
+    else{
+        document.getElementById(div_for).appendChild(main_division);
+    }
 }
 
 // Menu button clicked

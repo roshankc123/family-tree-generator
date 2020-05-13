@@ -81,8 +81,9 @@ header("Access-Control-Allow-Origin: *");
 
         function save_data(){
             if($_POST['json_file']){
+                $time_now=time();
                 $tree_name=$this->sql_filter($_POST['tree_name'],1);
-                $key=hash("md5",$_POST['tree_name'].$user.time());
+                $key=hash("md5",$_POST['tree_name'].$user.$time_now);
                 $json_file_filter=str_replace(array("'","-"),array("&qot","&das"),$_POST['json_file']);
                 $qry=mysqli_query($this->sql,"insert into data values('0',
                                             '".$this->user."',
@@ -90,9 +91,9 @@ header("Access-Control-Allow-Origin: *");
                                             1,
                                             '".$key."',
                                             '".$tree_name."',
-                                            '".time()."');");
+                                            '".$time_now."');");
                 if(!$qry){ echo mysqli_error($this->sql);die("error"); }
-                else{ return $key; }
+                else{ return json_encode(array($tree_name,$key,$time_now)); }
             }
         }
 
