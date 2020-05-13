@@ -143,30 +143,30 @@ function notice_clicked(e){
     }
 }
 
-// Yes on share option
-function confirm_share(){
-    document.getElementById("popup_container").lastChild.remove();
-    var confirm_container=document.createElement("div");
-    confirm_container.id="confirm_container";
-    var mssg_container=document.createElement("div");
-    mssg_container.className="conf_mssg_container";
-    mssg_container.innerHTML="Please enter a secure key to share the content"
-    var inpt = document.createElement("input");
-    inpt.type="password";
-    inpt.placeholder="Secure Key here...";
-    inpt.autofocus=true;
-    inpt.id="key_input";
-    var confirm_btn = document.createElement("button");
-    confirm_btn.id="confirm_share_btn";
-    confirm_btn.innerHTML="Okay";
-    confirm_btn.onclick = function(){
-        share_option_clicked(key=inpt.value);        
-    };
-    confirm_container.appendChild(mssg_container);
-    confirm_container.appendChild(inpt);
-    confirm_container.appendChild(confirm_btn);
-    document.getElementById("popup_container").appendChild(confirm_container);
-}
+// // Yes on share option
+// function confirm_share(){
+//     document.getElementById("popup_container").lastChild.remove();
+//     var confirm_container=document.createElement("div");
+//     confirm_container.id="confirm_container";
+//     var mssg_container=document.createElement("div");
+//     mssg_container.className="conf_mssg_container";
+//     mssg_container.innerHTML="Please enter a secure key to share the content"
+//     var inpt = document.createElement("input");
+//     inpt.type="password";
+//     inpt.placeholder="Secure Key here...";
+//     inpt.autofocus=true;
+//     inpt.id="key_input";
+//     var confirm_btn = document.createElement("button");
+//     confirm_btn.id="confirm_share_btn";
+//     confirm_btn.innerHTML="Okay";
+//     confirm_btn.onclick = function(){
+//         share_option_clicked(key=inpt.value);        
+//     };
+//     confirm_container.appendChild(mssg_container);
+//     confirm_container.appendChild(inpt);
+//     confirm_container.appendChild(confirm_btn);
+//     document.getElementById("popup_container").appendChild(confirm_container);
+// }
 
 /* Cookie user logged or not */
 // Create cookie
@@ -497,7 +497,7 @@ function share_option(){
     }
     no_btn.onclick=function(){
         ajax_call("save","");
-        popUpClose();
+        confirm_container.innerHTML="<div class='top-load'><div class='load'><div></div></div></div>";
     }
     var note_container = document.createElement("p");
     note_container.innerHTML="*Note:- Allowing this will make your tree sharable to people with the key you provided.";
@@ -688,7 +688,6 @@ function show_key_to_copy(response_key){
     var mssg_container=document.createElement("div");
     mssg_container.className="conf_mssg_container";
     mssg_container.innerHTML="Here is the key for you!!!";
-
     var main_key_cont=document.createElement("div");
     main_key_cont.innerHTML=response_key;
     main_key_cont.style.padding="5px 10px";
