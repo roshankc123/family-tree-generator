@@ -103,7 +103,7 @@ function callback(response, callback_arg){
     else if(callback_arg=="delete_perm"){
         var response_json=JSON.parse(response);
         if(response_json[1]=="deleted"){
-            note_div("main-action-cont","Deleted tree from server");
+            note_div("main-action-cont","Deleted tree(key:"+response_json[0]+") from server");
         }
     }
     document.getElementById("pop-close").style.display="block";
@@ -718,7 +718,7 @@ function show_key_to_copy(response_key){
 
 function ajax_call(ajax_for,args){     ///args represent any argument to be passed
     var user=getCookie("tree_cookie");
-    var url="http://tree.eastus.cloudapp.azure.com/main.php";
+    var url="http://tree.eastus.cloudapp.azure.com/main.php";  //tree.eastus.cloudapp.azure.com
     var formData = new FormData();
     formData.append('user', user);
     switch (ajax_for) {
@@ -850,7 +850,8 @@ function note_div(div_for,does,note_type=null){
         var button_2=document.createElement('BUTTON');
         division_1.innerHTML="name:"+does[0];
         division_2.innerHTML=does[1];
-        division_3.innerHTML=show_time(does[2])+" ago";
+        var to_date=new Date(does[2]*1000);
+        division_3.innerHTML=to_date;//show_time(does[2])+" ago";
         time_storage.innerHTML=does[2];
         main_division.appendChild(time_storage);
         button_2.innerHTML="copy key";
@@ -901,8 +902,15 @@ function notice_clicked(){
         that.style.fontWeight="1000";
         that.style.fontSize="2.5em";
         that.parentNode.style.boxShadow="-6px 0px 8px -4px #ddd";
-        document.getElementById("notif-cont").style.width="480px"; 
-        ajax_call('get_note',max_tree_time);    
+        document.getElementById("notif-cont").style.width="480px";
+        var div_self=document.getElementById("main-notif-cont");
+        var div_offset=div_self.childElementCount;
+        var for_ajax="";
+        if(div_offset>0){
+            for_ajax=JSON.stringify([div_self.childNodes[0].childNodes[0].textContent,
+                            div_self.childNodes[div_offset-1].childNodes[0].textContent]);
+        }
+        ajax_call('get_note',for_ajax);    
     } else {
         that.className="";
         that.innerHTML="-----------------------------------------------------";
@@ -926,7 +934,7 @@ function action_tab(){
 function notif_tab(){
     var that = document.getElementById("notif_tab");
     that.className="active_tab";
-    time_update(document.getElementById("main-notif-cont"));
+    //time_update(document.getElementById("main-notif-cont"));
     document.getElementById("main-notif-cont").style.display="block";
     document.getElementById("main-action-cont").style.display="none";
     document.getElementById("action_tab").className="";
