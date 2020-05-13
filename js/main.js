@@ -84,7 +84,7 @@ function callback(response, callback_arg){
         var response_json=JSON.parse(response);
         show_key_to_copy(response_json[1]);
         note_div("main-action-cont","Tree ("+response_json[1]+") uploaded to server","green");
-        note_div("main-notif-cont",response_json,"","before");
+        note_div("main-notif-cont",response_json);
     }
     else if(callback_arg=="image_uploaded"){
         data[response.box_id][1]=response.response;
@@ -94,7 +94,7 @@ function callback(response, callback_arg){
         var response_json=JSON.parse(response);
         var i=0;
         while(response_json[i]){
-            note_div("main-notif-cont",response_json[i]);
+            note_div("main-notif-cont",response_json[i],"","after");
             max_tree_time=response_json[i][2];
             i++;
         }
@@ -815,7 +815,7 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
     request.send(formData);
 }
 
-function note_div(div_for,does,note_type=null,position="after"){
+function note_div(div_for,does,note_type=null,position="before"){
     var main_division=document.createElement('div');
     var division_1=document.createElement('div');
     var division_2=document.createElement('div');
