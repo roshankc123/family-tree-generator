@@ -82,7 +82,7 @@ function callback(response, callback_arg){
     else if(callback_arg=="save"){
         popUpClose();
         show_key_to_copy(response);
-        note_div("main-action-cont","Tree uploaded to server","GREEN");
+        note_div("main-action-cont","Tree uploaded to server","green");
     }
     else if(callback_arg=="image_uploaded"){
         data[response.box_id][1]=response.response;
