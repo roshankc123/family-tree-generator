@@ -718,7 +718,7 @@ function show_key_to_copy(response_key){
 
 function ajax_call(ajax_for,args){     ///args represent any argument to be passed
     var user=getCookie("tree_cookie");
-    var url="http://127.0.0.1:8081/main.php";
+    var url="http://tree.eastus.cloudapp.azure.com/main.php";
     var formData = new FormData();
     formData.append('user', user);
     switch (ajax_for) {
