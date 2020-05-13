@@ -26,13 +26,13 @@ window.onload = () => {
         if(raw_data=getCookie("tree_data")){
             data=JSON.parse(raw_data);
             console.log("cookie data found");
-            note_div("main-action-cont","data from local storage");
+            note_div("main-action-cont","Data from local storage","green");
         }
         else{
         // get_json return the data that is from server, if server sent json data then now we can JSON.parse(get_json())
             ajax_call("get_json","");
             console.log("data from server");
-            note_div("main-action-cont","Searching server for data..");
+            note_div("main-action-cont","Searching server for data..","yellow");
         }
 
     }
@@ -69,10 +69,10 @@ function callback(response, callback_arg){
         if(response){
             data=JSON.parse(response);
             document.getElementById('img_A').src="images/"+data['A'][1]+".png";
-            note_div("main-action-cont","Fetched data from server");
+            note_div("main-action-cont","Fetched data from server", "green");
         }
         else{
-            note_div("main-action-cont","No data from server");
+            note_div("main-action-cont","No data from server", "red");
         }
         update_cache();
     }
@@ -100,12 +100,16 @@ function callback(response, callback_arg){
             i++;
         }
     }
+<<<<<<< HEAD
     else if(callback_arg=="delete_perm"){
         var response_json=JSON.parse(response);
         if(response_json[1]=="deleted"){
             note_div("main-action-cont","Deleted tree from server");
         }
     }
+=======
+    document.getElementById("pop-close").style.display="block";
+>>>>>>> 0e8ac100149e8b224f0050bd06c50c8c6aa26d46
 }
 
 // Menu button clicked
@@ -381,7 +385,7 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
             }
             update_cache();
             console.log("child added to parent");
-            note_div("main-action-cont",parent_child+" added to "+id);
+            note_div("main-action-cont",parent_child+" added to "+id, "green");
         }
         if(id!=""){
             var button=document.getElementById('btn_'+id+'_3');
@@ -512,7 +516,9 @@ function share_option(){
 
 // Yes on share option
 function ask_key_popup(for_){
-    document.getElementById("popup_container").lastChild.remove();
+    if(for_=="save"){
+        document.getElementById("popup_container").lastChild.remove();
+    }
     var confirm_container=document.createElement("div");
     confirm_container.id="confirm_container";
     var mssg_container=document.createElement("div");
@@ -538,6 +544,8 @@ function ask_key_popup(for_){
     confirm_btn.onclick = function(){
         if(inpt.value.length!=0){
             ajax_call(for_,inpt.value);
+            document.getElementById("pop-close").style.display="none";
+            confirm_container.innerHTML="<div class='top-load'><div class='load'><div></div></div></div>";
         }   
         else{
             inpt.placeholder="please dont leave it blank";
@@ -641,7 +649,7 @@ function delete_box(id){
         tmp_id=tmp_id.join("");
         var parent=tmp_id;
         update_cache();
-        note_div("main-action-cont",id+" removed");
+        note_div("main-action-cont",id+" removed", "green");
         merge(parent);
         expand(parent);
     }
@@ -698,23 +706,7 @@ function show_key_to_copy(response_key){
     yes_btn.style.backgroundColor="#00c9FE";
 
     yes_btn.onclick=function(){
-        // Copy response_text to clipboard
-        if(document.body.createTextRange) {
-            // IE
-            var range = document.body.createTextRange();
-            range.moveToElementText(main_key_cont);
-            range.select();
-            document.execCommand("Copy");
-        }
-        else {
-            // other browsers
-            var selection = window.getSelection();
-            var range = document.createRange();
-            range.selectNodeContents(main_key_cont);
-            selection.removeAllRanges();
-            selection.addRange(range);
-            document.execCommand("Copy");
-        }
+        copy_to_clipboard(main_key_cont);
     }    
     confirm_container.appendChild(mssg_container);
     confirm_container.appendChild(main_key_cont);
@@ -739,7 +731,7 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
         case 'json_send':
             formData.append('json_file', JSON.stringify(data));
             formData.append("action",'save_json');
-            note_div("main-action-cont","Uploading data to server");
+            note_div("main-action-cont","Uploading data to server", "yellow");
             break;
         case 'okEditFormClicked':
             var id=args;
@@ -751,7 +743,7 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
                 formData.append("u_image", image.files[0]);
                 formData.append("box_id",id);
                 formData.append("action","save_image");
-                note_div("main-action-cont","Image uploading to server");
+                note_div("main-action-cont","Image uploading to server", "yellow");
             }
             else{
                 return 0;
@@ -783,7 +775,7 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
     var request = makeRequest('POST', url);
     if(!request) {
         console.log('Request not supported');
-        note_div("main-action-cont",'Request not supported');
+        note_div("main-action-cont",'Request not supported', "red");
         return;
     }
     // Handle the requests
@@ -802,7 +794,7 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
                     break;
                 case 'okEditFormClicked':
                     callback({'response':response,'box_id':args},"image_uploaded");
-                    note_div("main-action-cont","Image uploaded to server");
+                    note_div("main-action-cont","Image uploaded to server", "green");
                     break;
                 case 'clone' :
                     backed_up=1;
@@ -827,13 +819,13 @@ function ajax_call(ajax_for,args){     ///args represent any argument to be pass
         }
         else if(request.readyState==4&&request.status!=200){
             console.log("Error occured!!!");
-            note_div("main-action-cont","Error contacting server");
+            note_div("main-action-cont","Error contacting server", "red");
         }
     };
     request.send(formData);
 }
 
-function note_div(div_for,does){
+function note_div(div_for,does,note_type=null){
     var main_division=document.createElement('div');
     var division_1=document.createElement('div');
     var division_2=document.createElement('div');
@@ -852,6 +844,7 @@ function note_div(div_for,does){
             this.parentNode.parentNode.remove();
         }
         division_2.appendChild(button_1);
+        main_division.className=note_type;
         main_division.appendChild(division_1);
         main_division.appendChild(division_2);
     }
