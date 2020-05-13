@@ -100,16 +100,13 @@ function callback(response, callback_arg){
             i++;
         }
     }
-<<<<<<< HEAD
     else if(callback_arg=="delete_perm"){
         var response_json=JSON.parse(response);
         if(response_json[1]=="deleted"){
             note_div("main-action-cont","Deleted tree from server");
         }
     }
-=======
     document.getElementById("pop-close").style.display="block";
->>>>>>> 0e8ac100149e8b224f0050bd06c50c8c6aa26d46
 }
 
 // Menu button clicked
