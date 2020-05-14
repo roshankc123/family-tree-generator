@@ -93,7 +93,7 @@ header("Access-Control-Allow-Origin: *");
                                             '".$tree_name."',
                                             '".$time_now."');");
                 if(!$qry){ echo mysqli_error($this->sql);die("error"); }
-                else{ return json_encode(array($tree_name,$key,$time_now)); }
+                else{ return json_encode(array($_POST['tree_name'],$key,$time_now)); }
             }
         }
 

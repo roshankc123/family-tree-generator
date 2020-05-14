@@ -17,8 +17,6 @@ backed_up=0;
 var max_tree_time=0;   ////it store the time date of latest tree that is in notification
 var time_display=["sec","min","hour"];
 var local_obj_time={};   ///it store action time for local actions in action tab
-var mblDeviceWidth = window.matchMedia('(max-device-width: 479px)').matches ? screen.width : null;      // Width of mobile below 480px
-
 // When window is loaded then only
 window.onload = () => {
     if(!isCookieSet()){
@@ -878,7 +876,7 @@ function notice_clicked(){
         that.style.fontSize="2.5em";
         that.parentNode.style.boxShadow="-6px 0px 8px -4px #ddd";
 
-        
+        var mblDeviceWidth = window.matchMedia('(max-device-width: 479px)').matches ? screen.width : null;      // Width of mobile below 480px
         document.getElementById("notif-cont").style.width = !mblDeviceWidth ? "480px" : mblDeviceWidth+"px";
         
         ajax_call('get_note',max_tree_time);    
