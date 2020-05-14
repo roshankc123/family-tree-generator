@@ -37,6 +37,7 @@ window.onload = () => {
 
     }
     position_add("",0,1);
+    document.getElementById('outer-tree').style.height=screen.height-100+"px";
 }
 
 ///function that make button appears or dissappear when box is clicked
