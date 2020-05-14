@@ -1,0 +1,25 @@
+
+<h3>Just click at box the black box and click add to add child</h3>
+
+this is a fully client side site. it creates a tree for a data in a supposed way. it has main parent
+ that is auto loaded in first(look at the black box behind). and then when you click that box, buttons 
+ pops up that has facility of 
+            1.adding its child box
+            2.viewing data inside box
+            3.expand its childs if present
+            4.delete that box
+the link between box is called branch and box at other end below is its direct child and so on below 
+will be its grand child. you can create a complete tree by adding boxes and linking between them. 
+boxes with branches between has direct link .
+ for example suppose you are main parent in your family you may hav childrens and then your childrens may have
+ childrens. you can create a visual link of your family showing your generations. 
+ at top right there is notification(we call it note) and menu buttons. note has two tab, action and notification
+ .action contain recent things happening in site and notification contain your trees saved in cloud.
+ menu has:
+    1.save:to upload created tree in cloud
+    2.delete:to clear workspace
+    3.clone:to clone trees with provided key
+
+saving will display a key that identify your tree and can be shared 
+
+bottom right has zoom buttons.
