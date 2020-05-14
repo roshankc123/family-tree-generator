@@ -17,7 +17,7 @@ function button_create(name,id){
             position_add(id,0);
             break;
         case 'View':
-            view();
+            view(id);
             break;
         case 'Edit':
             edit();
@@ -125,4 +125,34 @@ function start(){
         }
         offset++;
     }
+}
+
+
+///function that create a view division when popup happens
+function view(id){
+    document.getElementById("popup_div").style.display = "flex";
+    var view_container=document.createElement("div");
+    view_container.id="view_div";
+    // Image path of user image
+    if(id){
+        imagePath="http://202.70.84.165/img/student/"+id+".jpg";
+    }
+    else{
+        imagePath="";
+    }
+    if(imagePath){
+        view_container.style.backgroundImage = `url('${imagePath}')`;
+    }
+    // div for name of user
+    var div_0=document.createElement("div");
+    div_0.id="view_name_div";
+    div_0.innerHTML=id;
+    view_container.appendChild(div_0);
+    document.getElementById('popup_container').appendChild(view_container);
+}
+
+///function for making popup dissappear
+function popUpClose(){
+    document.getElementById('popup_container').lastChild.remove();
+    document.getElementById("popup_div").style.display = "none";
 }
