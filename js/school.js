@@ -57,7 +57,7 @@ function position_add(id,init,present_id){
         p_tag_to_enclose_btn.appendChild(button);
         box.appendChild(p_tag_to_enclose_btn);
     var image=document.createElement("img");
-        image.src="file:///home/roshan/vscode/bashtest/photos/"+box.id+".jpg";
+        image.src="http://202.70.84.165/img/student/"+box.id+".jpg";
         image.alt=box.id;
         image.width="130";
         image.height="130";
