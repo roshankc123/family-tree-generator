@@ -1,12 +1,17 @@
 body {
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
+}
+#outer-tree {
+    position: relative;
+    transform-origin: top left;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 #tree{
-    position: absolute;
-    top: 60px;
+    margin-top: 60px;
     transform: scale(1);
-    transform-origin: top left;
     transition: transform 0.2s linear;
 }
 #tree div {
@@ -14,7 +19,6 @@ body {
 }
 ul{
     display: flex;
-    justify-content: space-around;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -35,6 +39,7 @@ button {
     width: 100%;
     top: 0;
     z-index: 6;
+    background-color: #fff;
     /*box-shadow: 0px 2px 5px #ccc;*/
 }
 .mn-tp-out, .nf-tp-out {
@@ -216,7 +221,7 @@ button {
 .zoom-btns {
     position: fixed;
     right: 5px;
-    bottom: 5px;
+    bottom: 13px;
     z-index: 4;
 }
 #zoom-in, #zoom-out, #zoom-reset {
@@ -225,7 +230,7 @@ button {
     display: block;
     margin: 5px;
     border-radius: 50%;
-    background-color: transparent;
+    background-color: #fff;
     box-shadow: 0 0 3px #000;
     font-weight: 1000;
     height: 40px;
