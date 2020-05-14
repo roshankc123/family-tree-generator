@@ -882,7 +882,7 @@ function notice_clicked(){
         ajax_call('get_note',max_tree_time);    
     } else {
         that.className="";
-        that.innerHTML="-----------------------------------------------------";
+        that.innerHTML="------------ ------------ ------------ ------";
         that.style="";
         that.parentNode.style="";
         document.getElementById("notif-cont").style="";     

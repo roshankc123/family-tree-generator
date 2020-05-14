@@ -5,12 +5,11 @@ body {
 }
 #outer-tree {
     position: relative;
-    transform-origin: top left;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: auto;
 }
 #tree{
     margin-top: 60px;
+    transform-origin: left top;
     transform: scale(1);
     transition: transform 0.2s linear;
 }
