@@ -17,6 +17,8 @@ backed_up=0;
 var max_tree_time=0;   ////it store the time date of latest tree that is in notification
 var time_display=["sec","min","hour"];
 var local_obj_time={};   ///it store action time for local actions in action tab
+var mblDeviceWidth = window.matchMedia('(max-device-width: 479px)').matches ? screen.width : null;      // Width of mobile below 480px
+
 // When window is loaded then only
 window.onload = () => {
     if(!isCookieSet()){
@@ -143,31 +145,6 @@ function notice_clicked(e){
         document.querySelector(".nf-tp-out").style="";
     }
 }
-
-// // Yes on share option
-// function confirm_share(){
-//     document.getElementById("popup_container").lastChild.remove();
-//     var confirm_container=document.createElement("div");
-//     confirm_container.id="confirm_container";
-//     var mssg_container=document.createElement("div");
-//     mssg_container.className="conf_mssg_container";
-//     mssg_container.innerHTML="Please enter a secure key to share the content"
-//     var inpt = document.createElement("input");
-//     inpt.type="password";
-//     inpt.placeholder="Secure Key here...";
-//     inpt.autofocus=true;
-//     inpt.id="key_input";
-//     var confirm_btn = document.createElement("button");
-//     confirm_btn.id="confirm_share_btn";
-//     confirm_btn.innerHTML="Okay";
-//     confirm_btn.onclick = function(){
-//         share_option_clicked(key=inpt.value);        
-//     };
-//     confirm_container.appendChild(mssg_container);
-//     confirm_container.appendChild(inpt);
-//     confirm_container.appendChild(confirm_btn);
-//     document.getElementById("popup_container").appendChild(confirm_container);
-// }
 
 /* Cookie user logged or not */
 // Create cookie
@@ -900,14 +877,10 @@ function notice_clicked(){
         that.style.fontWeight="1000";
         that.style.fontSize="2.5em";
         that.parentNode.style.boxShadow="-6px 0px 8px -4px #ddd";
-        document.getElementById("notif-cont").style.width="480px";
-        // var div_self=document.getElementById("main-notif-cont");
-        // var div_offset=div_self.childElementCount;
-        // var for_ajax="";
-        // if(div_offset>0){
-        //     for_ajax=JSON.stringify([div_self.childNodes[0].childNodes[0].textContent,
-        //                     div_self.childNodes[div_offset-1].childNodes[0].textContent]);
-        // }
+
+        
+        document.getElementById("notif-cont").style.width = !mblDeviceWidth ? "480px" : mblDeviceWidth+"px";
+        
         ajax_call('get_note',max_tree_time);    
     } else {
         that.className="";
