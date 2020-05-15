@@ -450,6 +450,9 @@ function popUpOpen(type,id){
 
 ///function for making popup dissappear
 function popUpClose(){
+    if(document.getElementById("popup_container").classList.contains("help_in_content")){
+        document.getElementById("popup_container").className="";
+    }
     document.getElementById('popup_container').lastChild.remove();
     document.getElementById("popup_div").style.display = "none";
 }
@@ -957,4 +960,20 @@ function time_update(div_self){
         div_self.childNodes[i].childNodes[div_self.childNodes[i].childElementCount-1].childNodes[0].textContent=result+" ago";
         i++;
     }
+}
+
+/**Help button clicked */
+function help_clicked(){
+    popUpOpen();
+    var help = document.createElement("div");
+
+    var request= new XMLHttpRequest();
+    request.open('GET', 'help.html');
+    request.onreadystatechange= function() {
+        help.innerHTML= request.responseText;
+    };
+    request.send();
+
+    document.getElementById("popup_container").className="help_in_content";
+    document.getElementById("popup_container").append(help);
 }

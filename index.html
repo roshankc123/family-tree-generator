@@ -4,7 +4,6 @@
         <meta charset="UTF-8">
         <title>index</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- <link rel="stylesheet" href="css/index.css"> -->
         <link rel="stylesheet" href="css/index.css">
         <script src="js/md5.js"></script>
         <script src="js/main.js"></script> 
@@ -31,6 +30,7 @@
         <button onclick="popUpOpen(type='share_option')" class="main-push" title="Upload all new changes">Save</button>
         <button onclick="delete_clicked()" class="main-push" title="Delete">Delete</button>
         <button class="main-push" onclick="clone_clicked()">clone</button>
+        <button id="help-btn" onclick="help_clicked()"><span>?</span> Help</button>
     </div>
     <div class="notif-outer">
         <div id="notif-cont">
@@ -60,7 +60,7 @@
     
     <div id="popup_div">
         <div id="popup_container">
-            <button id="pop-close" onclick="popUpClose()" title="Close">&times;</button>       
+            <div class="pop-close-outer"><button id="pop-close" onclick="popUpClose()" title="Close">&times;</button></div>       
         </div>
     </div>
     <!--

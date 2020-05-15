@@ -203,6 +203,28 @@ button {
 }
 .main-push:nth-child(3){
     background-color: #FFCC33;
+    margin-bottom: 10px;
+}
+#help-btn {
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    border-top: 1px solid #eee;
+    padding: 10px;
+}
+#help-btn:hover {
+    background-color: #efefef;
+}
+#help-btn span {
+    height: 20px;
+    width: 20px;
+    font-weight: 1000;
+    background-color: #444;
+    color: #ccc;
+    border-radius: 50%;
+    flex-shrink: 0;
+    line-height: 20px;
+    margin-right: 5px;
 }
 #n-status {
     display: none;
@@ -377,6 +399,11 @@ li div.box img {
     box-sizing: border-box;
     background-color: #eee;
     z-index: 10;
+    overflow: auto;
+}
+#popup_container.help_in_content {
+    width: 98%;
+    height: 95%;
 }
 #edit_div {
     padding: 20px;
@@ -410,10 +437,13 @@ input::placeholder {
     padding: 5px 36px;
     border: 1px solid #222;
 }
-#pop-close {
+.pop-close-outer {
     position: absolute;
     top: 0px;
-    right: 5px;
+    right: 33px;
+}
+#pop-close {
+    position: fixed;
     font-size: 2em;
     text-shadow: 2px 1px #eee;
 }
@@ -524,4 +554,31 @@ input::placeholder {
     0% { transform: rotate(0deg) }
     50% { transform: rotate(180deg) }
     100% { transform: rotate(360deg) }
+}
+
+
+/**Help*/
+.help-content {
+    padding: 10px;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    width: 100%;
+    height: 100%;
+}
+.help-content h3 {
+    text-align: center;
+}
+.help-content .bck-grey {
+    background-color: #ccc;
+    box-sizing: border-box;
+    padding: 0 5px;
+}
+.help-content button {
+    border: 1px solid #555;
+    box-sizing: border-box;
+    padding: 0 5px;
+}
+.help-content .tab {
+    border-bottom: 1px solid #555;
+    padding: 0 5px;
 }
