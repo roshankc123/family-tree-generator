@@ -372,6 +372,7 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
         document.body.scrollTop=document.getElementById("tree").offsetHeight;
         console.log("position add end reached");
     }
+    time_update(document.getElementById('main-action-cont'));
     child++;
     child_subid_offset++;
 }
