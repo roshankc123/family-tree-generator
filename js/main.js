@@ -337,10 +337,14 @@ function position_add(id,init,view_only){  ////view_only 1 for just viewing
             p_tag_to_enclose_btn.appendChild(button);
             box.appendChild(p_tag_to_enclose_btn);
         var image=document.createElement('img');
-            image.alt=box.id;
+            if(data[box.id][0]!=""){
+                image.alt=data[box.id][0];
+            }
+            else{
+                image.alt=box.id;
+            }
             image.id="img_"+box.id;
             image.className="box_image";
-            image.alt=box.id;
             if(temp[box.id]){
                 image.src=temp[box.id];
             }
