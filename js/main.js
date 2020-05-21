@@ -164,6 +164,9 @@ function createCookie(ck_name, expire,ck_for){
 //function to push,edit array data
 function data_add(id){
     data[id][0]=document.getElementById('u_name').value;
+    if(data[id][0]){
+        document.getElementById("img_"+id).alt=data[id][0];
+    }
     ajax_call("okEditFormClicked",id);
     update_cache();                                                   
 popUpClose();
