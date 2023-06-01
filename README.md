@@ -8,3 +8,5 @@
 - Pop up for edit and view
 
 if you want to get idea about this project check myheritage app on play store
+
+for guidance regarding webapp see guide.txt
